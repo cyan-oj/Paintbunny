@@ -1,3 +1,22 @@
 nav {
+  background-color: var(--nav);
+  color: var(--nav-text);
   display: flex;
+  justify-content: space-between;
+}
+
+nav a {
+  padding: 4px;
+  margin: 4px;
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--nav-text);
+}
+
+.usermenu {
+  padding: 4px;
+  margin: 4px;
+  float:right;
 }

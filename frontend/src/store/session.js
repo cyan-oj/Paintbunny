@@ -53,7 +53,7 @@ export const signup = user => async dispatch => { // can we preemptively destruc
   return response;
 };
 
-export const logout = () => async (dispatch) => {
+export const logout = () => async dispatch => {
   const response = await csrfFetch("/api/session", {
     method: "DELETE"
   });

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
-import { logout } from "../../store/session"
-import { Link } from "react-router-dom";
+import { logout } from "../../../store/session"
+import { NavLink } from "react-router-dom";
 
 function UserMenu() {
   const dispatch = useDispatch();
@@ -8,9 +8,7 @@ function UserMenu() {
 
   return (
     <div class="usermenu">
-      <Link to="/">{username}</Link>
-      <Link to="/">Dashboard</Link>
-      <Link to="/">Create</Link>
+      <NavLink to="/">{username}</NavLink>
       <button onClick={e => dispatch(logout())}>Logout</button>
     </div>
   )
