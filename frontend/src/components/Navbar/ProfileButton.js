@@ -10,7 +10,6 @@ function ProfileButton() {
     if (!showMenu) return
     document.addEventListener("click", toggleMenu)
     return () => document.removeEventListener("click", toggleMenu);
-
   }, [showMenu])
 
   const toggleMenu = () => {
@@ -19,7 +18,9 @@ function ProfileButton() {
 
   return (
     <>
-      <button onClick={toggleMenu}>{username}</button>
+      <button 
+      className="profile-button"
+      onClick={toggleMenu}>{username}</button>
       { showMenu && (
         <UserMenu />
       )}

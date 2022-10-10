@@ -1,13 +1,16 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { logout } from "../../store/session"
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function UserMenu() {
   const dispatch = useDispatch();
 
   return (
     <div className="usermenu">
-      <Link to="/">Profile</Link>
+      <NavLink 
+        className={ isActive => "dropdown" + (isActive ? "active" : "" ) }
+        to="/"
+        >Profile</NavLink>
       <button onClick={e => dispatch(logout())}>Logout</button>
     </div>
   )
