@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import * as sessionActions from "../../store/session";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import "./LoginForm.css";
 
 function LoginForm() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector(state => state.session.user);
   
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
@@ -31,9 +30,9 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit}>
       <h1>Login</h1>
-      <ul>
-        {errors.map(error => <li key={error}>{error}</li>)}
-      </ul>
+        <ul style={{ display: errors.length ? "block" : "none" }}>
+          {errors.map(error => <li key={error}>{error}</li>)}
+        </ul>
         <input
           type="text"
           value={credential}
