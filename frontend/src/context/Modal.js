@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import ReactDOM from "react-dom";
+import "../colors.css"
 import "./Modal.css"
 
 const ModalContext = React.createContext();
 
-export function ModalProvider(props) {
-  const modalRef = useRef()
+export function ModalProvider({ children }) {
+  const modalRef = useRef();
   const [value, setValue] = useState();
 
   useEffect (() => {
@@ -15,14 +16,14 @@ export function ModalProvider(props) {
   return (
     <>
       <ModalContext.Provider value={value}>
-        { props.children }
+        { children }
       </ModalContext.Provider>
       <div ref={modalRef}></div>
     </>
   )
 }
 
-export function Modal({onClose, children}) {
+export function Modal({ onClose, children }) {
   const modalNode = useContext(ModalContext);
   if (!modalNode) return null;
 
@@ -36,5 +37,5 @@ export function Modal({onClose, children}) {
       </div>
     </div>,
     modalNode
-  )
+  );
 }

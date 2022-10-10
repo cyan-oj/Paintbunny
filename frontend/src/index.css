@@ -1,5 +1,21 @@
 /* TODO Add site wide styles */
 body{
   font-family: "Open Sans","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+  font-size: 20px;
   margin: 0;
+}
+
+form {
+  width: 500px;
+}
+
+form > * {
+  display: block;
+  width: 80%;
+  margin: 12px auto;
+  padding: 8px 16px;
+}
+
+li {
+  list-style-type: none;
 }

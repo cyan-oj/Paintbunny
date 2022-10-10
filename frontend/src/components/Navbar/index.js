@@ -1,10 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import "./Navbar.css"
-import "../../colors.css"
+import { useSelector } from "react-redux";
 import GuestMenu from "./GuestMenu";
 import ProfileButton from "./ProfileButton";
+import "./Navbar.css"
+import "../../colors.css"
 
 function Navbar() {
   const user = useSelector(state => state.session.user);

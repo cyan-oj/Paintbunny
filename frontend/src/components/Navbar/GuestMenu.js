@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
+import LoginFormModal from "../LoginFormModal";
 
 function GuestMenu() {
   return (
-    <div className="usermenu">
-      <NavLink to="/login">Log In</NavLink>
+    <div className="guestmenu">
       <NavLink to="/signup">Sign Up</NavLink>
+      <LoginFormModal />
     </div> 
   )
 }
