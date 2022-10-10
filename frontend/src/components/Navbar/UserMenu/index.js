@@ -7,7 +7,7 @@ function UserMenu() {
   const { username } = useSelector(state => state.session.user);
 
   return (
-    <div class="usermenu">
+    <div className="usermenu">
       <NavLink to="/">{username}</NavLink>
       <button onClick={e => dispatch(logout())}>Logout</button>
     </div>
