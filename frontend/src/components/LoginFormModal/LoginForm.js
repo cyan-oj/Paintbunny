@@ -27,11 +27,16 @@ function LoginForm() {
     });
   }
 
+  const demoSignIn = e => {
+    e.preventDefault();
+    dispatch(sessionActions.login({ credential: "Demo-lition" , password: "password"}))
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <h1>Login</h1>
         <ul style={{ display: errors.length ? "block" : "none" }}>
-          {errors.map(error => <li key={error}>{error}</li>)}
+          {errors.map(error => <li className="error" key={error}>{error}</li>)}
         </ul>
         <input
           type="text"
@@ -48,6 +53,7 @@ function LoginForm() {
           required
         />
       <button type="submit">Log In</button>
+      <button onClick={demoSignIn}>Demo User</button>
     </form>
   );
 }

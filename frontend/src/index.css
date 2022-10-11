@@ -28,3 +28,11 @@ input {
 li {
   list-style-type: none;
 }
+
+li.error {
+  font-size: 12px;
+  color: darkred;
+  background-color: rgb(254, 231, 223);
+  border: solid 1px darkred;
+  padding: 4px 8px;
+}

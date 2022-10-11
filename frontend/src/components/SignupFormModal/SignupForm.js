@@ -34,8 +34,9 @@ function SignupForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <ul>
-        {errors.map(error => <li key={error}>{error}</li>)}
+      <h1>Sign Up</h1>
+      <ul style={{ display: errors.length ? "block" : "none" }}>
+        {errors.map(error => <li className="error" key={error}>{error}</li>)}
       </ul>
         <input
           type="text"
@@ -54,7 +55,7 @@ function SignupForm() {
         <input
           type="password"
           value={password}
-          placeholder="Passowrd"
+          placeholder="Password"
           onChange={e => setPassword(e.target.value)}
           required
         />
