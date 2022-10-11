@@ -16,6 +16,7 @@ export const fetchUser = userId => async dispatch => {
 }
 
 const usersReducer = (state = {}, action) => {
+  //debugger;
   const nextState = {...state};
   switch (action.type) {
     case RECEIVE_USER:
