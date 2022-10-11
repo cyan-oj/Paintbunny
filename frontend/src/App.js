@@ -1,14 +1,15 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import UserPage from "./components/UserPage";
 
 function App() {
   return (
     <>
       <Navbar />
       <Switch>
-        {/* <Route path="/login">
-          <LoginForm />
+        {/* <Route path="/:userId">
+          <UserPage />
         </Route> */}
         {/* <Route path="/signup">
           <SignupForm />
