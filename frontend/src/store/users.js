@@ -12,11 +12,11 @@ export const getUser = userId => ({ users }) => users ? users[userId] : null;
 export const fetchUser = userId => async dispatch => {
   const res = await csrfFetch(`/api/users/${userId}`);
   const data = await res.json();
-  dispatch(receiveUser(data));
+  //debugger;
+  dispatch(receiveUser(data.user));
 }
 
 const usersReducer = (state = {}, action) => {
-  //debugger;
   const nextState = {...state};
   switch (action.type) {
     case RECEIVE_USER:

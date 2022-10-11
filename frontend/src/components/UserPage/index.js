@@ -6,18 +6,22 @@ import { getUser, fetchUser } from "../../store/users";
 function UserPage() {
   const dispatch = useDispatch();
   const { userId } = useParams();
-  const user = useSelector(getUser(userId));
-
+  const user = useSelector(state => state.users[userId]);
+  //debugger;
   useEffect(() => {
     dispatch(fetchUser(userId));
+    console.log(user);
   }, [dispatch, userId]);
   // debugger;
+
+  if (!user) return null;
+  
   console.log(userId)
   console.log(user)
 
   return (
-    <div className="user-bio">        
-      <h1>UserPage</h1>
+    <div className="user-bio">      
+      <h1>{user.username}</h1>
     </div>
   )
 }
