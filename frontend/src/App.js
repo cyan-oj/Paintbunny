@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import SignupForm from "./components/SignupForm";
+import { Switch } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -11,9 +10,9 @@ function App() {
         {/* <Route path="/login">
           <LoginForm />
         </Route> */}
-        <Route path="/signup">
+        {/* <Route path="/signup">
           <SignupForm />
-        </Route>
+        </Route> */}
       </Switch>
     </>
   );
