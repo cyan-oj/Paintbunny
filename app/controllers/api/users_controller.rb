@@ -12,15 +12,15 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  # def show
-  #   @user = User.find(params[:id])
+  def show
+    @user = User.find(params[:id])
 
-  #   if @user
-  #     render :show
-  #   else
-  #     render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-  #   end
-  # end
+    if @user
+      render :show
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
   private
   def user_params
