@@ -6,22 +6,23 @@ import { getUser, fetchUser } from "../../store/users";
 function UserPage() {
   const dispatch = useDispatch();
   const { userId } = useParams();
-  const user = useSelector(state => state.users[userId]);
-  //debugger;
+  const user = useSelector(getUser(userId));
+
   useEffect(() => {
     dispatch(fetchUser(userId));
-    console.log(user);
   }, [dispatch, userId]);
-  // debugger;
 
   if (!user) return null;
-  
-  console.log(userId)
-  console.log(user)
+
+  const dateFormat = dateString => {
+    const date = new Date(dateString)
+    return date.toDateString()
+  }
 
   return (
     <div className="user-bio">      
       <h1>{user.username}</h1>
+      <p>member since: {dateFormat(user.createdAt)} </p>
     </div>
   )
 }

@@ -4,7 +4,7 @@ import UserMenu from "./UserMenu";
 
 function ProfileButton() {
   const [showMenu, setShowMenu] = useState(false);
-  const { username } = useSelector(state => state.session.user);
+  const { username, id } = useSelector(state => state.session.user);
 
   useEffect (() => {
     if (!showMenu) return
@@ -22,7 +22,7 @@ function ProfileButton() {
       className="profile-button"
       onClick={toggleMenu}>{username}</button>
       { showMenu && (
-        <UserMenu />
+        <UserMenu userId={id} />
       )}
     </>
   )
