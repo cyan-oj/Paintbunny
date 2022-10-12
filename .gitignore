@@ -9,7 +9,6 @@ lerna-debug.log*
 .byebug_history
 .DS_Store
 
-
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -109,3 +108,6 @@ dist
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ingnore manifest files
+/public
