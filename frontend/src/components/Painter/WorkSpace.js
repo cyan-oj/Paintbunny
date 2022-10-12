@@ -14,7 +14,7 @@ function WorkSpace() {
 
   return (
     <>
-      <Canvas id="canvas" width="500" height="800" style={{ backgroundColor: "white" }}/>
+      <Canvas id="canvas" width="300" height="300" style={{ backgroundColor: "white" }}/>
       <button onClick={saveCanvas}>Save Canvas</button>
       <a id="link"></a>
     </>

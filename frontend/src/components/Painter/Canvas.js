@@ -27,6 +27,7 @@ const Canvas = props => {
       const color = "rgba(0,0,0)"; //todo: dynamic
       const size = 5; //todo: dynamic
 
+      context.imageSmoothingEnabled = false;
       context.beginPath();
       
       context.lineWidth = size;
