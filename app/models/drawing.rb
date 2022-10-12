@@ -9,5 +9,11 @@
 #  updated_at :datetime         not null
 #
 class Drawing < ApplicationRecord
-  
+  validates :artist_id, :title, presence: true
+  validates :title, uniqueness: { scope: [:artist_id], message: "you already have a drawing with this title" }
+
+  belongs_to :artist,
+    class_name: :User
+
+  has_one_attached :image
 end
