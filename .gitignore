@@ -8,6 +8,7 @@ lerna-debug.log*
 
 .byebug_history
 .DS_Store
+/public
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
