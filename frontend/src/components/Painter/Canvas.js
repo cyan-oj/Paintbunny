@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 const Canvas = props => {
   const canvasRef = useRef(null)
 
-  
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
     
+    context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
     const position = { 
@@ -24,7 +24,7 @@ const Canvas = props => {
     const draw = (e) => {
       if (e.buttons !== 1) return; 
 
-      const color = "rgba(255,255,255,0.5)"; //todo: dynamic
+      const color = "rgba(0,0,0)"; //todo: dynamic
       const size = 5; //todo: dynamic
 
       context.beginPath();
