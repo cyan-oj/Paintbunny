@@ -1,0 +1,27 @@
+{
+  "name": "paintbunny",
+  "version": "0.1.0",
+  "description": "Paintbunny is a project clone of [Paintberri](https://paintberri.com/)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyan-oj/Paintbunny.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cyan-oj/Paintbunny/issues"
+  },
+  "homepage": "https://github.com/cyan-oj/Paintbunny#readme",
+  "engines": {
+    "node": "16.17.1"
+  }
+}

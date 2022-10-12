@@ -6,7 +6,6 @@ function WorkSpace() {
   const saveCanvas = () => {
     const link = document.getElementById("link")
     const canvas = document.getElementById("canvas")
-    console.log("inside saveFile")
     link.setAttribute('download', 'minxel.png');
     link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
     link.click();
