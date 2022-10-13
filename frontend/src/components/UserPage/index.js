@@ -18,10 +18,6 @@ function UserPage() {
     const date = new Date(dateString)
     return date.toDateString()
   }
-  
-  // const drawings = user.drawings.map (drawing => { //todo: need drawings index method
-  //   <img src={drawing.imageUrl} alt="" className="showimage" />
-  // })
 
   return (
     <div className="user-bio">      
