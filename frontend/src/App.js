@@ -11,14 +11,14 @@ function App() {
     <>
       <Navbar />
       <Switch>
-        <Route path="/"> 
-          <DrawingIndex />
-        </Route>
         <Route path="/users/:userId">
           <UserPage />
         </Route>
         <Route path="/drawings/:drawingId">
           <DrawingPage />
+        </Route>
+        <Route path="/"> 
+          <DrawingIndex />
         </Route>
       </Switch>
       <WorkSpace />

@@ -13,9 +13,8 @@ export const receiveDrawings = drawings => ({
   drawings
 });
 
-export const getDrawings = ({ drawings }) => drawings ? Object.values(drawings) : [];
-
 export const getDrawing = drawingId => ({ drawings }) => drawings ? drawings[drawingId] : null;
+export const getDrawings = ({ drawings }) => drawings ? Object.values(drawings) : [];
 
 export const fetchDrawing = (userId, drawingId) => async dispatch => {
   const res = await csrfFetch(`/api/users/${userId}/drawings/${drawingId}`);
@@ -25,6 +24,12 @@ export const fetchDrawing = (userId, drawingId) => async dispatch => {
 
 export const fetchDrawings = () => async dispatch => {
   const res = await csrfFetch("/api/drawings");
+  const data = await res.json();
+  dispatch(receiveDrawings(data.drawings));
+}
+
+export const fetchUserDrawings = userId => async dispatch => {
+  const res = await csrfFetch(`/api/users/${userId}/drawings`);
   const data = await res.json();
   dispatch(receiveDrawings(data.drawings));
 }

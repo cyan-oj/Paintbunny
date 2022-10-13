@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUser, fetchUser } from "../../store/users";
+import DrawingIndex from "../Drawings/DrawingIndex";
 
 function UserPage() {
   const dispatch = useDispatch();
   const { userId } = useParams();
   const user = useSelector(getUser(userId));
+  console.log("user", user)
 
   useEffect(() => {
     dispatch(fetchUser(userId));
@@ -20,10 +22,13 @@ function UserPage() {
   }
 
   return (
-    <div className="user-bio">      
-      <h1>{user.username}</h1>
-      <p>member since: {dateFormat(user.createdAt)} </p>
-    </div>
+    <>
+      <div className="user-bio">      
+        <h1>{user.username}</h1>
+        <p>member since: {dateFormat(user.createdAt)} </p>
+      </div>
+      <DrawingIndex userId={user.id}/>
+    </>
   )
 }
 

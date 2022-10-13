@@ -1,15 +1,21 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDrawings, getDrawings } from "../../../store/drawings";
+import { useParams } from "react-router-dom";
+import { fetchDrawings, fetchUserDrawings, getDrawings } from "../../../store/drawings";
 
-function DrawingIndex() {
+function DrawingIndex({ userId }) {
   const dispatch = useDispatch();
   const drawings = useSelector(getDrawings)
+
+  console.log("user id", userId)
   console.log("selected drawings", drawings)
-  console.log(drawings.length)
 
   useEffect(() => {
-    dispatch(fetchDrawings())
+    if ( userId ){
+      dispatch(fetchUserDrawings(userId));
+    } else {
+      dispatch(fetchDrawings());
+    }
   }, [dispatch])
 
   const drawingsList = drawings.map(drawing => 

@@ -1,6 +1,11 @@
 class Api::DrawingsController < ApplicationController
   def index
-    @drawings = Drawing.all.limit(16)
+    user_id = params[:user_id]    
+    if user_id
+      @drawings = Drawing.where(artist_id: user_id).limit(16)
+    else
+      @drawings = Drawing.all.limit(16)
+    end
     render :index
   end
 
