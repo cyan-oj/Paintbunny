@@ -1,8 +1,12 @@
 class Api::DrawingsController < ApplicationController
+  # wrap_parameters include: Drawing.attribute_names + [:image] + [:user_id]
+  # before_action :snake_case_params
+  # alias_attribute :user_id, :artist_id
+
   def index
-    user_id = params[:user_id]    
-    if user_id
-      @drawings = Drawing.where(artist_id: user_id).limit(16)
+    artist_id = params[:artist_id]    
+    if artist_id
+      @drawings = Drawing.where(artist_id:artist_id).limit(16)
     else
       @drawings = Drawing.all.limit(16)
     end
@@ -23,7 +27,12 @@ class Api::DrawingsController < ApplicationController
   end
 
   def create
-
+    drawing = Drawing.new(drawing_params)
+    if drawing.save
+      render json: { message: "it go!!"}
+    else
+      render json: post.errors.full_messages, status: 422
+    end
   end
 
   def destroy
@@ -32,6 +41,6 @@ class Api::DrawingsController < ApplicationController
 
   private
   def drawing_params
-    params.require(:user).permit(:title, :author_id)
+    params.require(:drawing).permit(:title, :artist_id, :image)
   end
 end
