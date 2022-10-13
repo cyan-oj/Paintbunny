@@ -1,11 +1,16 @@
 class Api::DrawingsController < ApplicationController
   def index
-
+    @drawings = Drawing.all.limit(16)
+    render :index
   end
 
   def show
     @drawing = Drawing.find(params[:id])
-    render :show
+    if @drawing
+      render :show 
+    else
+      render json: { errors: ["this drawing does not exist"] }, status: 404
+    end
   end
 
   def new
