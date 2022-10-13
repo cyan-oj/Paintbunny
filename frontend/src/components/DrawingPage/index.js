@@ -9,7 +9,7 @@ function DrawingPage() {
   const { drawingId } = useParams();
   const drawing = useSelector(getDrawing(drawingId));
 
-  console.log("drawing", drawing);
+  console.log("drawing", drawing)
 
   useEffect(() => {
     dispatch(fetchDrawing(drawingId));
