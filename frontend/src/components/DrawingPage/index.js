@@ -6,13 +6,13 @@ import "./DrawingPage.css"
 
 function DrawingPage() {
   const dispatch = useDispatch();
-  const { drawingId } = useParams();
+  const { drawingId, userId } = useParams();
   const drawing = useSelector(getDrawing(drawingId));
 
   console.log("drawing", drawing)
 
   useEffect(() => {
-    dispatch(fetchDrawing(drawingId));
+    dispatch(fetchDrawing(userId, drawingId));
   }, [dispatch, drawingId]);
 
   if (!drawing) return null;

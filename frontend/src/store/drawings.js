@@ -17,8 +17,8 @@ export const getDrawings = ({ drawings }) => drawings ? Object.values(drawings) 
 
 export const getDrawing = drawingId => ({ drawings }) => drawings ? drawings[drawingId] : null;
 
-export const fetchDrawing = drawingId => async dispatch => {
-  const res = await csrfFetch(`/api/drawings/${drawingId}`);
+export const fetchDrawing = (userId, drawingId) => async dispatch => {
+  const res = await csrfFetch(`/api/users/${userId}/drawings/${drawingId}`);
   const data = await res.json();
   dispatch(receiveDrawing(data.drawing));
 }
