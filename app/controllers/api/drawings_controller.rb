@@ -1,7 +1,7 @@
 class Api::DrawingsController < ApplicationController
   # wrap_parameters include: Drawing.attribute_names + [:image] + [:user_id]
-  # before_action :snake_case_params
-  # alias_attribute :user_id, :artist_id
+  before_action :snake_case_params
+  alias_attribute :user_id, :artist_id
 
   def index
     user_id = params[:user_id]    
@@ -31,7 +31,7 @@ class Api::DrawingsController < ApplicationController
     if drawing.save
       render json: { message: "it go!!"}
     else
-      render json: post.errors.full_messages, status: 422
+      render json: drawing.errors.full_messages, status: 422
     end
   end
 
