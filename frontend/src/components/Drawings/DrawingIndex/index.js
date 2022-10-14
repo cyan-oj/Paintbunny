@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { fetchDrawings, fetchUserDrawings, getDrawings } from "../../../store/drawings";
 
 function DrawingIndex({ userId }) {
@@ -12,15 +11,17 @@ function DrawingIndex({ userId }) {
 
   useEffect(() => {
     if ( userId ){
+      console.log("fetching user drawings")
       dispatch(fetchUserDrawings(userId));
     } else {
+      console.log("fetching all drawings")
       dispatch(fetchDrawings());
     }
   }, [dispatch])
 
   const drawingsList = drawings.map(drawing => 
     <img src={drawing.imageUrl} alt="" className="showimage" /> 
-    );
+  );
 
   console.log("drawingsList", drawingsList)
   return (

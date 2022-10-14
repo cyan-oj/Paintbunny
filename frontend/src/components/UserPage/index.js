@@ -27,7 +27,7 @@ function UserPage() {
         <h1>{user.username}</h1>
         <p>member since: {dateFormat(user.createdAt)} </p>
       </div>
-      {/* <DrawingIndex userId={user.id}/> */}
+      <DrawingIndex userId={user.id}/>
     </>
   )
 }

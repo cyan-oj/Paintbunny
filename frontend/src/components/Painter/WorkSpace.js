@@ -1,11 +1,10 @@
-import React, { useRef, useState } from "react"
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
 import csrfFetch from "../../store/csrf";
 import Canvas from "./Canvas"
-import { getUser } from "../../store/users";
 
 function WorkSpace() {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.session.user)
 
   const [title, setTitle] = useState('');
@@ -19,7 +18,7 @@ function WorkSpace() {
     link.click();
   }
 
-  const sendCanvas = async e => {
+  const uploadFile = async e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('drawing[title]', title);
@@ -35,7 +34,6 @@ function WorkSpace() {
       console.log("message", message.message);
       setTitle('');
       setDrawingFile(null);
-      //setImgUrl(null); // ???
     }
   }
 
@@ -44,15 +42,44 @@ function WorkSpace() {
     setDrawingFile(file);
   }
 
-  console.log(drawingFile)
+  function dataURItoBlob(dataURI) { // todo: ask spencer if this is okay 
+      var binary = atob(dataURI.split(',')[1]);
+      var array = [];
+      for(var i = 0; i < binary.length; i++) {
+          array.push(binary.charCodeAt(i));
+      }
+      return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+  }
+
+  const blobCanvas = async e => {
+    e.preventDefault();
+    const canvas = document.getElementById("canvas");
+    const dataURL = canvas.toDataURL("img/png");
+    const blobData = dataURItoBlob(dataURL);
+
+    const formData = new FormData();
+    formData.append('drawing[title]', title);
+    formData.append('drawing[artist_id]', user.id)
+    formData.append('drawing[image]', blobData)
+
+    const response = await csrfFetch(`/api/users/${user.id}/drawings`, {
+      method: "POST",
+      body: formData
+    });
+    if (response.ok) {
+      const message = await response.json();
+      console.log("message", message.message);
+      setTitle('');
+    }
+  }
 
   return (
     <>
       <Canvas id="canvas" width="300" height="300" style={{ backgroundColor: "white" }}/>
       <button onClick={ saveCanvas }>save canvas</button>
 
-      <form onSubmit={ sendCanvas }>
-        <input 
+      <form onSubmit={ blobCanvas }>
+        <input
           type="text"
           placeholder="title"
           value={ title }
@@ -61,11 +88,11 @@ function WorkSpace() {
         <input 
           type="file"
           onChange={ handleFile }
-        />
-        <input 
-          type="submit" 
-          value="send canvas" 
-        />
+          />
+          <input 
+            type="submit" 
+            value="post drawing" 
+          />
       </form>
 
       <a id="link"></a>
