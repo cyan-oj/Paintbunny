@@ -2,6 +2,7 @@ import csrfFetch from "./csrf";
 
 export const RECEIVE_DRAWING = "drawings/RECIEVE_DRAWING";
 export const RECEIVE_DRAWINGS = "drawings/RECEIVE_DRAWINGS";
+export const RECEIVE_USER_DRAWINGS = "drawings/RECEIVE_USER_DRAWINGS";
 
 export const receiveDrawing = drawing => ({
   type: RECEIVE_DRAWING,
@@ -10,6 +11,11 @@ export const receiveDrawing = drawing => ({
 
 export const receiveDrawings = drawings => ({
   type: RECEIVE_DRAWINGS,
+  drawings
+});
+
+export const receiveUserDrawings = drawings => ({
+  type: RECEIVE_USER_DRAWINGS,
   drawings
 });
 
@@ -31,7 +37,7 @@ export const fetchDrawings = () => async dispatch => {
 export const fetchUserDrawings = userId => async dispatch => {
   const res = await csrfFetch(`/api/users/${userId}/drawings`);
   const data = await res.json();
-  dispatch(receiveDrawings(data.drawings));
+  dispatch(receiveUserDrawings(data.drawings));
 }
 
 const drawingsReducer = (state = {}, action) => {
@@ -42,6 +48,8 @@ const drawingsReducer = (state = {}, action) => {
       return nextState;
     case RECEIVE_DRAWINGS:
       return {...state, ...action.drawings}
+    case RECEIVE_USER_DRAWINGS:
+      return action.drawings
     default:
       return state;
   }

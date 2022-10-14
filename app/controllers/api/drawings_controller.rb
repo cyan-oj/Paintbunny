@@ -29,13 +29,14 @@ class Api::DrawingsController < ApplicationController
   def create
     drawing = Drawing.new(drawing_params)
     if drawing.save
-      render json: { message: "it go!!"}
+      render json: { message: "poatsted"}
     else
       render json: drawing.errors.full_messages, status: 422
     end
   end
 
   def destroy
+
 
   end
 

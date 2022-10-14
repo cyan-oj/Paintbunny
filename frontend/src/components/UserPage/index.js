@@ -8,7 +8,6 @@ function UserPage() {
   const dispatch = useDispatch();
   const { userId } = useParams();
   const user = useSelector(getUser(userId));
-  console.log("user", user)
 
   useEffect(() => {
     dispatch(fetchUser(userId));
@@ -27,7 +26,9 @@ function UserPage() {
         <h1>{user.username}</h1>
         <p>member since: {dateFormat(user.createdAt)} </p>
       </div>
-      <DrawingIndex userId={user.id}/>
+      {user &&
+        <DrawingIndex userId={user.id}/>
+      }
     </>
   )
 }
