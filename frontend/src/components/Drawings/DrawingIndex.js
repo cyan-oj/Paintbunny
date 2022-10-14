@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDrawings, fetchUserDrawings, getDrawings } from "../../../store/drawings";
-import DrawingIndexItem from "../DrawingIndexItem";
+import { fetchDrawings, fetchUserDrawings, getDrawings } from "../../store/drawings";
+import DrawingIndexItem from "./DrawingIndexItem";
+import "./DrawingIndex.css"
 
 function DrawingIndex({ userId }) {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ function DrawingIndex({ userId }) {
   );
 
   return (
-    <div id="gallery" >
+    <div className="gallery" >
       {drawingsList}
     </div>
   );

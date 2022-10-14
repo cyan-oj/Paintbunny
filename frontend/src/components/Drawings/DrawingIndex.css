@@ -1,0 +1,16 @@
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  border: solid 1px var(--base1);
+  border-radius: 3px;
+  margin: 4px;
+  font-size: 10px;
+}
+
+.thumb {
+  max-width: 128px;
+  max-height: 128;
+}
