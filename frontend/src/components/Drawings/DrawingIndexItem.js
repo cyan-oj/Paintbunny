@@ -3,14 +3,26 @@ import { Link } from "react-router-dom";
 
 function DrawingIndexItem({ drawing }) {
 
+  const dateFormat = dateString => {
+    const date = new Date(dateString)
+    return date.toDateString()
+  }
+
   return (
     <div className="thumbnail">
-      <Link to={`/drawings/${drawing.id}`}>
-        <img src={drawing.imageUrl} alt="" className="thumb" /> 
+      <Link 
+        className="thumb"
+        to={`/drawings/${drawing.id}`}>
+        <img src={drawing.imageUrl} alt=""/> 
       </Link>
-      <p>{drawing.title}</p>
-      <p>{drawing.artist}</p>
-      <p>{drawing.createdAt}</p>
+      <Link 
+        to={`/drawings/${drawing.id}`}>{drawing.title}
+      </Link>
+      <Link 
+        className="artist-name"
+        to={`/users/${drawing.artistId}`}>{drawing.artist}
+      </Link>
+      <p className="thumb-date">{dateFormat(drawing.createdAt)}</p>
     </div>
   )
 }

@@ -1,3 +1,14 @@
+a {
+  text-decoration: none;
+  color: var(--base0);
+  padding: 2px 8px
+}
+
+a:visited {
+  text-decoration: inherit;
+  color: inherit;
+}
+
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -8,9 +19,22 @@
   border-radius: 3px;
   margin: 4px;
   font-size: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
-.thumb {
+.thumb{
+  padding: 0
+}
+.thumb img {
   max-width: 128px;
   max-height: 128;
+}
+
+.thumb-date {
+  padding: 2px 8px;
+}
+
+.artist-name {
+  font-weight: 600;
 }
