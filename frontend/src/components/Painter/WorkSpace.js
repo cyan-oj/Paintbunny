@@ -5,11 +5,11 @@ import Canvas from "./Canvas"
 import './Painter.css'
 
 function WorkSpace() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const user = useSelector(state => state.session.user)
 
   const [title, setTitle] = useState('');
-  const [drawingFile, setDrawingFile] = useState(null);
+  //const [drawingFile, setDrawingFile] = useState(null);
 
   // const saveCanvas = () => {
   //   const link = document.getElementById("link")
@@ -43,13 +43,13 @@ function WorkSpace() {
   //   setDrawingFile(file);
   // }
 
-  function dataURItoBlob(dataURI) { // todo: ask spencer if this is okay 
-      var binary = atob(dataURI.split(',')[1]);
-      var array = [];
-      for(var i = 0; i < binary.length; i++) {
-          array.push(binary.charCodeAt(i));
-      }
-      return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+  function dataURItoBlob(dataURI) { // todo: check gif libraries to optimize this process
+    const binary = atob(dataURI.split(',')[1]);
+    const array = [];
+    for(let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], {type: 'image/png'});
   }
 
   const blobCanvas = async e => {
