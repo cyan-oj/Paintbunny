@@ -1,6 +1,6 @@
 
 
-function Palette({ palette = ["hsl(0, 0%, 0%)", "hsl(0, 0%, 100%)", "hsl(0, 50%, 50%)"]}) {
+function Palette({ palette = ["hsl(0, 0%, 100%)", "hsl(0, 0%, 0%)", "hsl(0, 50%, 50%)"]}) {
 
   const swatchList = palette.map((swatch, i) => 
     <button 

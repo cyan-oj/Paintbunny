@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+import Brushes from "./Brushes";
 import Palette from "./Palette";
 
 const Canvas = props => {
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
   const [color, setColor] = useState("black")
+  const [size, setSize] = useState(2)
 
   const position = { 
     x: 0, 
@@ -26,7 +28,6 @@ const Canvas = props => {
     const box = e.target.getBoundingClientRect();
     position.x = e.clientX - box.left;
     position.y = e.clientY - box.top;
-    console.log(position)
   }
 
   const draw = (e, context, color = "rgba(0,0,0)", size = 5) => {
@@ -53,15 +54,17 @@ const Canvas = props => {
         onMouseMove={ e => draw( 
           e,
           contextRef.current,
-          color
+          color,
+          size
           )}
         {...props} 
       />
       <div onClick={ e => setColor(e.target.value) } id="palette">
         <Palette  />
       </div>
-      <button onClick={e => setColor("red")}>red</button>
-      <button onClick={e => setColor("black")}>black</button>
+      <div onClick={ e => setSize(e.target.value) } id="brushes">
+        <Brushes />
+      </div>
     </>
   )
 } 

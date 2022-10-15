@@ -2,9 +2,8 @@ canvas {
   border: solid 1px black;
 }
 
-#palette {
+#palette, #brushes {
   margin: 24px;
-  padding: 12px;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
