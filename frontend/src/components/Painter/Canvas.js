@@ -59,11 +59,13 @@ const Canvas = props => {
           )}
         {...props} 
       />
-      <div onClick={ e => setColor(e.target.value) } id="palette">
-        <Palette  />
-      </div>
-      <div onClick={ e => setSize(e.target.value) } id="brushes">
-        <Brushes />
+      <div className="toolboxes">
+        <div onClick={ e => setColor(e.target.value) } id="palette">
+          <Palette  />
+        </div>
+        <div onClick={ e => setSize(e.target.value) } id="brushes">
+          <Brushes />
+        </div>
       </div>
     </>
   )

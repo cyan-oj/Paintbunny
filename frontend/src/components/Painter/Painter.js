@@ -42,7 +42,7 @@ function Painter() {
   }
 
   return (
-    <>
+    <div className="painter">
       <Canvas id="canvas" width="300" height="300" style={{ backgroundColor: "white" }}/>
       <form onSubmit={ blobCanvas }>
         <input
@@ -51,13 +51,10 @@ function Painter() {
           value={ title }
           onChange={ e => setTitle(e.target.value) }
         />
-          <input 
-            type="submit" 
-            value="post drawing" 
-          />
+          <button type="submit">post drawing</button>
       </form>
       <a id="link"></a>
-    </>
+    </div>
   )
 }
 

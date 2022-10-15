@@ -38,7 +38,7 @@ li.error {
 
 button {
   display: inline;
-  width: 36px;
+  min-width: 36px;
   height: 36px;
   margin: 2px;
   font-size: 20px;
@@ -52,7 +52,7 @@ button {
 }
 
 button:hover {
-  width: 48px;
+  min-width: 48px;
   height: 48px;
   border-radius: 4px;
   margin: -4px;
