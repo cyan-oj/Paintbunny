@@ -3,6 +3,7 @@ import csrfFetch from "./csrf";
 export const RECEIVE_DRAWING = "drawings/RECIEVE_DRAWING";
 export const RECEIVE_DRAWINGS = "drawings/RECEIVE_DRAWINGS";
 export const RECEIVE_USER_DRAWINGS = "drawings/RECEIVE_USER_DRAWINGS";
+export const REMOVE_DRAWING = "drawings/REMOVE_DRAWING";
 
 export const receiveDrawing = drawing => ({
   type: RECEIVE_DRAWING,
@@ -19,10 +20,15 @@ export const receiveUserDrawings = drawings => ({
   drawings
 });
 
+export const removeDrawing = drawingId => ({
+  type: REMOVE_DRAWING,
+  drawingId
+});
+
 export const getDrawing = drawingId => ({ drawings }) => drawings ? drawings[drawingId] : null;
 export const getDrawings = ({ drawings }) => drawings ? Object.values(drawings) : [];
 
-export const fetchDrawing = (userId, drawingId) => async dispatch => {
+export const fetchDrawing = ( userId, drawingId ) => async dispatch => {
   const res = await csrfFetch(`/api/users/${userId}/drawings/${drawingId}`);
   const data = await res.json();
   dispatch(receiveDrawing(data.drawing));
@@ -40,6 +46,13 @@ export const fetchUserDrawings = userId => async dispatch => {
   dispatch(receiveUserDrawings(data.drawings));
 }
 
+export const destroyDrawing = ( userId, drawingId ) => async dispatch => {
+  const res = await csrfFetch(`/api/users/${userId}/drawings/${drawingId}`, {
+    method: "DELETE"
+  });
+  dispatch(removeDrawing(drawingId));
+}
+
 const drawingsReducer = (state = {}, action) => {
   const nextState = {...state};
   switch (action.type) {
@@ -49,7 +62,10 @@ const drawingsReducer = (state = {}, action) => {
     case RECEIVE_DRAWINGS:
       return {...state, ...action.drawings}
     case RECEIVE_USER_DRAWINGS:
-      return action.drawings
+      return action.drawings;
+    case REMOVE_DRAWING:
+      delete nextState[action.drawingId];
+      return nextState;
     default:
       return state;
   }
