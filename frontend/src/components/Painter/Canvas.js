@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Palette from "./Palette";
 
 const Canvas = props => {
   const canvasRef = useRef(null)
@@ -13,11 +14,12 @@ const Canvas = props => {
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
-    
+  
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
     contextRef.current = context;
+
   }, []);
 
   const setPosition = e => {
@@ -55,6 +57,9 @@ const Canvas = props => {
           )}
         {...props} 
       />
+      <div onClick={ e => setColor(e.target.value) } id="palette">
+        <Palette  />
+      </div>
       <button onClick={e => setColor("red")}>red</button>
       <button onClick={e => setColor("black")}>black</button>
     </>

@@ -4,6 +4,7 @@ import csrfFetch from "../../store/csrf";
 import Canvas from "./Canvas"
 import "./Painter.css"
 
+
 function Painter() {
   const user = useSelector(state => state.session.user)
   const [title, setTitle] = useState('');
