@@ -1,6 +1,8 @@
 class Api::DrawingsController < ApplicationController
   # wrap_parameters include: Drawing.attribute_names + [:image] + [:user_id]
   before_action :snake_case_params
+  before_action :require_logged_in, only: [:new, :create, :destroy]
+
   alias_attribute :user_id, :artist_id
 
   def index
@@ -36,8 +38,13 @@ class Api::DrawingsController < ApplicationController
   end
 
   def destroy
-
-
+    @drawing = current_user.drawings.find(params[:id])
+    if @drawing
+      @drawing.destroy
+      redirect_to api_users_url(current_user)
+    else 
+      render json: { message: "you can't do that" }, status: :unauthorized
+    end
   end
 
   private
