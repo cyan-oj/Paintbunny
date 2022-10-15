@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Canvas = props => {
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
+  const [color, setColor] = useState("black")
 
   const position = { 
     x: 0, 
@@ -26,7 +27,7 @@ const Canvas = props => {
     console.log(position)
   }
 
-  const draw = ( e, context, color = "rgba(0,0,0)", size = 5 ) => {
+  const draw = (e, context, color = "rgba(0,0,0)", size = 5) => {
     if (e.buttons !== 1) return;
     context.imageSmoothingEnabled = false;
     context.beginPath();
@@ -42,16 +43,21 @@ const Canvas = props => {
   }
 
   return (
-  <canvas 
-    ref={ canvasRef } 
-    {...props} 
-    onMouseDown={ setPosition }
-    onMouseEnter={ setPosition }
-    onMouseMove={ e => draw( 
-      e,
-      contextRef.current,
-      "red"
-    )}/>
+    <>
+      <canvas 
+        ref={ canvasRef } 
+        onMouseDown={ setPosition }
+        onMouseEnter={ setPosition }
+        onMouseMove={ e => draw( 
+          e,
+          contextRef.current,
+          color
+          )}
+        {...props} 
+      />
+      <button onClick={e => setColor("red")}>red</button>
+      <button onClick={e => setColor("black")}>black</button>
+    </>
   )
 } 
 

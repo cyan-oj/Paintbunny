@@ -2,12 +2,12 @@ import React, { useState } from "react"
 import { useSelector } from "react-redux";
 import csrfFetch from "../../store/csrf";
 import Canvas from "./Canvas"
-import './Painter.css'
+import "./Painter.css"
 
-function WorkSpace() {
+function Painter() {
   const user = useSelector(state => state.session.user)
-
   const [title, setTitle] = useState('');
+
 
   function dataURItoBlob(dataURI) { // todo: check gif libraries to optimize this process
     const binary = atob(dataURI.split(',')[1]);
@@ -55,10 +55,9 @@ function WorkSpace() {
             value="post drawing" 
           />
       </form>
-
       <a id="link"></a>
     </>
   )
 }
 
-export default WorkSpace;
+export default Painter;
