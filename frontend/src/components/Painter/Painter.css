@@ -25,9 +25,9 @@ button.swatch:hover {
 }
 
 button.brush:hover {
-  min-width: 48px;
-  min-height: 48px;
-  margin: 2px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -2px;
 }
 
 .painter {

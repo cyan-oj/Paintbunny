@@ -23,17 +23,23 @@ class Api::DrawingsController < ApplicationController
       render json: { errors: ["this drawing does not exist"] }, status: 404
     end
   end
-
-  def new
-
-  end
-
+  
   def create
     drawing = Drawing.new(drawing_params)
     if drawing.save
       render json: { message: "poatsted"}
     else
       render json: drawing.errors.full_messages, status: 422
+    end
+  end
+
+  def update
+    @drawing = drawing.find(params[:id])
+
+    if @drawing.update(drawing_params)
+      render :show
+    else 
+      render json: { errors: ["could not update drawing"] }
     end
   end
 

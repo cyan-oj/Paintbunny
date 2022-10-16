@@ -10,7 +10,6 @@ function Painter() {
   return (
     <div className="painter">
       <Canvas id="canvas" width="300" height="300" style={{ backgroundColor: "white" }}/>
-
     </div>
   )
 }

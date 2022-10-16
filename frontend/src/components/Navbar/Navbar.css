@@ -16,10 +16,6 @@ nav {
   background-color: var(--highlight);
 }
 
-button {
-  margin: 8px 8px;
-}
-
 .usermenu {
   display: none;
   background-color: var(--nav);
