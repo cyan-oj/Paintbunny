@@ -2,15 +2,17 @@ import { useDispatch } from "react-redux"
 import { logout } from "../../store/session"
 import { Link } from "react-router-dom";
 
-function UserMenu({userId}) {
+function UserMenu({user}) {
   const dispatch = useDispatch();
 
   return (
-    <div className="usermenu">
-      <Link to={`/users/${userId}`}
-      >Profile</Link>
-      <Link to={"/new"}>Create</Link>
-      <button onClick={e => dispatch(logout())}>Logout</button>
+    <div class="dropdown">
+      <a href="#" className ="nav-link">{user.username}</a>
+      <div className="usermenu">
+        <Link className="nav-link" to={`/users/${user.id}`}>Profile</Link>
+        <Link className="nav-link" to={"/new"}>Create</Link>
+        <a className="nav-link" href="#" onClick={e => dispatch(logout())}>Logout</a>
+      </div>
     </div>
   )
 }  

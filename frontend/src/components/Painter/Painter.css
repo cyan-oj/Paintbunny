@@ -24,6 +24,12 @@ button.swatch:hover {
   margin: -4px;
 }
 
+button.brush:hover {
+  min-width: 48px;
+  min-height: 48px;
+  margin: 2px;
+}
+
 .painter {
   display: flex;
   flex-wrap: wrap;

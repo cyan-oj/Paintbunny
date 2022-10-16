@@ -1,17 +1,19 @@
 nav {
   background-color: var(--nav);
+  height: 12mm;
   color: var(--nav-text);
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-nav a {
-  padding: 8px 16px;
-  text-decoration: none;
+.nav-link {
+  padding: 3mm 6mm;
+  box-sizing: border-box;
 }
 
-a:visited {
-  color: var(--nav-text);
+.nav-link:hover {
+  background-color: var(--highlight);
 }
 
 button {
@@ -19,26 +21,26 @@ button {
 }
 
 .usermenu {
+  display: none;
   background-color: var(--nav);
-  padding: 4px;
-  margin: 4px;
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  top: 39px;
-  right: 0;
+  top: 12mm;
+  width: inherit;
+  min-width: 24mm
+}
+
+.dropdown:hover .usermenu {
+  display: block;
+  z-index: 100;
 }
 
 .usermenu > * {
   display: block;
+  width: inherit;
+  min-width: 24mm
 }
 
 .guestmenu {
   display: flex;
   align-items: center;
-}
-
-.profile-button {
-  min-width: 100px
 }

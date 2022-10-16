@@ -1,5 +1,4 @@
-a {
-  text-decoration: none;
+a.artist-name, a.title {
   color: var(--base0);
   padding: 2px 8px
 }

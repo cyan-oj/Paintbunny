@@ -33,7 +33,7 @@ function SignupForm() {
   } 
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="modal-form" onSubmit={handleSubmit}>
       <h1>Sign Up</h1>
       <ul style={{ display: errors.length ? "block" : "none" }}>
         {errors.map(error => <li className="error" key={error}>{error}</li>)}
