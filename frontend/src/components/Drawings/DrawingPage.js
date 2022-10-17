@@ -15,7 +15,7 @@ function DrawingPage() {
   const [showCanvas, setShowCanvas] = useState(false);
 
   console.log("drawing", drawing)
-
+  
   useEffect(() => {
     dispatch(fetchDrawing(userId, drawingId));
 
@@ -40,7 +40,7 @@ function DrawingPage() {
       }
       { showCanvas &&
         <>
-          <Canvas id="canvas" width={drawingWidth} height={drawingHeight} imgSrc={drawing.imageUrl} drawingId={drawingId}/>
+          <Canvas id="canvas" width={drawingWidth} height={drawingHeight} imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} />
           <button onClick={ editDrawing }>cancel edit</button>
         </>
       }

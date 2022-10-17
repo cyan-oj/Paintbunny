@@ -4,14 +4,10 @@ import Brushes from "./Brushes";
 import Palette from "./Palette";
 import { createDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
-import { useParams } from "react-router-dom";
 
-function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId }) {
+function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
-  id ||= "canvas"
-
-  // const drawingId = useParams();
-
+  console.log("drawingTitle", drawingTitle)
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.session.user)
@@ -21,11 +17,13 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId }) {
 
   const [canvasWidth, setWidth] = useState(width || 300)
   const [canvasHeight, setHeight] = useState(height || 300)
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(drawingTitle || '');
+  console.log("title", title)
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
 
   const image = new Image(width, height)
+  //image.crossOrigin = "use-credentials"
   image.src = imgSrc
 
   const buttonText = imgSrc ? "edit drawing" : "post drawing"
@@ -46,7 +44,6 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId }) {
       context.drawImage(image, 0, 0)
 
     contextRef.current = context;
-
   }, []);
 
   const setPosition = e => {
@@ -91,6 +88,7 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId }) {
     formData.append('drawing[image]', blobData)
 
     if ( imgSrc && drawingUserId === user.id ) {
+      debugger;
       dispatch(updateDrawing( user.id, drawingId, formData ))
     } else {
       dispatch(createDrawing( user.id, formData ))
