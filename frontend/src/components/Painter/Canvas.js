@@ -5,7 +5,7 @@ import Palette from "./Palette";
 import { createDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
 import { Buffer } from 'buffer'
-import { toBuffer } from 'canvas'
+import csrfFetch from "../../store/csrf";
 
 function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
@@ -23,13 +23,8 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
 
-
-
-
   const image = new Image(width, height)
   image.src = imgSrc
-
-
 
   const buttonText = imgSrc ? "edit drawing" : "post drawing"
 
