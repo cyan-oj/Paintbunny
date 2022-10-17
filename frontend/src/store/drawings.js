@@ -46,6 +46,24 @@ export const fetchUserDrawings = userId => async dispatch => {
   dispatch(receiveUserDrawings(data.drawings));
 }
 
+export const createDrawing = ( userId, drawing ) => async dispatch => {
+  const res = await csrfFetch(`/api/users/${userId}/drawings`, {
+    method: "POST",
+    body: drawing
+  });
+  const data = await res.json();
+  dispatch(receiveDrawing(data.drawing));
+}
+
+export const updateDrawing = ( userId, drawingId, drawing ) => async dispatch => {
+  const res = await csrfFetch(`/api/users/${userId}/drawings${drawingId}`, {
+    method: "PUT",
+    body: drawing
+  });
+  const data = await res.json();
+  dispatch(receiveDrawing(data.drawing));
+}
+
 export const destroyDrawing = ( userId, drawingId ) => async dispatch => {
   const res = await csrfFetch(`/api/users/${userId}/drawings/${drawingId}`, {
     method: "DELETE"

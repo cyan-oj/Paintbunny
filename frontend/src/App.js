@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import UserPage from "./components/UserPage";
 import DrawingPage from "./components/Drawings/DrawingPage";
 import DrawingIndex from "./components/Drawings/DrawingIndex";
-import Painter from "./components/Painter/Painter";
+import Canvas from "./components/Painter/Canvas";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           <DrawingPage />
         </Route>
         <Route path="/new">
-          <Painter />
+          <Canvas />
         </Route>
         <Route path="/"> 
           <DrawingIndex />

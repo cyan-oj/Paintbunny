@@ -1,16 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Brushes from "./Brushes";
 import Palette from "./Palette";
-import csrfFetch from "../../store/csrf";
+import { createDrawing, updateDrawing } from "../../store/drawings";
+import "./Painter.css"
+import { useParams } from "react-router-dom";
 
-const Canvas = props => {
+function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId }) {
+
+  id ||= "canvas"
+
+  // const drawingId = useParams();
+
+  const dispatch = useDispatch();
+
   const user = useSelector(state => state.session.user)
-  const [title, setTitle] = useState('');
+
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
+
+  const [canvasWidth, setWidth] = useState(width || 300)
+  const [canvasHeight, setHeight] = useState(height || 300)
+  const [title, setTitle] = useState('');
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
+
+  const image = new Image(width, height)
+  image.src = imgSrc
+
+  const buttonText = imgSrc ? "edit drawing" : "post drawing"
 
   const position = { 
     x: 0, 
@@ -23,6 +41,9 @@ const Canvas = props => {
   
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+    
+    if (imgSrc)
+      context.drawImage(image, 0, 0)
 
     contextRef.current = context;
 
@@ -58,7 +79,7 @@ const Canvas = props => {
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
   }
 
-  const blobCanvas = async e => {
+  const blobCanvas = e => {
     e.preventDefault();
     const canvas = document.getElementById("canvas");
     const dataURL = canvas.toDataURL("img/png");
@@ -69,19 +90,16 @@ const Canvas = props => {
     formData.append('drawing[artist_id]', user.id)
     formData.append('drawing[image]', blobData)
 
-    const response = await csrfFetch(`/api/users/${user.id}/drawings`, {
-      method: "POST",
-      body: formData
-    });
-    if (response.ok) {
-      const message = await response.json();
-      console.log("message", message.message);
-      setTitle('');
+    if ( imgSrc && drawingUserId === user.id ) {
+      dispatch(updateDrawing( user.id, drawingId, formData ))
+    } else {
+      dispatch(createDrawing( user.id, formData ))
     }
+    setTitle('');
   }
 
   return (
-    <>
+    <div className="painter">
       <canvas 
         ref={ canvasRef } 
         onMouseDown={ setPosition }
@@ -92,7 +110,9 @@ const Canvas = props => {
           color,
           size
           )}
-        {...props} 
+        height={canvasHeight}
+        width={canvasWidth}
+        id={id}
       />
       <div className="toolboxes">
         <div onClick={ e => setColor(e.target.value) } id="palette">
@@ -108,11 +128,11 @@ const Canvas = props => {
             value={ title }
             onChange={ e => setTitle(e.target.value) }
           />
-          <button type="submit">post drawing</button>
+          <button type="submit">{buttonText}</button>
         </form>
         <a id="link"></a>
       </div>
-    </>
+    </div>
   )
 } 
 

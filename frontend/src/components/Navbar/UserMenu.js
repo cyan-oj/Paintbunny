@@ -6,7 +6,7 @@ function UserMenu({user}) {
   const dispatch = useDispatch();
 
   return (
-    <div class="dropdown">
+    <div className="dropdown">
       <a href="#" className ="nav-link">{user.username}</a>
       <div className="usermenu">
         <Link className="nav-link" to={`/users/${user.id}`}>Profile</Link>
