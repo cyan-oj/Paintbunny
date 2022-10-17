@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { fetchDrawing, getDrawing } from "../../store/drawings";
 import Canvas from "../Painter/Canvas";
 import "./DrawingPage.css"
@@ -14,14 +14,9 @@ function DrawingPage() {
   const [drawingWidth, setDrawingWidth] = useState(0);
   const [showCanvas, setShowCanvas] = useState(false);
 
-  console.log("drawing", drawing)
-  
   useEffect(() => {
     dispatch(fetchDrawing(userId, drawingId));
-
     const image = document.getElementById("image")
-    setDrawingHeight(image.naturalHeight)
-    setDrawingWidth(image.naturalWidth)
   }, [dispatch, drawingId]);
 
   if (!drawing) return null;
@@ -30,22 +25,34 @@ function DrawingPage() {
     setShowCanvas(!showCanvas);
   }
 
+  const dateFormat = dateString => {
+    const date = new Date(dateString)
+    return date.toDateString()
+  }
+
   return (
-    <>
+    <div className="drawingShow">
       { !showCanvas &&
         <>
+          <div className="user-info">
+            <Link 
+              className="artist-name"
+              to={`/users/${drawing.artistId}`}>{drawing.artist}
+            </Link>
+            <p className="thumb-date">{dateFormat(drawing.createdAt)}</p>
+            <p>description text text text</p>
+            <button onClick={ editDrawing }>edit</button>
+          </div>
           <img src={drawing.imageUrl} alt="" id="image" className="showimage" />
-          <button onClick={ editDrawing }>edit</button>
         </>
       }
       { showCanvas &&
         <>
-          <Canvas id="canvas" width={drawingWidth} height={drawingHeight} imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} />
+          <Canvas id="canvas" imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} />
           <button onClick={ editDrawing }>cancel edit</button>
         </>
       }
-
-    </>
+    </div>
   )
 }
 

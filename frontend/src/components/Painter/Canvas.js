@@ -4,6 +4,8 @@ import Brushes from "./Brushes";
 import Palette from "./Palette";
 import { createDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
+import { Buffer } from 'buffer'
+import { toBuffer } from 'canvas'
 
 function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
@@ -18,13 +20,16 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
   const [canvasWidth, setWidth] = useState(width || 300)
   const [canvasHeight, setHeight] = useState(height || 300)
   const [title, setTitle] = useState(drawingTitle || '');
-  console.log("title", title)
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
 
+
+
+
   const image = new Image(width, height)
-  //image.crossOrigin = "use-credentials"
   image.src = imgSrc
+
+
 
   const buttonText = imgSrc ? "edit drawing" : "post drawing"
 
@@ -67,7 +72,7 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
     context.stroke();
   }
 
-  function dataURItoBlob(dataURI) { // todo: check gif libraries to optimize this process
+  function dataURItoBlob(dataURI) {
     const binary = atob(dataURI.split(',')[1]);
     const array = [];
     for(let i = 0; i < binary.length; i++) {
@@ -88,7 +93,6 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
     formData.append('drawing[image]', blobData)
 
     if ( imgSrc && drawingUserId === user.id ) {
-      debugger;
       dispatch(updateDrawing( user.id, drawingId, formData ))
     } else {
       dispatch(createDrawing( user.id, formData ))
