@@ -55,8 +55,9 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const draw = (e, context, color = "rgba(0,0,0)", size = 5) => {
     if (e.buttons !== 1) return;
     context.imageSmoothingEnabled = false;
-    context.beginPath();
+    context.globalAlpha = 1;
     
+    context.beginPath();
     context.lineWidth = size;
     context.lineCap = "round"
     context.strokeStyle = color;

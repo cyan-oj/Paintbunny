@@ -11,6 +11,7 @@ a:visited {
 .gallery {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   max-width: 64em;
   margin: auto;
 }

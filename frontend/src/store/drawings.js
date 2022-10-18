@@ -79,7 +79,7 @@ const drawingsReducer = (state = {}, action) => {
       nextState[action.drawing.id] = action.drawing;
       return nextState;
     case RECEIVE_DRAWINGS:
-      return {...state, ...action.drawings}
+      return action.drawings
     case RECEIVE_USER_DRAWINGS:
       return action.drawings; // todo: check with spencer bc this feels wrong
     case REMOVE_DRAWING:

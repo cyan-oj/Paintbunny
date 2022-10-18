@@ -49,5 +49,6 @@ button.brush:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 52em
+  max-width: 52em;
+  margin: auto
 }
