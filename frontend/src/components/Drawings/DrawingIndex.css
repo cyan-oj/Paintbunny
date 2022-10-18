@@ -16,7 +16,6 @@ a:visited {
 }
 
 .thumbnail {
-  border: solid 1px var(--base1);
   background-color: var(--base01);
   border-radius: .6em;
   max-width: 17em;
@@ -25,6 +24,7 @@ a:visited {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  filter: drop-shadow(0 1mm 1.2mm rgb(0, 0, 0, .4));
 }
 
 .thumb {
@@ -35,7 +35,7 @@ a:visited {
   max-width: 100%;
 }
 
-.drawing-info {
+.thumb-info {
   display: flex;
   flex-direction: column;
   margin-bottom: .4em;

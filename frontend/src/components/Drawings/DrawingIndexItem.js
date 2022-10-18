@@ -15,7 +15,7 @@ function DrawingIndexItem({ drawing }) {
         to={`/drawings/${drawing.id}`}>
         <img src={drawing.imageUrl} alt=""/> 
       </Link>
-      <div className="drawing-info">
+      <div className="thumb-info">
         <Link 
           className="title"
           to={`/drawings/${drawing.id}`}>{drawing.title}
