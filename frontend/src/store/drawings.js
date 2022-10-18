@@ -34,7 +34,8 @@ export const fetchDrawing = ( userId, drawingId ) => async dispatch => {
   dispatch(receiveDrawing(data.drawing));
 }
 
-export const fetchDrawings = () => async dispatch => {
+// todo: combine with fetchUserDrawings and use conditional
+export const fetchDrawings = () => async dispatch => { 
   const res = await csrfFetch("/api/drawings");
   const data = await res.json();
   dispatch(receiveDrawings(data.drawings));

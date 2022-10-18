@@ -4,6 +4,7 @@ import Brushes from "./Brushes";
 import Palette from "./Palette";
 import { createDrawing, destroyDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
+import { createComment } from "../../store/comments";
 
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
@@ -16,8 +17,8 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
 
-  const [canvasWidth, setWidth] = useState(width || 300)
-  const [canvasHeight, setHeight] = useState(height || 300)
+  const [canvasWidth, setWidth] = useState(width || 512)
+  const [canvasHeight, setHeight] = useState(height || 512)
   const [title, setTitle] = useState(drawingTitle || '');
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
@@ -25,7 +26,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   // const image = new Image(width, height)
   // image.src = imgSrc
 
-  const buttonText = imgSrc ? "edit drawing" : "post drawing"
+  const buttonText = imgSrc ? "edit it" : "post it"
 
   const position = { 
     x: 0, 
@@ -80,18 +81,26 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
     const canvas = document.getElementById("canvas");
     const dataURL = canvas.toDataURL("img/png");
     const blobData = dataURItoBlob(dataURL);
-
     const formData = new FormData();
-    formData.append('drawing[title]', title);
-    formData.append('drawing[artist_id]', user.id)
-    formData.append('drawing[image]', blobData)
+
+    if (canvas.height === 256) {
+      formData.append('comment[author_id]', user.id);
+      formData.append('comment[drawing_id]', drawingId)
+      formData.append('comment[image]', blobData)
+      dispatch(createComment( drawingId, formData ))
+    } else {
+      formData.append('drawing[title]', title);
+      formData.append('drawing[artist_id]', user.id)
+      formData.append('drawing[image]', blobData)
+      dispatch(createDrawing( user.id, formData ))
+    }
+
 
     // if ( imgSrc && (drawingUserId === user.id) ) {
     //   dispatch(updateDrawing( user.id, drawingId, formData ))
     // } else {
     // }
 
-    dispatch(createDrawing( user.id, formData ))
     setTitle('');
   }
 

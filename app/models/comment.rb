@@ -9,10 +9,10 @@
 #  updated_at :datetime         not null
 #
 class Comment < ApplicationRecord
-  validates :artist_id, :drawing_id, presence: true
+  validates :author_id, :drawing_id, presence: true
 
   belongs_to :author,
-    class_name: User
+    class_name: :User
 
   belongs_to :drawing
 

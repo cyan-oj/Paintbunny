@@ -29,6 +29,6 @@ class Api::CommentsController < ApplicationController
 
   private
   def comment_params
-    params.require(:drawing).permit(:author_id, :drawing_id, :image)
+    params.require(:comment).permit(:author_id, :drawing_id, :image)
   end
 end
