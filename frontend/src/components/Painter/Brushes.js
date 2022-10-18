@@ -1,5 +1,5 @@
 
-function Brushes({ brushes = [ 2, 5, 30 ]}) {
+function Brushes({ brushes = [ 2, 5, 30, 100 ]}) {
 
   const buttonList = brushes.map((brush, i) => 
     <button 

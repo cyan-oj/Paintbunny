@@ -38,7 +38,6 @@ function DrawingPage() {
             <div className="drawing-info">
               <h1>{drawing.title}</h1>
               <Link 
-                className="artist-name"
                 to={`/users/${drawing.artistId}`}>{drawing.artist}
               </Link>
               <p className="thumb-date">{dateFormat(drawing.createdAt)}</p>

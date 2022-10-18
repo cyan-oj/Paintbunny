@@ -114,7 +114,16 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   }
 
   return (
+    <>
     <div className="painter">
+      <div className="toolboxes">
+        <div onClick={ e => setColor(e.target.value) } id="palette">
+          <Palette  />
+        </div>
+        <div onClick={ e => setSize(e.target.value) } id="brushes">
+          <Brushes />
+        </div>
+      </div>
       <canvas 
         ref={ canvasRef } 
         onMouseDown={ setPosition }
@@ -125,32 +134,25 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
           color,
           size
           )}
-        height={ canvasHeight }
-        width={ canvasWidth }
-        id="canvas"
-      />
-      <div className="toolboxes">
-        <div onClick={ e => setColor(e.target.value) } id="palette">
-          <Palette  />
-        </div>
-        <div onClick={ e => setSize(e.target.value) } id="brushes">
-          <Brushes />
-        </div>
-        <form onSubmit={ blobCanvas }>
-          <input
-            type="text"
-            placeholder="title"
-            value={ title }
-            onChange={ e => setTitle(e.target.value) }
-          />
-          <button type="submit">{ buttonText }</button>
-          { imgSrc && 
-          <button onClick={ deleteImage }>delete</button>
-          }
-        </form>
-        <a id="link"></a>
-      </div>
+          height={ canvasHeight }
+          width={ canvasWidth }
+          id="canvas"
+        />
     </div>
+    <form onSubmit={ blobCanvas } class="comment-form">
+      <input
+        type="text"
+        placeholder="title"
+        value={ title }
+        onChange={ e => setTitle(e.target.value) }
+        />
+      <button type="submit">{ buttonText }</button>
+      { imgSrc && 
+      <button onClick={ deleteImage }>delete</button>
+    }
+    </form>
+    <a id="link"></a>
+    </>
   )
 } 
 
