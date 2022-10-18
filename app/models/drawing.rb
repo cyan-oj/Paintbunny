@@ -17,5 +17,8 @@ class Drawing < ApplicationRecord
   belongs_to :artist,
     class_name: :User
 
+  has_many :comments,
+    dependent: :destroy
+
   has_one_attached :image
 end

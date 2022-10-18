@@ -17,7 +17,7 @@ function DrawingIndex({ userId }) {
   }, [dispatch])
 
   const drawingsList = drawings.map(drawing => 
-      <DrawingIndexItem drawing={drawing} />
+      <DrawingIndexItem key={drawing.id} drawing={drawing} />
   );
 
   return (

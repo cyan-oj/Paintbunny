@@ -11,23 +11,32 @@ a:visited {
 .gallery {
   display: flex;
   flex-wrap: wrap;
+  max-width: 64em;
+  margin: auto;
 }
 
 .thumbnail {
   border: solid 1px var(--base1);
-  border-radius: 3px;
-  margin: 4px;
+  background-color: var(--base01);
+  border-radius: .6em;
+  margin: 1em;
   font-size: 10px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-.thumb{
-  padding: 0
+.thumb {
+  padding: 0;
+  max-width: 17em;
 }
 .thumb img {
-  max-width: 128px;
-  max-height: 128;
+  max-width: 100%;
+}
+
+.drawing-info {
+  display: flex;
+  flex-direction: column;
 }
 
 .thumb-date {

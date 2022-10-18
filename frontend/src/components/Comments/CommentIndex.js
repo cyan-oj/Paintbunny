@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchComments, getComments } from "../../store/comments";
+import CommentIndexItem from "./CommentIndexItem";
+import "./Comments.css"
 
 function CommentIndex({ drawingId }) {
   const dispatch = useDispatch();
@@ -8,10 +10,10 @@ function CommentIndex({ drawingId }) {
 
   useEffect(() => {
     dispatch(fetchComments(drawingId))
-  }, [dispatch])
+  }, [drawingId, dispatch])
 
   const commentsList = comments.map(comment => 
-    <img key={comment.id} src={comment.imageUrl} alt="" />
+    <CommentIndexItem key={comment.id} comment={comment} />
     );
 
   return (

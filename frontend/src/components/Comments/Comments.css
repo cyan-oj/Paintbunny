@@ -1,0 +1,10 @@
+.comment {
+  display: flex;
+  min-width: 800px;
+  flex-direction: row;
+}
+
+.commenter-info {
+  max-width: 20%;
+}
+

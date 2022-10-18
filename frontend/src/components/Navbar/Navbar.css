@@ -10,6 +10,7 @@ nav {
 .nav-link {
   padding: 3mm 6mm;
   box-sizing: border-box;
+  font-size: 18px;
 }
 
 .nav-link:hover {

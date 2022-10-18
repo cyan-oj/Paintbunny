@@ -7,7 +7,7 @@ function UserMenu({user}) {
 
   return (
     <div className="dropdown">
-      <a href="#" className ="nav-link">{user.username}</a>
+      <a href="" className ="nav-link">{user.username}</a>
       <div className="usermenu">
         <Link className="nav-link" to={`/users/${user.id}`}>Profile</Link>
         <Link className="nav-link" to={"/new"}>Create</Link>

@@ -17,11 +17,8 @@ export const getComment = commentId => ({ comments }) => comments ? comments[com
 export const getComments = ({ comments }) => comments ? Object.values(comments) : [];
 
 export const fetchComments = drawingId => async dispatch => {
-  console.log("drawingId", drawingId)
   const res = await csrfFetch(`/api/drawings/${drawingId}/comments`);
   const data = await res.json();
-  console.log("thunk data", data)
-  console.log("thunk comments", data.comments)
   dispatch(receiveComments(data.comments));
 } 
 
@@ -31,6 +28,8 @@ export const createComment = ( drawingId, comment ) => async dispatch => {
     body: comment
   });
   const data = await res.json();
+  console.log("comment data", data)
+  console.log("data comment", data.comment)
   dispatch(receiveComment(data.comment));
 }
 
@@ -38,9 +37,9 @@ const commentsReducer = (state = {}, action) => {
   const nextState = {...state};
   switch (action.type) {
     case RECEIVE_COMMENTS:
-      console.log("reducer comments", action.comments)
-      return {...state, ...action.comments}
+      return action.comments // todo: check with spencer bc this feels wrong
     case RECEIVE_COMMENT: 
+      console.log("action comment", action.comment.id)
       nextState[action.comment.id] = action.comment;
       return nextState;
     default:
