@@ -46,7 +46,7 @@ function DrawingPage() {
             </div>
             <img src={drawing.imageUrl} alt="" id="image" className="showimage" />
           </div>
-          <CommentIndex />
+          <CommentIndex drawingId={drawingId} />
           <div className="comment-canvas" >
             <Canvas height="256" drawingId={drawingId} />
           </div>
