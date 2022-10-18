@@ -137,7 +137,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
           id="canvas"
         />
     </div>
-    <form onSubmit={ blobCanvas } class="comment-form">
+    <form onSubmit={ blobCanvas } className="comment-form">
       <input
         type="text"
         placeholder="title"

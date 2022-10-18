@@ -22,8 +22,8 @@ function DrawingPage() {
   
   useEffect(() => {
     dispatch(fetchDrawing(userId, drawingId));
-    if (user && user.id === drawing.artistId) 
-    setIsArtist(true) 
+    if (user && user.id === userId) 
+      setIsArtist(true) 
   }, [dispatch]);
 
   if (!drawing) return null;

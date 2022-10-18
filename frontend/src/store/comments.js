@@ -2,6 +2,7 @@ import csrfFetch from "./csrf";
 
 export const RECEIVE_COMMENT = "comments/RECEIVE_COMMENT";
 export const RECEIVE_COMMENTS = "comments/RECEIVE_COMMENTS";
+export const REMOVE_COMMENT = "comments/REMOVE_COMMENT";
 
 export const receiveComment = comment => ({
   type: RECEIVE_COMMENT,
@@ -11,6 +12,11 @@ export const receiveComment = comment => ({
 export const receiveComments = comments => ({
   type: RECEIVE_COMMENTS,
   comments
+})
+
+export const removeComment = commentId => ({
+  type: REMOVE_COMMENT,
+  commentId
 })
 
 export const getComment = commentId => ({ comments }) => comments ? comments[commentId] : null;
@@ -31,13 +37,23 @@ export const createComment = ( drawingId, comment ) => async dispatch => {
   dispatch(receiveComment(data.comment));
 }
 
+export const destroyComment = ( drawingId, commentId ) => async dispatch => {
+  const res = await csrfFetch(`/api/drawings/${drawingId}/comments/${commentId}`, {
+    method: "DELETE"
+  });
+  dispatch(removeComment(commentId));
+}
+
 const commentsReducer = (state = {}, action) => {
   const nextState = {...state};
   switch (action.type) {
     case RECEIVE_COMMENTS:
       return action.comments // todo: check with spencer bc this feels wrong
     case RECEIVE_COMMENT: 
-      nextState[action.comment.id] = action.comment;
+      nextState[action.comments.id] = action.comment;
+      return nextState;
+    case REMOVE_COMMENT:
+      delete nextState[action.commentId];
       return nextState;
     default:
       return nextState;
