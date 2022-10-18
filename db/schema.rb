@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_12_200357) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_18_131525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_12_200357) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.bigint "author_id", null: false
+    t.bigint "drawing_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["drawing_id"], name: "index_comments_on_drawing_id"
+  end
+
   create_table "drawings", force: :cascade do |t|
     t.bigint "artist_id", null: false
     t.string "title", null: false
@@ -64,5 +73,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_12_200357) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "drawings"
+  add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "drawings", "users", column: "artist_id"
 end

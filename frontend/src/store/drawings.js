@@ -85,7 +85,7 @@ const drawingsReducer = (state = {}, action) => {
       delete nextState[action.drawingId];
       return nextState;
     default:
-      return state;
+      return nextState;
   }
 }
 

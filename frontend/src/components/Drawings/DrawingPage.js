@@ -10,13 +10,12 @@ function DrawingPage() {
   const { drawingId, userId } = useParams();
   const drawing = useSelector(getDrawing(drawingId));
 
-  const [drawingHeight, setDrawingHeight] = useState(0);
-  const [drawingWidth, setDrawingWidth] = useState(0);
+  console.log(drawing)
+
   const [showCanvas, setShowCanvas] = useState(false);
 
   useEffect(() => {
     dispatch(fetchDrawing(userId, drawingId));
-    const image = document.getElementById("image")
   }, [dispatch, drawingId]);
 
   if (!drawing) return null;
@@ -48,7 +47,7 @@ function DrawingPage() {
       }
       { showCanvas &&
         <>
-          <Canvas id="canvas" imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} />
+          <Canvas id="canvas" imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} />
           <button onClick={ editDrawing }>cancel edit</button>
         </>
       }

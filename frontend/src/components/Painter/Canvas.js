@@ -2,14 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Brushes from "./Brushes";
 import Palette from "./Palette";
-import { createDrawing, updateDrawing } from "../../store/drawings";
+import { createDrawing, destroyDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
-import { Buffer } from 'buffer'
-import csrfFetch from "../../store/csrf";
 
-function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
+function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
-  console.log("drawingTitle", drawingTitle)
+  // console.log("drawingUserId", drawingUserId)
+
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.session.user)
@@ -23,8 +22,8 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
 
-  const image = new Image(width, height)
-  image.src = imgSrc
+  // const image = new Image(width, height)
+  // image.src = imgSrc
 
   const buttonText = imgSrc ? "edit drawing" : "post drawing"
 
@@ -40,8 +39,8 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
     
-    if (imgSrc)
-      context.drawImage(image, 0, 0)
+    // if (imgSrc)
+    //   context.drawImage(image, 0, 0)
 
     contextRef.current = context;
   }, []);
@@ -87,12 +86,22 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
     formData.append('drawing[artist_id]', user.id)
     formData.append('drawing[image]', blobData)
 
-    if ( imgSrc && drawingUserId === user.id ) {
-      dispatch(updateDrawing( user.id, drawingId, formData ))
-    } else {
-      dispatch(createDrawing( user.id, formData ))
-    }
+    // if ( imgSrc && (drawingUserId === user.id) ) {
+    //   dispatch(updateDrawing( user.id, drawingId, formData ))
+    // } else {
+    // }
+
+    dispatch(createDrawing( user.id, formData ))
     setTitle('');
+  }
+
+  const deleteImage = e => {
+    e.preventDefault();
+
+    console.log(drawingUserId, drawingId)
+
+    if ( imgSrc && drawingUserId === user.id )
+      dispatch(destroyDrawing(drawingUserId, drawingId))
   }
 
   return (
@@ -107,9 +116,9 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
           color,
           size
           )}
-        height={canvasHeight}
-        width={canvasWidth}
-        id={id}
+        height={ canvasHeight }
+        width={ canvasWidth }
+        id="canvas"
       />
       <div className="toolboxes">
         <div onClick={ e => setColor(e.target.value) } id="palette">
@@ -125,7 +134,10 @@ function Canvas({ id, width, height, imgSrc, drawingId, drawingUserId, drawingTi
             value={ title }
             onChange={ e => setTitle(e.target.value) }
           />
-          <button type="submit">{buttonText}</button>
+          <button type="submit">{ buttonText }</button>
+          { imgSrc && 
+          <button onClick={ deleteImage }>delete</button>
+          }
         </form>
         <a id="link"></a>
       </div>
