@@ -11,18 +11,26 @@ function DrawingPage() {
   const { drawingId, userId } = useParams();
   const drawing = useSelector(getDrawing(drawingId));
 
+  const user = useSelector(state => state.session.user)
+  console.log(user)
+
   console.log(drawing)
 
   const [showCanvas, setShowCanvas] = useState(false);
+  const [isArtist, setIsArtist] = useState(false);
 
+  
   useEffect(() => {
     dispatch(fetchDrawing(userId, drawingId));
-  }, [dispatch, drawingId]);
+    if (user && user.id === drawing.artistId) 
+    setIsArtist(true) 
+  }, [dispatch]);
 
   if (!drawing) return null;
 
   const editDrawing = () => {
-    setShowCanvas(!showCanvas);
+    if (isArtist)
+      setShowCanvas(!showCanvas);
   }
 
   const dateFormat = dateString => {
@@ -42,17 +50,21 @@ function DrawingPage() {
               </Link>
               <p className="thumb-date">{dateFormat(drawing.createdAt)}</p>
               <p>description text text text</p>
-              <button onClick={ editDrawing }>edit</button>
+              { isArtist &&
+                <button onClick={ editDrawing }>edit</button>
+              }
             </div>
             <img src={drawing.imageUrl} alt="" id="image" className="showimage" />
           </div>
           <CommentIndex drawingId={drawingId} />
-          <div className="comment-canvas" >
-            <Canvas height="256" drawingId={drawingId} />
-          </div>
+          { user &&           
+            <div className="comment-canvas" >
+              <Canvas height="256" drawingId={drawingId} />
+            </div>
+          }
         </>
       }
-      { showCanvas &&
+      { showCanvas && user &&
         <>
           <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} />
           <button onClick={ editDrawing }>cancel edit</button>

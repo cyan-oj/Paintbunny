@@ -8,41 +8,39 @@ import { createComment } from "../../store/comments";
 
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
-  // console.log("drawingUserId", drawingUserId)
-
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.session.user)
-
+  
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
-
+  
   const [canvasWidth, setWidth] = useState(width || 512)
   const [canvasHeight, setHeight] = useState(height || 512)
   const [title, setTitle] = useState(drawingTitle || '');
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
-
+  
   // const image = new Image(width, height)
   // image.src = imgSrc
-
+  
   const buttonText = imgSrc ? "edit it" : "post it"
-
+  
   const position = { 
     x: 0, 
     y: 0 
   }
-
+  
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
-  
+    
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
     
     // if (imgSrc)
     //   context.drawImage(image, 0, 0)
-
+    
     contextRef.current = context;
   }, []);
 
@@ -56,7 +54,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
     if (e.buttons !== 1) return;
     context.imageSmoothingEnabled = false;
     context.globalAlpha = 1;
-    
+
     context.beginPath();
     context.lineWidth = size;
     context.lineCap = "round"
@@ -95,7 +93,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
       formData.append('drawing[image]', blobData)
       dispatch(createDrawing( user.id, formData ))
     }
-
 
     // if ( imgSrc && (drawingUserId === user.id) ) {
     //   dispatch(updateDrawing( user.id, drawingId, formData ))
