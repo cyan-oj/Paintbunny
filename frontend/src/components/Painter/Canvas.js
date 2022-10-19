@@ -5,9 +5,11 @@ import Palette from "./Palette";
 import { createDrawing, destroyDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
 import { createComment } from "../../store/comments";
+import { useHistory } from "react-router-dom";
 
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.session.user)
@@ -92,6 +94,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
       formData.append('drawing[artist_id]', user.id)
       formData.append('drawing[image]', blobData)
       dispatch(createDrawing( user.id, formData ))
+      history.push(`/users/${user.id}`)
     }
 
     // if ( imgSrc && (drawingUserId === user.id) ) {
@@ -99,7 +102,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
     // } else {
     // }
 
-    setTitle('');
   }
 
   const deleteImage = e => {
@@ -145,9 +147,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
         onChange={ e => setTitle(e.target.value) }
         />
       <button type="submit">{ buttonText }</button>
-      { imgSrc && 
-      <button onClick={ deleteImage }>delete</button>
-    }
     </form>
     <a id="link"></a>
     </>

@@ -1,7 +1,7 @@
-json.drawings do
-  @drawings.each do |drawing|
+@drawings.each do |drawing|
+  json.drawings do 
     json.set! drawing.id do
       json.partial! "api/drawings/drawing", drawing: drawing
     end
-  end
+  end 
 end

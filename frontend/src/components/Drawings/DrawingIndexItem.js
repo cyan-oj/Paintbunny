@@ -12,13 +12,13 @@ function DrawingIndexItem({ drawing }) {
     <div className="thumbnail">
       <Link 
         className="thumb"
-        to={`/drawings/${drawing.id}`}>
+        to={`/users/${drawing.artistId}/drawings/${drawing.id}`}>
         <img src={drawing.imageUrl} alt=""/> 
       </Link>
       <div className="thumb-info">
         <Link 
           className="title"
-          to={`/drawings/${drawing.id}`}>{drawing.title}
+          to={`/users/${drawing.artistId}/drawings/${drawing.id}`}>{drawing.title}
         </Link>
         <Link 
           className="artist-name"

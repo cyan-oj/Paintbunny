@@ -11,8 +11,9 @@ class Api::CommentsController < ApplicationController
 
   def create
     comment = Comment.new(comment_params)
+    @drawing = Drawing.find(params[:drawing_id])
     if comment.save
-      render json: { message: "you have made yourself heard" }
+      render :show
     else
       render json: comment.errors.full_messages, status: 422
     end
@@ -24,7 +25,12 @@ class Api::CommentsController < ApplicationController
   end
 
   def destroy
-
+    @comment = current_user.comments.find(params[:id])
+    if @comment.destroy
+      render json: { message: "comment deleted" }
+    else
+      render json: { message: "you can't do that" }
+    end
   end
 
   private

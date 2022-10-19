@@ -18,7 +18,7 @@ function CommentIndexItem({ comment, drawingId, isUser }) {
           to={`/users/${comment.authorId}`}>{comment.author}
         </Link>
         <p className="comment-date">{dateFormat(comment.createdAt)}</p>
-        {isUser && 
+        { isUser && 
           <button onClick={ deleteComment }>delete</button>
         }
       </div>

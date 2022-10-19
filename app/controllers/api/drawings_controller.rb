@@ -25,9 +25,9 @@ class Api::DrawingsController < ApplicationController
   end
   
   def create
-    drawing = Drawing.new(drawing_params)
-    if drawing.save
-      render json: { message: "poatsted"}
+    @drawing = Drawing.new(drawing_params)
+    if @drawing.save
+      render :show
     else
       render json: drawing.errors.full_messages, status: 422
     end
@@ -45,9 +45,8 @@ class Api::DrawingsController < ApplicationController
 
   def destroy
     @drawing = current_user.drawings.find(params[:id])
-    if @drawing
-      @drawing.destroy
-      redirect_to api_users_url(current_user)
+    if @drawing.destroy
+      render :index
     else 
       render json: { message: "you can't do that" }, status: :unauthorized
     end

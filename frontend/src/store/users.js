@@ -1,4 +1,5 @@
 import csrfFetch from "./csrf";
+import { receiveDrawings } from "./drawings";
 
 export const RECEIVE_USER = "users/RECEIVE_USER";
 
@@ -13,6 +14,7 @@ export const fetchUser = userId => async dispatch => {
   const res = await csrfFetch(`/api/users/${userId}`);
   const data = await res.json();
   dispatch(receiveUser(data.user));
+  dispatch(receiveDrawings(data.drawings))
 }
 
 const usersReducer = (state = {}, action) => {

@@ -1,20 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDrawings, fetchUserDrawings, getDrawings } from "../../store/drawings";
+import { fetchDrawings, getDrawings } from "../../store/drawings";
 import DrawingIndexItem from "./DrawingIndexItem";
 import "./DrawingIndex.css"
+import { useParams } from "react-router-dom";
 
-function DrawingIndex({ userId }) {
-  const dispatch = useDispatch();
-  const drawings = useSelector(getDrawings)
+function DrawingIndex() {
+const dispatch = useDispatch();
+const { userId } = useParams();
+const drawings = useSelector(getDrawings(userId));
 
-  useEffect(() => {
-    if ( userId ){
-      dispatch(fetchUserDrawings(userId));
-    } else {
-      dispatch(fetchDrawings());
-    }
-  }, [dispatch])
+useEffect(() => {
+  dispatch(fetchDrawings(userId))
+}, [dispatch, userId]);
 
   const drawingsList = drawings.map(drawing => 
       <DrawingIndexItem key={drawing.id} drawing={drawing} />

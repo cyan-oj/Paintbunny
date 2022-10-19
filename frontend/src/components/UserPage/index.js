@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUser, fetchUser } from "../../store/users";
 import DrawingIndex from "../Drawings/DrawingIndex";
+import  { dateFormat } from "../../utils"
 
 function UserPage() {
   const dispatch = useDispatch();
@@ -15,11 +16,6 @@ function UserPage() {
 
   if (!user) return null;
 
-  const dateFormat = dateString => {
-    const date = new Date(dateString)
-    return date.toDateString()
-  }
-
   return (
     <>
       <div className="user-bio">      
@@ -27,7 +23,7 @@ function UserPage() {
         <p>member since: {dateFormat(user.createdAt)} </p>
       </div>
       {user &&
-        <DrawingIndex userId={user.id}/>
+        <DrawingIndex />
       }
     </>
   )

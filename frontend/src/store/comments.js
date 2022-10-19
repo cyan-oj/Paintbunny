@@ -21,6 +21,17 @@ export const removeComment = commentId => ({
 
 export const getComment = commentId => ({ comments }) => comments ? comments[commentId] : null;
 export const getComments = ({ comments }) => comments ? Object.values(comments) : [];
+export const getDrawingComments = drawingId => ({ comments }) => {
+  if (comments) {
+    const commentArray = Object.values(comments)
+    const selectedComments = commentArray.filter(comment => {
+      console.log(comment.drawingId, drawingId)
+      return '' + comment.drawingId === drawingId
+      });
+    return selectedComments;
+  }
+  return [];
+}
 
 export const fetchComments = drawingId => async dispatch => {
   const res = await csrfFetch(`/api/drawings/${drawingId}/comments`);
@@ -48,9 +59,9 @@ const commentsReducer = (state = {}, action) => {
   const nextState = {...state};
   switch (action.type) {
     case RECEIVE_COMMENTS:
-      return action.comments // todo: check with spencer bc this feels wrong
+      return {...state, ...action.comments}
     case RECEIVE_COMMENT: 
-      nextState[action.comments.id] = action.comment;
+      nextState[action.comment.id] = action.comment;
       return nextState;
     case REMOVE_COMMENT:
       delete nextState[action.commentId];
