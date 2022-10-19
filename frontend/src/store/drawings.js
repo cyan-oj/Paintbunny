@@ -22,13 +22,11 @@ export const removeDrawing = drawingId => ({
 export const getDrawings = userId => ({ drawings }) => {
   if (drawings) {
     const drawingArray = Object.values(drawings)
-    console.log("drawingArray", drawingArray)
     if(userId){
       const selectedDrawings = drawingArray.filter(drawing => {
         console.log(drawing.artistId, userId)
         return '' + drawing.artistId === userId
       });
-      console.log("selectedDarwings", selectedDrawings)
       return selectedDrawings;
     }
     return drawingArray;
@@ -37,9 +35,6 @@ export const getDrawings = userId => ({ drawings }) => {
 }
 
 export const getDrawing = drawingId => ({ drawings }) => drawings ? drawings[drawingId] : null;
-export const getUserDrawings = userId => ({drawings}) => {
-
-}
 
 export const fetchDrawing = ( userId, drawingId ) => async dispatch => {
   const res = await csrfFetch(`/api/users/${userId}/drawings/${drawingId}`);
