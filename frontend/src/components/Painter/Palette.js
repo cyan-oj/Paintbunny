@@ -1,16 +1,6 @@
 
 
-function Palette({palette}) {
-  console.log("palette props", palette)
-  
-  const defaultPalette = [
-    "hsl(0, 0%, 100%)", 
-    "hsl(0, 0%, 0%)", 
-    "hsl(0, 50%, 50%)", 
-    "hsl(47, 100%, 51%)"
-  ]
-
-  //const { palette = defaultPalette } = props;
+function Palette({palette}) {  
 
   const swatchList = palette.map((swatch, i) => 
     <button 

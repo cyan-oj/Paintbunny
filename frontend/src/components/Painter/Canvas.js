@@ -13,7 +13,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.session.user)
-  console.log("canvas user", user)
   
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -107,9 +106,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
 
   const deleteImage = e => {
     e.preventDefault();
-
     console.log(drawingUserId, drawingId)
-
     if ( imgSrc && drawingUserId === user.id )
       dispatch(destroyDrawing(drawingUserId, drawingId))
   }
@@ -140,7 +137,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
           id="canvas"
         />
     </div>
-    <ToolEditor brushes={user.brushes} palette={user.palette} />
+    <ToolEditor user={user} />
     <form onSubmit={ blobCanvas } className="comment-form">
       <input
         type="text"

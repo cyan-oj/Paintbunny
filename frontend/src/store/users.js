@@ -17,6 +17,15 @@ export const fetchUser = userId => async dispatch => {
   dispatch(receiveDrawings(data.drawings))
 }
 
+export const updateUser = (user) => async dispatch => {
+  const res = await csrfFetch(`/api/users/${user.id}`, {
+    method: "PUT",
+    body: JSON.stringify(user)
+  });
+  const data = await res.json();
+  dispatch(receiveUser(data.user))
+}
+
 const usersReducer = (state = {}, action) => {
   const nextState = {...state};
   switch (action.type) {

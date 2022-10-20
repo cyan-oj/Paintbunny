@@ -1,39 +1,45 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../store/users";
 import "./ToolEditor.css"
 
-function ToolEditor({ brushes = [], palette = [] }) {
+function ToolEditor({ user }) {
+  console.log(user)
+  const dispatch = useDispatch();
 
-  const [newPalette, setPalette] = useState(palette);
-  const [newBrushes, setBrushes] = useState(brushes);
+  const [palette, setPalette] = useState(user.palette);
+  const [brushes, setBrushes] = useState(user.brushes);
   const [testVal, setVal] = useState(1);
 
   useEffect(() => {
 
-  }, [newBrushes])
+  }, [brushes, palette])
 
-  const updateBrushes = (size, i) => {
-    const currentBrushes = newBrushes;
-    const sizeInt = parseInt(size, 10)
-    currentBrushes[i] = sizeInt;
-    setBrushes(currentBrushes);
-    console.log(newBrushes);
+  const updateTools = e => {
+    e.preventDefault();
+    console.log(brushes);
+    console.log(palette);
+    user.palette = palette;
+    user.brushes = brushes;
+    console.log(user);
+    dispatch(updateUser(user))
   }
 
-  const updateTools = () => {
-
-  }
-
-  const swatchList = newPalette.map((swatch, i) =>
+  const swatchList = palette.map((swatch, i) =>
     <input
       key={i}
       type="text" 
-      value={swatch} 
+      value={ palette[i] } 
       className="editor-swatch" 
       style={{ backgroundColor: swatch }} 
+      onChange={ e => {
+        palette[i] = e.target.value;
+        setPalette([...palette])
+      }}
     />
   )
 
-  const brushList = newBrushes.map((brush, i) =>
+  const brushList = brushes.map((brush, i) =>
     <input
       key={i}
       type="text" 
@@ -41,28 +47,26 @@ function ToolEditor({ brushes = [], palette = [] }) {
       className="editor-brush" 
       onChange={ e => {
         if(e.target.value && !isNaN(e.target.value)) {
-          newBrushes[i] = parseInt(e.target.value, 10)
-          setBrushes([...newBrushes])
-          console.log("newBrushes", newBrushes)
+          brushes[i] = parseInt(e.target.value, 10)
+          setBrushes([...brushes])
         } else {
-          newBrushes[i] = ''
+          brushes[i] = ''
           setVal(testVal+1)
-          console.log("newBrushes", newBrushes)
         }
       }}
     />
   )
 
   return (
-    <form onSubmit={ updateTools }>
-      <input value={testVal} onChange={ e => setVal(e.target.value)} />
+    <div className="toolbox-editor">
       <div className="swatchbox">
         { swatchList }
       </div>
       <div className="brushbox">
         { brushList }
       </div>
-    </form>
+      <button onClick={ e => updateTools(e)}>update tools</button>
+    </div>
   )
 }
 
