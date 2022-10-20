@@ -1,4 +1,7 @@
-function Brushes({ brushes = [ 2, 5, 30, 100 ]}) {
+import { useSelector } from "react-redux";
+
+function Brushes() {
+  const brushes = useSelector(state => state.session.user.brushes)
 
   const buttonList = brushes.map((brush, i) => 
     <button 

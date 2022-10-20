@@ -1,6 +1,7 @@
+import { useSelector } from "react-redux";
 
-
-function Palette({palette}) {  
+function Palette() {  
+  const palette = useSelector(state => state.session.user.palette)
 
   const swatchList = palette.map((swatch, i) => 
     <button 
