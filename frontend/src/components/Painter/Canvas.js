@@ -7,6 +7,9 @@ import "./Painter.css"
 import { createComment } from "../../store/comments";
 import { useHistory } from "react-router-dom";
 
+
+
+
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
 
   const history = useHistory();
@@ -23,9 +26,12 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
   
-  // const image = new Image(width, height)
-  // image.src = imgSrc
+  const image = new Image(512, 512)
+  image.crossOrigin = "anonymous"
+  if(imgSrc) image.src = imgSrc
   
+  console.log(image);
+
   const buttonText = imgSrc ? "edit it" : "post it"
   
   const position = { 
@@ -39,9 +45,9 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
     
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-    
-    // if (imgSrc)
-    //   context.drawImage(image, 0, 0)
+  
+    if (imgSrc)
+      context.drawImage(image, 0, 0)
     
     contextRef.current = context;
   }, []);
@@ -89,6 +95,11 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
       formData.append('comment[drawing_id]', drawingId)
       formData.append('comment[image]', blobData)
       dispatch(createComment( drawingId, formData ))
+    } else if ( imgSrc && (drawingUserId === user.id) ) {
+      formData.append('drawing[title]', title);
+      formData.append('drawing[artist_id]', user.id)
+      formData.append('drawing[image]', blobData)
+      dispatch(updateDrawing( user.id, drawingId, formData ))
     } else {
       formData.append('drawing[title]', title);
       formData.append('drawing[artist_id]', user.id)
@@ -96,12 +107,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
       dispatch(createDrawing( user.id, formData ))
       history.push(`/users/${user.id}`)
     }
-
-    // if ( imgSrc && (drawingUserId === user.id) ) {
-    //   dispatch(updateDrawing( user.id, drawingId, formData ))
-    // } else {
-    // }
-
   }
 
   const deleteImage = e => {

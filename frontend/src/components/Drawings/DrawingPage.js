@@ -19,12 +19,11 @@ function DrawingPage() {
   
   useEffect(() => {
     dispatch(fetchDrawing(userId, drawingId));
-
   }, [dispatch]);
 
   if (!drawing) return null;
 
-  const editDrawing = () => {
+  const toggleEdit = () => {
     if (isArtist)
       setShowCanvas(!showCanvas);
   }
@@ -54,7 +53,10 @@ function DrawingPage() {
               <p className="thumb-date">{dateFormat(drawing.createdAt)}</p>
               <p>description text text text</p>
               { isArtist &&
+                <>
                 <button onClick={ deleteImage }>delete</button>
+                {/* <button onClick={ toggleEdit }>edit</button> */}
+                </>
               }
             </div>
             <img src={drawing.imageUrl} alt="" id="image" className="showimage" />
@@ -70,7 +72,7 @@ function DrawingPage() {
       { showCanvas && user &&
         <>
           <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} />
-          <button onClick={ editDrawing }>cancel edit</button>
+          <button onClick={ toggleEdit }>cancel edit</button>
         </>
       }
     </div>

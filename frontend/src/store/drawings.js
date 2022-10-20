@@ -65,7 +65,7 @@ export const createDrawing = ( userId, drawing ) => async dispatch => {
 }
 
 export const updateDrawing = ( userId, drawingId, drawing ) => async dispatch => {
-  const res = await csrfFetch(`/api/users/${userId}/drawings${drawingId}`, {
+  const res = await csrfFetch(`/api/users/${userId}/drawings/${drawingId}`, {
     method: "PUT",
     body: drawing
   });

@@ -25,7 +25,6 @@ export const getDrawingComments = drawingId => ({ comments }) => {
   if (comments) {
     const commentArray = Object.values(comments)
     const selectedComments = commentArray.filter(comment => {
-      console.log(comment.drawingId, drawingId)
       return '' + comment.drawingId === drawingId
       });
     return selectedComments;
