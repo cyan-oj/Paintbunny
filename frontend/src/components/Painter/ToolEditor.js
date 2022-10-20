@@ -4,7 +4,6 @@ import { updateUser } from "../../store/users";
 import "./ToolEditor.css"
 
 function ToolEditor({ user }) {
-  console.log(user)
   const dispatch = useDispatch();
 
   const [palette, setPalette] = useState(user.palette);
@@ -21,7 +20,7 @@ function ToolEditor({ user }) {
     console.log(palette);
     user.palette = palette;
     user.brushes = brushes;
-    console.log(user);
+    console.log("user for dispatch from ToolEditor", user);
     dispatch(updateUser(user))
   }
 

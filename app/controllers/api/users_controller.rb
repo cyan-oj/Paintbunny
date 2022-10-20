@@ -24,7 +24,7 @@ class Api::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      render json: { message: "tools updated!" }
+      render :show
     else
       render json: { message: "tool update failed" }, status: 422
     end
@@ -32,6 +32,6 @@ class Api::UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:email, :username, :password, :palette, :brushes)
+    params.require(:user).permit(:email, :username, :password, palette: [], brushes: [])
   end
 end
