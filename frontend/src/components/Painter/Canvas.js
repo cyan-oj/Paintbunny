@@ -6,7 +6,7 @@ import { createDrawing, destroyDrawing, updateDrawing } from "../../store/drawin
 import "./Painter.css"
 import { createComment } from "../../store/comments";
 import { useHistory } from "react-router-dom";
-import ToolEditor from "./ToolEditor";
+import ToolEditorModal from "./ToolEditorModal";
 
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
   const history = useHistory();
@@ -137,7 +137,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
           id="canvas"
         />
     </div>
-    <ToolEditor user={user} />
+    <ToolEditorModal user={user} />
     <form onSubmit={ blobCanvas } className="comment-form">
       <input
         type="text"

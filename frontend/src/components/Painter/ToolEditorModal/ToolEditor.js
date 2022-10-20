@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../../store/users";
+import { updateUser } from "../../../store/users";
 import "./ToolEditor.css"
 
 function ToolEditor({ user }) {
