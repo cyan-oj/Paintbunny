@@ -6,16 +6,14 @@ import { createDrawing, destroyDrawing, updateDrawing } from "../../store/drawin
 import "./Painter.css"
 import { createComment } from "../../store/comments";
 import { useHistory } from "react-router-dom";
-
-
-
+import ToolEditor from "./ToolEditor";
 
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
-
   const history = useHistory();
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.session.user)
+  console.log("canvas user", user)
   
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -26,11 +24,9 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const [color, setColor] = useState("black")
   const [size, setSize] = useState(2)
   
-  const image = new Image(512, 512)
-  image.crossOrigin = "anonymous"
-  if(imgSrc) image.src = imgSrc
-  
-  console.log(image);
+  // const image = new Image(512, 512)
+  // image.crossOrigin = "anonymous"
+  // if(imgSrc) image.src = imgSrc
 
   const buttonText = imgSrc ? "edit it" : "post it"
   
@@ -46,8 +42,8 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
   
-    if (imgSrc)
-      context.drawImage(image, 0, 0)
+    // if (imgSrc)
+    //   context.drawImage(image, 0, 0)
     
     contextRef.current = context;
   }, []);
@@ -123,10 +119,10 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
     <div className="painter">
       <div className="toolboxes">
         <div onClick={ e => setColor(e.target.value) } id="palette">
-          <Palette  />
+          <Palette palette={user.palette}/>
         </div>
-        <div onClick={ e => setSize(e.target.value) } id="brushes">
-          <Brushes />
+        <div onClick={ e => setSize(e.target.value) } id="brushes" brushes={user.brushes}>
+          <Brushes brushes={user.brushes} />
         </div>
       </div>
       <canvas 
@@ -144,13 +140,14 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
           id="canvas"
         />
     </div>
+    <ToolEditor brushes={user.brushes} palette={user.palette} />
     <form onSubmit={ blobCanvas } className="comment-form">
       <input
         type="text"
         placeholder="title"
         value={ title }
         onChange={ e => setTitle(e.target.value) }
-        />
+      />
       <button type="submit">{ buttonText }</button>
     </form>
     <a id="link"></a>

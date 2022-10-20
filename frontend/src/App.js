@@ -5,8 +5,12 @@ import UserPage from "./components/UserPage";
 import DrawingPage from "./components/Drawings/DrawingPage";
 import DrawingIndex from "./components/Drawings/DrawingIndex";
 import Canvas from "./components/Painter/Canvas";
+import { ProtectedRoute } from "./utils";
+import { useSelector } from "react-redux";
 
 function App() {
+  const user = useSelector(state => state.session.user)
+
   return (
     <>
       <Navbar />
@@ -18,7 +22,9 @@ function App() {
           <UserPage />
         </Route>
         <Route path="/new">
-          <Canvas />
+          <ProtectedRoute user={user} >
+              <Canvas />
+          </ProtectedRoute>
         </Route>
         <Route path="/"> 
           <DrawingIndex />

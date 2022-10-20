@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_18_131525) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_20_143151) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,6 +66,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_18_131525) do
     t.string "session_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "palette", default: ["hsl(0, 0%, 100%)", "hsl(0, 0%, 0%)"], array: true
+    t.integer "brushes", default: [2, 5, 30, 70, 200], array: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["session_token"], name: "index_users_on_session_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true

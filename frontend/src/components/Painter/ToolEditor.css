@@ -1,0 +1,15 @@
+.swatchbox{
+
+}
+
+.brushbox{
+  max-width: 48em;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.brushbox > input {
+  max-width: 4em;
+  margin: .1em;
+  font-size: 12pt;
+}
