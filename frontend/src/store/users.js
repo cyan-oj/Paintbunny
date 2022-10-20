@@ -1,5 +1,6 @@
 import csrfFetch from "./csrf";
 import { receiveDrawings } from "./drawings";
+import { storeCurrentUser } from "./session";
 
 export const RECEIVE_USER = "users/RECEIVE_USER";
 
@@ -27,6 +28,7 @@ export const updateUser = (user) => async dispatch => {
   });
   const data = await res.json();
   console.log(data);
+  storeCurrentUser(data.user);
   dispatch(receiveUser(data.user))
 }
 

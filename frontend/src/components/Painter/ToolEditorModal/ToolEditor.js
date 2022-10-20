@@ -24,6 +24,11 @@ function ToolEditor({ user }) {
     dispatch(updateUser(user))
   }
 
+  const addSwatch = () => {
+    palette.push("hsl(0, 0%, 100%)");
+    setPalette([...palette]);
+  }
+
   const swatchList = palette.map((swatch, i) =>
     <input
       key={i}
@@ -60,11 +65,18 @@ function ToolEditor({ user }) {
     <div className="toolbox-editor">
       <div className="swatchbox">
         { swatchList }
+        <input 
+          id="add-color"
+          className="editor-brush"
+          value="+"
+          //readOnly="true"
+          onClick={ addSwatch }
+        />
       </div>
       <div className="brushbox">
         { brushList }
       </div>
-      <button onClick={ e => updateTools(e)}>update tools</button>
+      <button onClick={ e => updateTools(e)}>save presets</button>
     </div>
   )
 }
