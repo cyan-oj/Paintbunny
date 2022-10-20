@@ -1,5 +1,6 @@
 class Api::UsersController < ApplicationController
   wrap_parameters include: User.attribute_names + ['password', 'palette', 'brushes']
+  before_action :require_logged_in, only: [:update]
 
   def show
     @user = User.find(params[:id])
