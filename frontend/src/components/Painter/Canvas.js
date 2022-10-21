@@ -17,22 +17,24 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
-  
-  const [canvasWidth, setWidth] = useState(width || 512)
-  const [canvasHeight, setHeight] = useState(height || 512)
+
+  const [canvasWidth, setWidth] = useState(width || 512);
+  const [canvasHeight, setHeight] = useState(height || 512);
   const [title, setTitle] = useState(drawingTitle || '');
   const [color, setColor] = useState("black")
   const [hue, setHue] = useState(0);
   const [saturation, setSaturation] = useState(0);
   const [lightness, setLightness] = useState(0);
-
-  const [size, setSize] = useState(2)
+  const [size, setSize] = useState(16)
 
   // const image = new Image(512, 512)
   // image.crossOrigin = "anonymous"
   // if(imgSrc) image.src = imgSrc
 
   const buttonText = imgSrc ? "edit it" : "post it"
+  
+  const isComment = height === "256" ? true : false
+  console.log("is comment?", isComment)
   
   const position = { 
     x: 0, 
@@ -117,17 +119,21 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   }
 
   const brushSettings = e => {
-    console.log("event target", e.target.id, "value", e.target.value)
     switch (e.target.id) {
       case "size":
         setSize(e.target.value);
-        console.log("size", size)
         break;
       case "hue":
+        setHue(e.target.value);
+        setColor(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
         break;
       case "saturation":
+        setSaturation(e.target.value);
+        setColor(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
         break;
       case "lightness":
+        setLightness(e.target.value);
+        setColor(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
         break;
       default: 
       break
@@ -136,7 +142,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
 
   return (
     <>
-    <div className="painter">
+    <div className={ isComment ? "comment-painter" : "painter" }>
       <div className="toolboxes">
         <div onClick={ e => setColor(e.target.value) } id="palette">
           <Palette palette={user.palette}/>
@@ -144,31 +150,33 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
         <div onClick={ e => setSize(e.target.value) } id="brushes" brushes={user.brushes}>
           <Brushes brushes={user.brushes} />
         </div>
+      <ToolEditorModal user={user} />
       </div>
       <canvas 
         ref={ canvasRef } 
         onMouseDown={ setPosition }
         onMouseEnter={ setPosition }
-        onMouseMove={ e => draw( 
-          e,
-          contextRef.current,
-          color,
-          size
-          )}
-          height={ canvasHeight }
-          width={ canvasWidth }
-          id="canvas"
+        onMouseMove={ e => draw( e, contextRef.current, color, size )}
+        height={ canvasHeight }
+        width={ canvasWidth }
+        id="canvas"
         />
-        <BrushDisplay brushSettings={brushSettings} size={size} />
+        <BrushDisplay 
+          brushSettings={brushSettings} 
+          color={color} size={size} 
+          hue={hue} saturation={saturation} lightness={lightness}
+          width="128"
+          height="256"/>
     </div>
-    <ToolEditorModal user={user} />
     <form onSubmit={ blobCanvas } className="comment-form">
-      <input
-        type="text"
-        placeholder="title"
-        value={ title }
-        onChange={ e => setTitle(e.target.value) }
-      />
+      { !isComment && 
+        <input
+          type="text"
+          placeholder="title"
+          value={ title }
+          onChange={ e => setTitle(e.target.value) }
+        />
+      }
       <button type="submit">{ buttonText }</button>
     </form>
     <a id="link"></a>

@@ -69,12 +69,12 @@ function DrawingPage() {
           }
         </>
       }
-      { showCanvas && user &&
+      {/* { showCanvas && user &&
         <>
           <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} />
           <button onClick={ toggleEdit }>cancel edit</button>
         </>
-      }
+      } */}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 #palette, #brushes {
-  margin: .6em 0;
+  margin: 4px 0;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -26,12 +26,12 @@ button.brush:hover {
 }
 
 .comment-canvas {
-  width: 72em;
+  width: 840px;
   margin: 2px
 }
 
 .toolboxes {
-  width: 12em;
+  width: 160px;
   margin-right: 4px;
   margin-right: 4px;
   border-right: solid 1px black;
@@ -45,10 +45,20 @@ button.brush:hover {
   margin: 2px;
 }
 
+.comment-painter {
+  position: relative;
+  left: 67px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2px;
+}
+
 .comment-form {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 52em;
+  max-width: 256px;
   margin: auto
 }
