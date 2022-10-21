@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getUser, fetchUser } from "../../store/users";
 import DrawingIndex from "../Drawings/DrawingIndex";
 import  { dateFormat } from "../../utils"
+import "./UserPage.css"
 
 function UserPage() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function UserPage() {
   if (!user) return null;
 
   return (
-    <>
+    <div className="user-page">
       <div className="user-bio">      
         <h1>{user.username}</h1>
         <p>member since: {dateFormat(user.createdAt)} </p>
@@ -25,7 +26,7 @@ function UserPage() {
       {user &&
         <DrawingIndex />
       }
-    </>
+    </div>
   )
 }
 

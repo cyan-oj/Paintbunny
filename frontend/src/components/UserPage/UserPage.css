@@ -1,0 +1,11 @@
+.user-page {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 80%;
+  margin: auto;
+}
+
+.user-bio {
+  width: 200px;
+  margin: 8px;
+}
