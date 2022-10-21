@@ -4,7 +4,6 @@
   align-items: flex-end;
   justify-content: center;
   margin-left: 4px;
-  border-left: solid 1px black;
   overflow: hidden;
 }
 
@@ -30,6 +29,7 @@
 .brush-sample {
   position: absolute;
   z-index: -1;
+  border-left: solid 1px black;
 }
 
 input[type=range] {

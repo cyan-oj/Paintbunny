@@ -7,7 +7,7 @@ function ToolEditorModal({ user }) {
 
   return (
     <>
-      <button onClick={e => setShowModal(true)}>Edit Toolbox</button>
+      <button onClick={e => setShowModal(true)}>edit toolbox</button>
       { showModal && (
         <Modal onClose={e => setShowModal(false)}>
           <ToolEditor user={user} />

@@ -34,8 +34,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const buttonText = imgSrc ? "edit it" : "post it"
   
   const isComment = height === "256" ? true : false
-  console.log("is comment?", isComment)
-  
+
   const position = { 
     x: 0, 
     y: 0 
@@ -166,7 +165,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
           color={color} size={size} 
           hue={hue} saturation={saturation} lightness={lightness}
           width="128"
-          height="256"/>
+          height={canvasHeight}/>
     </div>
     <form onSubmit={ blobCanvas } className="comment-form">
       { !isComment && 

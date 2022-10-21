@@ -13,16 +13,16 @@
 }
 
 .drawing-info {
-  width: 12em;
+  width: 160px;
   background-color: var(--base01);
   border-right: solid 1px black;
   margin-right: 4px;
-  border-radius: .6em 0 0 .6em;
-  padding: .8em
+  border-radius: 8px 0 0 8px;
+  padding: 4px;
 }
 
 .drawing-info > * {
-  padding: .2em;
+  padding: 8px 4px;
   margin: 0
 }
 

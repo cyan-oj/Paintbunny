@@ -35,12 +35,17 @@ button.brush:hover {
   margin-right: 4px;
   margin-right: 4px;
   border-right: solid 1px black;
-  padding: .8em
+  padding-right: 6px;
+}
+
+.toolboxes > button {
+  font-size: 19px;
 }
 
 .painter {
   display: flex;
   justify-content: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   margin: 2px;
 }
