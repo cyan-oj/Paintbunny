@@ -7,6 +7,7 @@ import "./Painter.css"
 import { createComment } from "../../store/comments";
 import { useHistory } from "react-router-dom";
 import ToolEditorModal from "./ToolEditorModal";
+import BrushDisplay from "./BrushDisplay";
 
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
   const history = useHistory();
@@ -21,8 +22,12 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const [canvasHeight, setHeight] = useState(height || 512)
   const [title, setTitle] = useState(drawingTitle || '');
   const [color, setColor] = useState("black")
+  const [hue, setHue] = useState(0);
+  const [saturation, setSaturation] = useState(0);
+  const [lightness, setLightness] = useState(0);
+
   const [size, setSize] = useState(2)
-  
+
   // const image = new Image(512, 512)
   // image.crossOrigin = "anonymous"
   // if(imgSrc) image.src = imgSrc
@@ -111,6 +116,24 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
       dispatch(destroyDrawing(drawingUserId, drawingId))
   }
 
+  const brushSettings = e => {
+    console.log("event target", e.target.id, "value", e.target.value)
+    switch (e.target.id) {
+      case "size":
+        setSize(e.target.value);
+        console.log("size", size)
+        break;
+      case "hue":
+        break;
+      case "saturation":
+        break;
+      case "lightness":
+        break;
+      default: 
+      break
+    }
+  }
+
   return (
     <>
     <div className="painter">
@@ -136,6 +159,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
           width={ canvasWidth }
           id="canvas"
         />
+        <BrushDisplay brushSettings={brushSettings} size={size} />
     </div>
     <ToolEditorModal user={user} />
     <form onSubmit={ blobCanvas } className="comment-form">

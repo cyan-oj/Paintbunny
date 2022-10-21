@@ -1,0 +1,22 @@
+.color-sliders {
+  display: flex;
+  flex-wrap: wrap;
+  width: 12em;
+  margin-right: 4px;
+  margin-right: 4px;
+  padding: .8em
+}
+
+.save-buttons {
+  display: flex;
+}
+
+.save-buttons > button {
+  font-size: 12pt;
+  height: auto;
+  padding: 0
+}
+
+.brush-sample {
+  position: absolute;
+}
