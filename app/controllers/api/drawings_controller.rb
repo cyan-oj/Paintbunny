@@ -1,5 +1,6 @@
 class Api::DrawingsController < ApplicationController
   # wrap_parameters include: Drawing.attribute_names + [:image] + [:user_id]
+  #todo: get wrap_paramenters working
   before_action :snake_case_params
   before_action :require_logged_in, only: [:create, :destroy]
 
@@ -8,9 +9,9 @@ class Api::DrawingsController < ApplicationController
   def index
     user_id = params[:user_id]    
     if user_id
-      @drawings = Drawing.where(artist_id: user_id).limit(16)
+      @drawings = Drawing.where(artist_id: user_id)
     else
-      @drawings = Drawing.all.limit(16)
+      @drawings = Drawing.all.order(created_at: :desc) #todo: desc ordering doesn't work?
     end
     render :index
   end
