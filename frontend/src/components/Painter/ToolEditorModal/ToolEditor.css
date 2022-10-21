@@ -1,11 +1,13 @@
 .toolbox-editor {
-  max-width: 48em;
+  width: 600px;
 }
 
 .swatchbox{
   max-width: 48em;
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .swatchbox > input {

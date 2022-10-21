@@ -9,9 +9,10 @@ nav {
 }
 
 .nav-link {
-  padding: 3mm 6mm;
+  padding: 8px 16px;
   box-sizing: border-box;
   font-size: 18px;
+  min-width: 128px;
 }
 
 .nav-link:hover {
@@ -35,7 +36,7 @@ nav {
 .usermenu > * {
   display: block;
   width: inherit;
-  min-width: 24mm
+  min-width: 128px
 }
 
 .guestmenu {

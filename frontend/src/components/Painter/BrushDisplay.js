@@ -1,9 +1,32 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../store/users";
 import "./BrushDisplay.css"
 
 function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, width, height }) {
   const brushSampleRef = useRef( null )
-  // set onInput on component to target size and color
+  //todo: consolidate brushdisplay and tooleditor util methods, rethink how color/palette info gets passed
+  const user = useSelector(state => state.session.user);
+
+  const dispatch = useDispatch();
+
+  const [palette, setPalette] = useState(user.palette);
+  const [brushes, setBrushes] = useState(user.brushes);
+
+  const addColor = () => {
+    palette.push(color);
+    setPalette([...palette]);
+    user.palette = palette;
+    dispatch(updateUser(user))
+  }
+
+  const addBrush = () => {
+    brushes.push(size);
+    setBrushes([...brushes])
+    user.brushes = brushes
+    dispatch(updateUser(user))
+  } 
+
 
   useEffect(() => {
     const canvas = brushSampleRef.current;
@@ -61,8 +84,8 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
           onChange={ e => brushSettings(e) }
           />
         <div className="save-buttons">
-          <button id="add-color" className="settingsbutton">save color</button>
-          <button id="add-brush" className="settingsbutton">save brush</button>
+          <button id="add-color" className="settingsbutton" onClick={addColor}>save color</button>
+          <button id="add-brush" className="settingsbutton" onClick={addBrush}>save brush</button>
         </div>
       </div>
     </div>

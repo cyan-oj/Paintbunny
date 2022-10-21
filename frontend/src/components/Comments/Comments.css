@@ -16,6 +16,8 @@
 
 .commenter-info > * {
   padding: 8px 4px;
-  
 }
 
+.commenter-info > a {
+  font-weight: 700;
+}

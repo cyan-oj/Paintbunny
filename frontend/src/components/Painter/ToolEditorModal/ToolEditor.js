@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../../store/users";
 import "./ToolEditor.css"
 
-function ToolEditor({ user }) {
+function ToolEditor() {
+  const user = useSelector(state => state.session.user);
+
   const dispatch = useDispatch();
 
   const [palette, setPalette] = useState(user.palette);
@@ -24,23 +26,41 @@ function ToolEditor({ user }) {
     dispatch(updateUser(user))
   }
 
+  const removeSwatch = i => {
+    if (palette[i]) palette.splice( i, 1 );
+    setPalette([...palette])
+  }
+
   const addSwatch = () => {
     palette.push("hsl(0, 0%, 100%)");
     setPalette([...palette]);
   }
 
+  const addBrush = () => {
+    brushes.push(50);
+    setBrushes([...brushes])
+  } 
+
+
   const swatchList = palette.map((swatch, i) =>
-    <input
-      key={i}
-      type="text" 
-      value={ palette[i] } 
-      className="editor-swatch" 
-      style={{ backgroundColor: swatch }} 
-      onChange={ e => {
-        palette[i] = e.target.value;
-        setPalette([...palette])
-      }}
-    />
+    <div className="editor-swatch-box">
+      <input
+        key={i}
+        type="text" 
+        value={ palette[i] } 
+        className="editor-swatch" 
+        style={{ backgroundColor: swatch }} 
+        onChange={ e => {
+          palette[i] = e.target.value;
+          setPalette([...palette])
+        }}
+        />
+      <button
+      id="remove-color"
+      className="editor-swatch"
+      onClick={ e => removeSwatch(i) }
+      >-</button>
+    </div>
   )
 
   const brushList = brushes.map((brush, i) =>
@@ -65,16 +85,21 @@ function ToolEditor({ user }) {
     <div className="toolbox-editor">
       <div className="swatchbox">
         { swatchList }
-        <input 
+        <button
           id="add-color"
-          className="editor-brush"
+          className="editor-swatch"
           value="+"
-          //readOnly="true"
           onClick={ addSwatch }
-        />
+        >+</button>
       </div>
       <div className="brushbox">
         { brushList }
+        <button
+          id="add-brush"
+          className="editor-brush"
+          value="+"
+          onClick={ addBrush }
+        >+</button>
       </div>
       <button onClick={ e => updateTools(e)}>save presets</button>
     </div>

@@ -153,9 +153,9 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
       </div>
       <canvas 
         ref={ canvasRef } 
-        onMouseDown={ setPosition }
-        onMouseEnter={ setPosition }
-        onMouseMove={ e => draw( e, contextRef.current, color, size )}
+        onMouseDown={ setPosition } onPointerDown={setPosition}
+        onMouseEnter={ setPosition } onPointerUp={setPosition}
+        onMouseMove={ e => draw( e, contextRef.current, color, size )} onPointerMove={ e => draw( e, contextRef.current, color, size )}
         height={ canvasHeight }
         width={ canvasWidth }
         id="canvas"
