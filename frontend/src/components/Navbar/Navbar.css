@@ -43,3 +43,7 @@ nav {
   display: flex;
   align-items: center;
 }
+
+.github-icon {
+  max-height: 8mm;
+}
