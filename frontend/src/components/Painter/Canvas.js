@@ -179,7 +179,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
           value={ title }
           onChange={ e => setTitle(e.target.value) }
           />
-          <input
+          <textarea
           type="text"
           placeholder="description"
           value={ description }
