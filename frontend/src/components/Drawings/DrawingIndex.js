@@ -8,7 +8,9 @@ import { useParams } from "react-router-dom";
 function DrawingIndex() {
 const dispatch = useDispatch();
 const { userId } = useParams();
-const drawings = useSelector(getDrawings(userId));
+let drawings = useSelector(getDrawings(userId));
+
+drawings = drawings.reverse();
 
 useEffect(() => {
   dispatch(fetchDrawings(userId))
