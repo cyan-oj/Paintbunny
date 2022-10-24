@@ -51,7 +51,7 @@ function DrawingPage() {
                 to={`/users/${drawing.artistId}`}>{drawing.artist}
               </Link>
               <p className="thumb-date">{dateFormat(drawing.createdAt)}</p>
-              <p>description text text text</p>
+              <p>{drawing.description}</p>
               { isArtist &&
                 <>
                 <button onClick={ deleteImage }>delete</button>

@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import ToolEditorModal from "./ToolEditorModal";
 import BrushDisplay from "./BrushDisplay";
 
-function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle }) {
+function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle, drawingDesc }) {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
   const [canvasWidth, setWidth] = useState(width || 512);
   const [canvasHeight, setHeight] = useState(height || 512);
   const [title, setTitle] = useState(drawingTitle || '');
+  const [description, setDescription] = useState(drawingDesc || '')
   const [color, setColor] = useState("black")
   const [hue, setHue] = useState(0);
   const [saturation, setSaturation] = useState(0);
@@ -98,11 +99,13 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
       dispatch(createComment( drawingId, formData ))
     } else if ( imgSrc && (drawingUserId === user.id) ) {
       formData.append('drawing[title]', title);
+      formData.append('drawing[description]', description)
       formData.append('drawing[artist_id]', user.id)
       formData.append('drawing[image]', blobData)
       dispatch(updateDrawing( user.id, drawingId, formData ))
     } else {
       formData.append('drawing[title]', title);
+      formData.append('drawing[description]', description)
       formData.append('drawing[artist_id]', user.id)
       formData.append('drawing[image]', blobData)
       dispatch(createDrawing( user.id, formData ))
@@ -169,12 +172,20 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle 
     </div>
     <form onSubmit={ blobCanvas } className="comment-form">
       { !isComment && 
-        <input
+        <>
+          <input
           type="text"
           placeholder="title"
           value={ title }
           onChange={ e => setTitle(e.target.value) }
-        />
+          />
+          <input
+          type="text"
+          placeholder="description"
+          value={ description }
+          onChange={ e => setDescription(e.target.value) }
+          />
+        </>
       }
       <button type="submit">{ buttonText }</button>
     </form>

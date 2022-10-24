@@ -55,6 +55,6 @@ class Api::DrawingsController < ApplicationController
 
   private
   def drawing_params
-    params.require(:drawing).permit(:title, :artist_id, :image)
+    params.require(:drawing).permit(:title, :artist_id, :image, :description)
   end
 end
