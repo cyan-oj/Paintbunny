@@ -21,7 +21,7 @@ function DrawingTemplatePage() {
   if (!drawing) return null;
 
   return (
-    <Canvas />
+    <Canvas imgSrc={drawing.imageUrl}/>
   )
 }
 

@@ -17,15 +17,6 @@ def cors_preflight_check
   end
 end
 
-protected
-
-def cors_set_access_control_headers
-  response.headers['Access-Control-Allow-Origin'] = '*'
-  response.headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, PATCH, DELETE, OPTIONS'
-  response.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email'
-  response.headers['Access-Control-Max-Age'] = '1728000'
-end
-
   def test
     if params.has_key?(:login)
       login!(User.first)
@@ -59,6 +50,14 @@ end
       render json: { message: 'Unauthorized' }, status: :unauthorized 
     end
   end
+
+protected
+def cors_set_access_control_headers
+  response.headers['Access-Control-Allow-Origin'] = '*'
+  response.headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, PATCH, DELETE, OPTIONS'
+  response.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email'
+  response.headers['Access-Control-Max-Age'] = '1728000'
+end
 
   private
   def snake_case_params

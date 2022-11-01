@@ -17,6 +17,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
+  const imageRef = useRef(null)
 
   const [canvasWidth, setWidth] = useState(width || 512);
   const [canvasHeight, setHeight] = useState(height || 512);
@@ -28,33 +29,37 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   const [lightness, setLightness] = useState(0);
   const [size, setSize] = useState(16)
 
-  const image = new Image(512, 512)
-  image.crossOrigin = "anonymous"
-  if(imgSrc) image.src = imgSrc
-
+  // const image = new Image(512, 512)
+  // image.crossOrigin = "anonymous"
+  // if(imgSrc) image.src = imgSrc
+  
   const buttonText = imgSrc ? "edit it" : "post it"
   
   const isComment = height === "256" ? true : false
-
+  /////
   const position = { 
     x: 0, 
     y: 0 
   }
   
   useEffect(() => {
+    const image = imageRef.current
+    if(imgSrc) image.src = imgSrc
+    console.log("image tag in useEffect", image)
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
+    contextRef.current = context;
     
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-  
-    if (imgSrc) {
+    
+    debugger;
+    // if (imgSrc) {
       console.log("image", image)
       console.log("drawing image")
       context.drawImage(image, 0, 0)
-    }
+   //}
     
-    contextRef.current = context;
   }, []);
 
   const setPosition = e => {
@@ -165,13 +170,14 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
         height={ canvasHeight }
         width={ canvasWidth }
         id="canvas"
-        />
-        <BrushDisplay 
-          brushSettings={brushSettings} 
-          color={color} size={size} 
-          hue={hue} saturation={saturation} lightness={lightness}
-          width="128"
-          height={canvasHeight}/>
+      />
+      <BrushDisplay 
+        brushSettings={brushSettings} 
+        color={color} size={size} 
+        hue={hue} saturation={saturation} lightness={lightness}
+        width="128"
+        height={canvasHeight}
+      />
     </div>
     <form onSubmit={ blobCanvas } className="comment-form">
       { !isComment && 
@@ -193,6 +199,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
       <button type="submit">{ buttonText }</button>
     </form>
     <a id="link"></a>
+    <img ref={ imageRef } src="" alt="" id="hidden-img" />
     </>
   )
 } 
