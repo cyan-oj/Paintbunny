@@ -55,7 +55,7 @@ function DrawingPage() {
               { isArtist &&
                 <>
                 <button onClick={ deleteImage }>delete</button>
-                {/* <button onClick={ toggleEdit }>edit</button> */}
+                <button onClick={ toggleEdit }>edit</button>
                 </>
               }
             </div>
@@ -69,12 +69,12 @@ function DrawingPage() {
           }
         </>
       }
-      {/* { showCanvas && user &&
+      { showCanvas && user &&
         <>
           <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} />
           <button onClick={ toggleEdit }>cancel edit</button>
         </>
-      } */}
+      }
     </div>
   )
 }

@@ -28,9 +28,9 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   const [lightness, setLightness] = useState(0);
   const [size, setSize] = useState(16)
 
-  // const image = new Image(512, 512)
-  // image.crossOrigin = "anonymous"
-  // if(imgSrc) image.src = imgSrc
+  const image = new Image(512, 512)
+  image.crossOrigin = "anonymous"
+  if(imgSrc) image.src = imgSrc
 
   const buttonText = imgSrc ? "edit it" : "post it"
   
@@ -48,8 +48,11 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
   
-    // if (imgSrc)
-    //   context.drawImage(image, 0, 0)
+    if (imgSrc) {
+      console.log("image", image)
+      console.log("drawing image")
+      context.drawImage(image, 0, 0)
+    }
     
     contextRef.current = context;
   }, []);
