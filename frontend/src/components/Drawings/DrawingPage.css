@@ -9,7 +9,7 @@
   align-items: center;
   max-width: 72em;
   margin: auto;
-  filter: drop-shadow(0 1mm 1.2mm rgb(0, 0, 0, .4));
+  /* filter: drop-shadow(0 1mm 1.2mm rgb(0, 0, 0, .4)); */
 }
 
 .drawing-info {
