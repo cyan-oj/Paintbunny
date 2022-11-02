@@ -31,11 +31,8 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   const [size, setSize] = useState(16)
 
   const image = new Image(512, 512) 
-
-  if ( imgSrc ) {
-    image.crossOrigin = "anonymous"
-    image.src = drawing.imageUrl
-  }
+  image.crossOrigin = "anonymous"
+  if (drawing) image.src = drawing.imageUrl
     
   const buttonText = imgSrc ? "edit it" : "post it"
   
@@ -47,8 +44,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   }
   
   useEffect(() => {
-    if (drawingId && drawingUserId)
-      dispatch(fetchDrawing(drawingUserId, drawingId));
+    if (drawing) dispatch(fetchDrawing(drawingUserId, drawingId));
 
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')

@@ -24,7 +24,6 @@ export const getDrawings = userId => ({ drawings }) => {
     const drawingArray = Object.values(drawings)
     if(userId){
       const selectedDrawings = drawingArray.filter(drawing => {
-        console.log(drawing.artistId, userId)
         return '' + drawing.artistId === userId
       });
       return selectedDrawings;
