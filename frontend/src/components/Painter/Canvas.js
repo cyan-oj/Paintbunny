@@ -14,7 +14,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   const dispatch = useDispatch();
 
   const drawing = useSelector(getDrawing(drawingId))
-
   const user = useSelector(state => state.session.user)
   
   const canvasRef = useRef(null)
@@ -24,37 +23,41 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   const [canvasHeight, setHeight] = useState(height || 512);
   const [title, setTitle] = useState(drawingTitle || '');
   const [description, setDescription] = useState(drawingDesc || '')
+
   const [color, setColor] = useState("black")
   const [hue, setHue] = useState(0);
   const [saturation, setSaturation] = useState(0);
   const [lightness, setLightness] = useState(0);
   const [size, setSize] = useState(16)
 
-  const image = new Image(512, 512)
-  image.crossOrigin = "anonymous"
-  image.src = drawing.imageUrl
-  
+  const image = new Image(512, 512) 
+
+  if ( imgSrc ) {
+    image.crossOrigin = "anonymous"
+    image.src = drawing.imageUrl
+  }
+    
   const buttonText = imgSrc ? "edit it" : "post it"
   
   const isComment = height === "256" ? true : false
-  /////
+
   const position = { 
     x: 0, 
     y: 0 
   }
   
   useEffect(() => {
-    dispatch(fetchDrawing(drawingUserId, drawingId));
+    if (drawingId && drawingUserId)
+      dispatch(fetchDrawing(drawingUserId, drawingId));
+
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
     contextRef.current = context;
     
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-    
-    // debugger;
+
     if (imgSrc) context.drawImage(image, 0, 0)
-    
   }, []);
 
   const setPosition = e => {
@@ -114,13 +117,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
       dispatch(createDrawing( user.id, formData ))
       history.push(`/users/${user.id}`)
     }
-  }
-
-  const deleteImage = e => {
-    e.preventDefault();
-    console.log(drawingUserId, drawingId)
-    if ( imgSrc && drawingUserId === user.id )
-      dispatch(destroyDrawing(drawingUserId, drawingId))
   }
 
   const brushSettings = e => {
@@ -194,7 +190,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
       <button type="submit">{ buttonText }</button>
     </form>
     <a id="link"></a>
-    {/* <img ref={ imageRef } src="" alt="" id="hidden-img" /> */}
     </>
   )
 } 

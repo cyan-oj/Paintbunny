@@ -2,7 +2,7 @@ class Api::DrawingsController < ApplicationController
   # wrap_parameters include: Drawing.attribute_names + [:image] + [:user_id]
   #todo: get wrap_paramenters working
   before_action :snake_case_params
-  before_action :require_logged_in, only: [:create, :destroy]
+  before_action :require_logged_in, only: [:create, :destroy, :update]
 
   alias_attribute :user_id, :artist_id
 
