@@ -35,7 +35,7 @@ class Api::DrawingsController < ApplicationController
   end
 
   def update
-    @drawing = drawing.find(params[:id])
+    @drawing = Drawing.find(params[:id])
 
     if @drawing.update(drawing_params)
       render :show

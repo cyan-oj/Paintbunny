@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Brushes from "./Brushes";
 import Palette from "./Palette";
-import { createDrawing, destroyDrawing, updateDrawing } from "../../store/drawings";
+import { createDrawing, destroyDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
 import { createComment } from "../../store/comments";
 import { useHistory } from "react-router-dom";
@@ -13,11 +13,12 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const drawing = useSelector(getDrawing(drawingId))
+
   const user = useSelector(state => state.session.user)
   
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
-  const imageRef = useRef(null)
 
   const [canvasWidth, setWidth] = useState(width || 512);
   const [canvasHeight, setHeight] = useState(height || 512);
@@ -29,9 +30,9 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   const [lightness, setLightness] = useState(0);
   const [size, setSize] = useState(16)
 
-  // const image = new Image(512, 512)
-  // image.crossOrigin = "anonymous"
-  // if(imgSrc) image.src = imgSrc
+  const image = new Image(512, 512)
+  image.crossOrigin = "anonymous"
+  image.src = drawing.imageUrl
   
   const buttonText = imgSrc ? "edit it" : "post it"
   
@@ -43,9 +44,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   }
   
   useEffect(() => {
-    const image = imageRef.current
-    if(imgSrc) image.src = imgSrc
-    console.log("image tag in useEffect", image)
+    dispatch(fetchDrawing(drawingUserId, drawingId));
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
     contextRef.current = context;
@@ -53,12 +52,8 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
     
-    debugger;
-    // if (imgSrc) {
-      console.log("image", image)
-      console.log("drawing image")
-      context.drawImage(image, 0, 0)
-   //}
+    // debugger;
+    if (imgSrc) context.drawImage(image, 0, 0)
     
   }, []);
 
@@ -199,7 +194,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
       <button type="submit">{ buttonText }</button>
     </form>
     <a id="link"></a>
-    <img ref={ imageRef } src="" alt="" id="hidden-img" />
+    {/* <img ref={ imageRef } src="" alt="" id="hidden-img" /> */}
     </>
   )
 } 
