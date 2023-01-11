@@ -11,7 +11,6 @@ function DrawingTemplatePage() {
   const dispatch = useDispatch();
   const { userId } = useParams();
   const drawing = { imageUrl: "/eyes.png" }
-  console.log("sample drawing image url", drawing.imageUrl)
 
   const user = useSelector(state => state.session.user)
   

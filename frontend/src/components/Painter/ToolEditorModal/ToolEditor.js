@@ -18,11 +18,8 @@ function ToolEditor() {
 
   const updateTools = e => {
     e.preventDefault();
-    console.log(brushes);
-    console.log(palette);
     user.palette = palette;
     user.brushes = brushes;
-    console.log("user for dispatch from ToolEditor", user);
     dispatch(updateUser(user))
   }
 

@@ -27,7 +27,6 @@ export const updateUser = (user) => async dispatch => {
     }})
   });
   const data = await res.json();
-  console.log(data);
   storeCurrentUser(data.user);
   dispatch(receiveUser(data.user))
 }
