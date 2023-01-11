@@ -2,7 +2,6 @@
   "name": "paintbunny",
   "version": "0.1.0",
   "description": "Paintbunny is a project clone of [Paintberri](https://paintberri.com/)",
-  "main": "index.js",
   "directories": {
     "lib": "lib"
   },

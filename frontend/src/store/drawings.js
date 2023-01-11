@@ -59,7 +59,6 @@ export const createDrawing = ( userId, drawing ) => async dispatch => {
     body: drawing
   });
   const data = await res.json();
-  console.log("drawing data", data)
   dispatch(receiveDrawing(data.drawing));
 }
 
