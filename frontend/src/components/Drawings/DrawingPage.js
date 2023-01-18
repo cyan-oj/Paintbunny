@@ -64,14 +64,14 @@ function DrawingPage() {
           <CommentIndex drawingId={drawingId} />
           { user &&           
             <div className="comment-canvas" >
-              <Canvas height="256" drawingId={drawingId} />
+              <Canvas height="256" drawingId={ drawingId } />
             </div>
           }
         </>
       }
       { showCanvas && user &&
         <>
-          <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} />
+          <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} toggleEdit={ toggleEdit } />
           <button onClick={ toggleEdit }>cancel edit</button>
         </>
       }

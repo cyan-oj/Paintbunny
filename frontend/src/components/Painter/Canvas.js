@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import ToolEditorModal from "./ToolEditorModal";
 import BrushDisplay from "./BrushDisplay";
 
-function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle, drawingDesc }) {
+function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle, drawingDesc, toggleEdit }) {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -105,6 +105,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
       formData.append('drawing[artist_id]', user.id)
       formData.append('drawing[image]', blobData)
       dispatch(updateDrawing( user.id, drawingId, formData ))
+      toggleEdit();
     } else {
       formData.append('drawing[title]', title);
       formData.append('drawing[description]', description)
