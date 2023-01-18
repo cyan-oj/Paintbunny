@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchDrawing, getDrawing, destroyDrawing } from "../../store/drawings";
@@ -71,7 +71,7 @@ function DrawingPage() {
       }
       { showCanvas && user &&
         <>
-          <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} toggleEdit={ toggleEdit } />
+          <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} drawingDesc={drawing.description} toggleEdit={ toggleEdit } />
           <button onClick={ toggleEdit }>cancel edit</button>
         </>
       }

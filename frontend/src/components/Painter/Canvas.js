@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Brushes from "./Brushes";
 import Palette from "./Palette";
-import { createDrawing, destroyDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
+import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
 import { createComment } from "../../store/comments";
 import { useHistory } from "react-router-dom";
@@ -105,7 +105,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
       formData.append('drawing[artist_id]', user.id)
       formData.append('drawing[image]', blobData)
       dispatch(updateDrawing( user.id, drawingId, formData ))
-      toggleEdit();
+      window.location.reload(true);
     } else {
       formData.append('drawing[title]', title);
       formData.append('drawing[description]', description)
