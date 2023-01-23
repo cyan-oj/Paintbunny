@@ -1,5 +1,8 @@
 .toolbox-editor {
   width: 600px;
+  background-color: var(--base-alt);
+  border-radius: 8px;
+  padding: 12px;
 }
 
 .swatchbox{
@@ -29,4 +32,13 @@
   max-width: 4em;
   margin: .1em;
   font-size: 12pt;
+}
+
+.preset-button {
+  display: flex;
+  justify-content: center;
+}
+
+.editor-button {
+  margin-left: 20px;
 }

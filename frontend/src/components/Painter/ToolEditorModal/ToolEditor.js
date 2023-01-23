@@ -95,23 +95,26 @@ function ToolEditor() {
     <div className="toolbox-editor">
       <div className="swatchbox">
         { swatchList }
-        <button
-          id="add-color"
-          className="editor-swatch"
-          value="+"
-          onClick={ addSwatch }
-        >+</button>
       </div>
+      <button
+        id="add-color"
+        className="editor-button"
+        value="+"
+        onClick={ addSwatch }
+      >add color</button>
       <div className="brushbox">
         { brushList }
-        <button
-          id="add-brush"
-          className="editor-brush"
-          value="+"
-          onClick={ addBrush }
-        >+</button>
       </div>
-      <button onClick={ e => updateTools(e)}>save presets</button>
+
+      <button
+        id="add-brush"
+        className="editor-button"
+        value="+"
+        onClick={ addBrush }
+        >add brush</button>
+      <div className="preset-button">
+        <button onClick={ e => updateTools(e)}>save presets</button>
+      </div>
     </div>
   )
 }
