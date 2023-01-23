@@ -54,7 +54,11 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
-    if (imgSrc) context.drawImage(image, 0, 0)
+    if (imgSrc) {
+      setTimeout (() => {
+        context.drawImage(image, 0, 0)
+      }, 200)
+    }
   }, []);
 
   const setPosition = e => {
