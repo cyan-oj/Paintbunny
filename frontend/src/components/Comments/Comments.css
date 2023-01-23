@@ -7,8 +7,8 @@
 
 .commenter-info {
   width: 160px;
-  background-color: var(--base01);
-  border-right: solid 1px black;
+  background-color: var(--base-alt);
+  border-right: var(--base-text);
   margin-right: 4px;
   border-radius: 8px 0 0 8px;
   padding: 8px 4px;

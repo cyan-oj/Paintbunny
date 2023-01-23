@@ -41,9 +41,28 @@ nav {
 
 .guestmenu {
   display: flex;
-  align-items: center;
+  justify-content: center;
+}
+
+.guestmenu > * {
+  padding: 8px 20px;
+  margin: 8px 12px;
 }
 
 .github-icon {
   max-height: 8mm;
+}
+
+.welcome-banner {
+  max-width: 600px;
+  margin: 16px auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: var(--base-alt);
+  filter: drop-shadow(0 1mm 1.2mm var(--shadow));
+  padding: 8px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--base-alt);
 }

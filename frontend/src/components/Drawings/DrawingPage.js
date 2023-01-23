@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchDrawing, getDrawing, destroyDrawing } from "../../store/drawings";
 import CommentIndex from "../Comments/CommentIndex";
+import Welcome from "../Welcome/Welcome";
 import Canvas from "../Painter/Canvas";
 import "./DrawingPage.css"
 
@@ -66,6 +67,9 @@ function DrawingPage() {
             <div className="comment-canvas" >
               <Canvas height="256" drawingId={ drawingId } />
             </div>
+          }
+          { !user && 
+            <Welcome />
           }
         </>
       }
