@@ -27,7 +27,8 @@ button.brush:hover {
 
 .comment-canvas {
   width: 840px;
-  margin: 2px
+  margin: 2px;
+  margin-bottom: 200px;
 }
 
 .toolboxes {

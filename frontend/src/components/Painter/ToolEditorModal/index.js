@@ -3,7 +3,7 @@ import { Modal } from "../../../context/Modal";
 import { useState } from "react";
 
 function ToolEditorModal({ user }) {
-  const [showModal, setShowModal] = useState();
+  const [ showModal, setShowModal ] = useState();
 
   return (
     <>

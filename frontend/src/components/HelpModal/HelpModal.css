@@ -1,0 +1,27 @@
+.help-text {
+  background-color: var(--base-alt);
+  padding: 8px;
+  font-size: 12px;
+  position: absolute;
+  bottom: 40px;
+  width: 128px;
+}
+
+button.help-button:hover {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 8px;
+  margin: -2px;
+}
+
+.tool-help-position-wrapper {
+  position: absolute;
+  bottom: 128px;
+  left: -36px;
+}
+
+.brush-help-position-wrapper {
+  position: absolute;
+  bottom: 256px;
+  right: 100px;
+}

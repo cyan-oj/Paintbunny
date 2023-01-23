@@ -15,10 +15,10 @@ export function ModalProvider({ children }) {
 
   return (
     <>
-      <ModalContext.Provider value={value}>
+      <ModalContext.Provider value={ value }>
         { children }
       </ModalContext.Provider>
-      <div ref={modalRef}></div>
+      <div ref={ modalRef }></div>
     </>
   )
 }
@@ -33,7 +33,7 @@ export function Modal({ onClose, children }) {
         id="modal-background"
         onClick={ onClose }></div>
       <div id="modal-content">
-        {children}
+        { children }
       </div>
     </div>,
     modalNode

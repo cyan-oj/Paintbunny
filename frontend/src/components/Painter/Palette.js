@@ -13,9 +13,9 @@ function Palette() {
   );
 
   return (
-    <>
+    <div title="palette color presets">
       { swatchList }
-    </>
+    </div>
   )
 }
 

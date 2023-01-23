@@ -8,6 +8,7 @@ import { createComment } from "../../store/comments";
 import { useHistory } from "react-router-dom";
 import ToolEditorModal from "./ToolEditorModal";
 import BrushDisplay from "./BrushDisplay";
+import HelpModal from "../HelpModal/HelpModal";
 
 function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle, drawingDesc, toggleEdit }) {
   const history = useHistory();
@@ -34,7 +35,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   image.crossOrigin = "anonymous"
   if (drawing) image.src = drawing.imageUrl
     
-  const buttonText = imgSrc ? "edit it" : "post it"
+  const buttonText = imgSrc ? "edit" : "post"
   
   const isComment = height === "256" ? true : false
 
@@ -148,16 +149,18 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
         <div onClick={ e => setSize(e.target.value) } id="brushes" brushes={user.brushes}>
           <Brushes brushes={user.brushes} />
         </div>
-      <ToolEditorModal user={user} />
+        <ToolEditorModal user={user} />
+        <div className="tool-help-position-wrapper">
+          <HelpModal helpText={ 'this menu contains your brush presets. use them to quickly change the color or size of your brush! you can add or remove them via the "edit toolbox" button'}/>
+        </div>
       </div>
-      <canvas 
+      <canvas id="canvas"
         ref={ canvasRef } 
         onMouseDown={ setPosition } onPointerDown={setPosition}
         onMouseEnter={ setPosition } onPointerUp={setPosition}
         onMouseMove={ e => draw( e, contextRef.current, color, size )} onPointerMove={ e => draw( e, contextRef.current, color, size )}
         height={ canvasHeight }
         width={ canvasWidth }
-        id="canvas"
       />
       <BrushDisplay 
         brushSettings={brushSettings} 

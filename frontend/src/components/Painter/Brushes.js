@@ -12,9 +12,9 @@ function Brushes() {
   );
 
   return (
-    <>
+    <div title="brush size presets">
       { buttonList }
-    </>
+    </div>
   )
 }
 

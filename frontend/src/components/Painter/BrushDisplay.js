@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../store/users";
+import HelpModal from "../HelpModal/HelpModal";
 import "./BrushDisplay.css"
 
 function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, width, height }) {
@@ -26,7 +27,6 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
     user.brushes = brushes
     dispatch(updateUser(user))
   } 
-
 
   useEffect(() => {
     const canvas = brushSampleRef.current;
@@ -91,6 +91,9 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
           <button id="add-color" className="settingsbutton" onClick={addColor}>save color</button>
           <button id="add-brush" className="settingsbutton" onClick={addBrush}>save brush</button>
         </div>
+      </div>
+      <div className="brush-help-position-wrapper">
+        <HelpModal helpText={ "use the sliders to change the color and size of your brush. if you like your brush, you can save it as a preset"} />
       </div>
     </div>
   )
