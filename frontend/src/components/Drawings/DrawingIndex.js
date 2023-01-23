@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDrawings, getDrawings } from "../../store/drawings";
-import Welcome from "../Welcome/Welcome";
 import DrawingIndexItem from "./DrawingIndexItem";
 import "./DrawingIndex.css"
 import { useParams } from "react-router-dom";
@@ -23,9 +22,6 @@ useEffect(() => {
 
   return (
     <>
-      { !user &&
-        <Welcome />
-      }
       <div className="gallery" >
         { drawingsList }
       </div>

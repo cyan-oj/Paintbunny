@@ -6,7 +6,7 @@ import DrawingIndex from "../Drawings/DrawingIndex";
 import  { dateFormat } from "../../utils"
 import "./UserPage.css"
 
-function UserPage( { loggedIn }) {
+function UserPage() {
   const dispatch = useDispatch();
   const { userId } = useParams();
   const user = useSelector(getUser(userId));
@@ -23,8 +23,8 @@ function UserPage( { loggedIn }) {
         <h1>{ `${user.username}'s gallery`}</h1>
         <p>member since: {dateFormat(user.createdAt)} </p>
       </div>
-      {user &&
-        <DrawingIndex user={ loggedIn } />
+      { user &&
+        <DrawingIndex />
       }
     </div>
   )

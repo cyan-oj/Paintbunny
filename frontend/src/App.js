@@ -8,6 +8,7 @@ import DrawingTemplatePage from "./components/Drawings/DrawingTemplatePage";
 import Canvas from "./components/Painter/Canvas";
 import { ProtectedRoute } from "./utils";
 import { useSelector } from "react-redux";
+import Welcome from "./components/Welcome/Welcome";
 
 function App() {
   const user = useSelector(state => state.session.user)
@@ -23,7 +24,7 @@ function App() {
           <DrawingTemplatePage />
         </Route>
         <Route path="/users/:userId">
-          <UserPage loggedIn={ user } />
+          <UserPage />
         </Route>
         <Route path="/new">
           <ProtectedRoute user={user} >
@@ -31,6 +32,9 @@ function App() {
           </ProtectedRoute>
         </Route>
         <Route path="/"> 
+          { !user &&
+            <Welcome />
+          }
           <DrawingIndex user={ user } />
         </Route>
       </Switch>
