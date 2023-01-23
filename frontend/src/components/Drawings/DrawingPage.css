@@ -26,6 +26,10 @@
   margin: 0
 }
 
+.drawing-info > button {
+  margin: 8px;
+}
+
 .drawing-box {
   display: flex;
   justify-content: center;
