@@ -46,6 +46,7 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
     <div className="brush-settings">
       <canvas ref={ brushSampleRef } className="brush-sample" width={ width } height={ height }></canvas>
       <div className="color-sliders">
+        <label for="hue">hue</label>
         <input 
           id="hue" 
           className="colorSlider" 
@@ -55,6 +56,7 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
           value={hue}
           onChange={ e => brushSettings(e) }
         /> 
+        <label for="saturation">saturation</label>
         <input 
           id="saturation" 
           className="colorSlider" 
@@ -65,6 +67,7 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
           onChange={ e => brushSettings(e) } 
           style={{ backgroundImage:  `linear-gradient(to right, hsl(${hue}, ${0}%, ${lightness}%), hsl(${hue}, ${saturation}%, ${lightness}%), hsl(${hue}, ${100}%, ${lightness}%))` }}
         /> 
+        <label for="lightness">lightness</label>
         <input 
           id="lightness" 
           className="colorSlider" 
@@ -75,6 +78,7 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
           onChange={ e => brushSettings(e) }
           style={{ backgroundImage:  `linear-gradient(to right, hsl(${hue}, ${saturation}%, ${0}%), hsl(${hue}, ${saturation}%, ${lightness}%), hsl(${hue}, ${saturation}%, ${100}%))` }}
           />
+          <label for="size">brush size</label>
         <input 
           id="size" 
           type="range" 

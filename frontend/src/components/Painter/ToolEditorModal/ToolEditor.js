@@ -23,20 +23,26 @@ function ToolEditor() {
     dispatch(updateUser(user))
   }
 
-  const removeSwatch = i => {
-    if (palette[i]) palette.splice( i, 1 );
-    setPalette([...palette])
-  }
-
+  
   const addSwatch = () => {
     palette.push("hsl(0, 0%, 100%)");
     setPalette([...palette]);
+  }
+
+  const removeSwatch = i => {
+    if (palette[i]) palette.splice( i, 1 );
+    setPalette([...palette])
   }
 
   const addBrush = () => {
     brushes.push(50);
     setBrushes([...brushes])
   } 
+
+  const removeBrush = i => {
+    if (brushes[i]) brushes.splice( i, 1 );
+    setBrushes([...brushes])
+  }
 
 
   const swatchList = palette.map((swatch, i) =>
@@ -61,21 +67,28 @@ function ToolEditor() {
   )
 
   const brushList = brushes.map((brush, i) =>
-    <input
-      key={i}
-      type="text" 
-      value={ brush } 
-      className="editor-brush" 
-      onChange={ e => {
-        if(e.target.value && !isNaN(e.target.value)) {
-          brushes[i] = parseInt(e.target.value, 10)
-          setBrushes([...brushes])
-        } else {
-          brushes[i] = ''
-          setVal(testVal+1)
-        }
-      }}
-    />
+    <div>
+      <input
+        key={i}
+        type="text" 
+        value={ brush } 
+        className="editor-brush" 
+        onChange={ e => {
+          if(e.target.value && !isNaN(e.target.value)) {
+            brushes[i] = parseInt(e.target.value, 10)
+            setBrushes([...brushes])
+          } else {
+            brushes[i] = ''
+            setVal(testVal+1)
+          }
+        }}
+      />
+        <button
+        id="remove-brush"
+        className="editor-brush"
+        onClick={ e => removeBrush(i) }
+      >-</button>
+    </div>
   )
 
   return (
