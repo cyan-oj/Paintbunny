@@ -5,6 +5,10 @@ body {
   margin: 0;
 }
 
+h1 {
+  font-size: 28px;
+}
+
 a, a:visited, a:active {
   text-decoration: none;
   color: inherit;

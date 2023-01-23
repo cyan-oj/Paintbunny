@@ -23,7 +23,7 @@ function App() {
           <DrawingTemplatePage />
         </Route>
         <Route path="/users/:userId">
-          <UserPage />
+          <UserPage loggedIn={ user } />
         </Route>
         <Route path="/new">
           <ProtectedRoute user={user} >
