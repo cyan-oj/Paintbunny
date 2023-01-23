@@ -5,6 +5,7 @@ import UserPage from "./components/UserPage";
 import DrawingPage from "./components/Drawings/DrawingPage";
 import DrawingIndex from "./components/Drawings/DrawingIndex";
 import DrawingTemplatePage from "./components/Drawings/DrawingTemplatePage";
+import Welcome from "./components/Welcome"
 import Canvas from "./components/Painter/Canvas";
 import { ProtectedRoute } from "./utils";
 import { useSelector } from "react-redux";
@@ -15,6 +16,9 @@ function App() {
   return (
     <>
       <Navbar />
+      { !user &&
+        <Welcome />
+      }
       <Switch>
         <Route path="/users/:userId/drawings/:drawingId">
           <DrawingPage />

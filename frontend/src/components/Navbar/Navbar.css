@@ -1,7 +1,7 @@
 nav {
-  background-color: var(--nav);
+  background-color: var(--accent);
   height: 12mm;
-  color: var(--nav-text);
+  color: var(--accent-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,7 +21,7 @@ nav {
 
 .usermenu {
   display: none;
-  background-color: var(--nav);
+  background-color: var(--accent);
   position: absolute;
   top: 12mm;
   width: inherit;

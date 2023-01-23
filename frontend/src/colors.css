@@ -1,13 +1,16 @@
 
 :root {
-  --base00: #c6c6c6;
-  --base01: #efefef;
+  --base: #c6c6c6;
+  --base-alt: #efefef;
+  --base-text: #000;
   
-  --base1: #3f3f3f;
-  --base0: #000000;
+  --accent: #3f3f3f;
+  --accent-alt: #000000;
+  --accent-text: #fff;
+
+  --error: #fee7df;
+  --error-text:  darkred;
 
   --highlight: #00b0c4;
-  
-  --nav: #333;
-  --nav-text: #c0c0c0;
+  --shadow: rgba(0, 0, 0, .4);
 }
