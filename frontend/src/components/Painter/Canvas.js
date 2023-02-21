@@ -36,7 +36,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   if (drawing) image.src = drawing.imageUrl
     
   const buttonText = imgSrc ? "edit" : "post"
-  
   const isComment = height === "256" ? true : false
 
   const position = { 
@@ -45,8 +44,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
   }
   
   useEffect(() => {
-    if (drawing) dispatch(fetchDrawing(drawingUserId, drawingId));
-
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
     contextRef.current = context;
@@ -54,11 +51,20 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
     context.fillStyle = "white";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
-    if (imgSrc) {
-      setTimeout (() => {
-        context.drawImage(image, 0, 0)
-      }, 200)
+    const getImageData = async () => {
+      const response = await dispatch(fetchDrawing(drawingUserId, drawingId));
     }
+    getImageData();
+    if (drawing) {
+      context.drawImage(image, 0, 0)
+    }
+    
+    
+    // if (imgSrc) {
+    //   setTimeout (() => {
+    //     context.drawImage(image, 0, 0)
+    //   }, 1000)
+    // }
   }, []);
 
   const setPosition = e => {

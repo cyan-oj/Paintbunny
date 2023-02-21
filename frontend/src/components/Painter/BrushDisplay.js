@@ -39,7 +39,6 @@ function BrushDisplay({ brushSettings, color, size, hue, saturation, lightness, 
     context.fillStyle = color;
     context.arc( width/2, height/3, radius, 0, 2*Math.PI );
     context.fill();
-
   }, [size, hue, saturation, lightness, color])
 
   return (
