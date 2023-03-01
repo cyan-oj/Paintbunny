@@ -58,13 +58,6 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
     if (drawing) {
       context.drawImage(image, 0, 0)
     }
-    
-    
-    // if (imgSrc) {
-    //   setTimeout (() => {
-    //     context.drawImage(image, 0, 0)
-    //   }, 1000)
-    // }
   }, []);
 
   const setPosition = e => {

@@ -37,6 +37,9 @@ function App() {
           }
           <DrawingIndex user={ user } />
         </Route>
+        <Route path="/webGL">
+
+        </Route>
       </Switch>
     </>
   );
