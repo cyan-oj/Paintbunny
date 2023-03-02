@@ -3,6 +3,7 @@ import { FRAG_SHADER, VERT_SHADER } from "./shaders";
 import { initShaders } from "./WebGLUtils/cuon-utils"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
 import { initVertexBuffers } from "./utils/gl-helpers";
+import { rgbToGL } from "./utils/colorConvert";
 
 const BRUSH_VERTICES = new Float32Array([
   -0.1, 0.1,
@@ -12,12 +13,12 @@ const BRUSH_VERTICES = new Float32Array([
 ]) 
 
 const DEFAULT_PALETTE = [
-  [ 0, 0, 0, ],
-  [ 255, 255, 255 ]
+  [ 255, 0, 0 ],
+  [ 0, 0, 0 ]
 ]
 
 const DEFAULT_BRUSHES = [
-  { ratio: 1.0, scale: 1, angle: 0 }
+  { ratio: 0.5, scale: 1, angle: 30 }
 ]
 
 const init = ( props ) => {
@@ -72,9 +73,12 @@ function Painter( props ) {
   const draw = ( evt, gl, brush, color ) => {
     setPosition( evt )
     if (evt.buttons !== 1 ) return
+    console.log(brush)
 
     const pos = position.current
-    console.log(pos)
+    const drawColor = rgbToGL(color)
+    const pressure = evt.pressure * 1
+
     const u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix')
     const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
     const u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor')
@@ -82,13 +86,11 @@ function Painter( props ) {
 
     const points = initVertexBuffers(gl, BRUSH_VERTICES, a_Position);
     if (!points) console.error('failed to set vertex positions')
-    console.log(points)
-
     modelMatrix.setTranslate( pos.x, pos.y, 0.0 )
-    // modelMatrix.rotate( brush.angle, 0, 0, 1 )
-    modelMatrix.scale( evt.pressure, evt.pressure )
+    modelMatrix.rotate( brush.angle, 0, 0, 1 )
+    modelMatrix.scale(  pressure * brush.ratio, pressure )
     gl.uniformMatrix4fv( u_ModelMatrix, false, modelMatrix.elements)
-    gl.uniform4f(u_FragColor, 0.3, 0.8, 0.8, 1)
+    gl.uniform4f(u_FragColor, drawColor[0], drawColor[1], drawColor[2], 1)
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
   }
 
