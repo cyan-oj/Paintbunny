@@ -71,6 +71,8 @@ function Painter( props ) {
 
   const draw = ( evt, gl, brush, color ) => {
     setPosition( evt )
+    if (evt.buttons !== 1 ) return
+
     const pos = position.current
     console.log(pos)
     const u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix')
@@ -84,7 +86,7 @@ function Painter( props ) {
 
     modelMatrix.setTranslate( pos.x, pos.y, 0.0 )
     // modelMatrix.rotate( brush.angle, 0, 0, 1 )
-    // modelMatrix.scale( brush.scale * brush.ratio )
+    modelMatrix.scale( evt.pressure, evt.pressure )
     gl.uniformMatrix4fv( u_ModelMatrix, false, modelMatrix.elements)
     gl.uniform4f(u_FragColor, 0.3, 0.8, 0.8, 1)
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
@@ -94,7 +96,9 @@ function Painter( props ) {
   return (
     <>
       <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }
-        onMouseMove={ e => draw(e, glRef.current, brushes[activeBrush], palette[activeColor] ) }
+        onPointerMove={ e => draw( e, glRef.current, brushes[activeBrush], palette[activeColor] )}
+        onPointerDown={ setPosition }
+        onPointerEnter={ setPosition }
       />
     </>
   )
