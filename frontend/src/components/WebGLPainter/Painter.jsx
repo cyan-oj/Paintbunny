@@ -2,15 +2,8 @@ import { useEffect, useReducer, useRef } from "react";
 import { FRAG_SHADER, VERT_SHADER } from "./shaders";
 import { initShaders } from "./WebGLUtils/cuon-utils"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
-import { initVertexBuffers } from "./utils/gl-helpers";
+import { drawPoint, getGLAttributes, getStroke, initVertexBuffers } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
-
-const BRUSH_VERTICES = new Float32Array([
-  -0.1, 0.1,
-  -0.1, -0.1, 
-  0.1,  0.1, 
-  0.1,  -0.1
-]) 
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -18,7 +11,7 @@ const DEFAULT_PALETTE = [
 ]
 
 const DEFAULT_BRUSHES = [
-  { ratio: 0.5, scale: 1, angle: 30 }
+  { ratio: 0.5, scale: 1, angle: 30, spacing: 0.004 }
 ]
 
 const init = ( props ) => {
@@ -41,19 +34,17 @@ const paintReducer = ( state, action ) => {
 }
 
 function Painter( props ) {
+  const { width, height, palette, brushes, activeColor, activeBrush } = paintState
+  const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
+  
   const canvasRef = useRef()
   const glRef = useRef()
-  const position = useRef({ x: 0, y: 0 })
-
-  const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
-
-  const { width, height, palette, brushes, activeColor, activeBrush } = paintState
+  const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
 
   useEffect(() => {
     const canvas = canvasRef.current
     const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true })
     if ( !gl ) alert( 'Your browser does not support WebGL. Try updating or using another browser, such as the most recent version of Mozilla Firefox' )
-    // console.log(gl)
     gl.clearColor( 1.0, 1.0, 1.0, 0.5 )
     gl.clear( gl.COLOR_BUFFER_BIT )
     glRef.current = gl
@@ -66,32 +57,32 @@ function Painter( props ) {
     let y = evt.clientY - rect.top;
     x = (x - width/2)/(width/2);
     y = (height/2 - y)/(height/2);
-    position.current = { x, y }
-    return { x, y }
+    const pressure = evt.pressure
+    penEvt.current = { x, y, pressure }
+    return { x, y, pressure }
   }
 
   const draw = ( evt, gl, brush, color ) => {
-    setPosition( evt )
+    const prev = { ...penEvt.current }
+    const curr = setPosition( evt )
     if (evt.buttons !== 1 ) return
-    console.log(brush)
 
-    const pos = position.current
-    const drawColor = rgbToGL(color)
-    const pressure = evt.pressure * 1
-
-    const u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix')
-    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
-    const u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor')
+    const [ dist, angle, deltaP ] = getStroke( prev, curr )
+    console.log( dist, angle, deltaP )
+    const drawColor = rgbToGL( color )
+    // const pressure = evt.pressure * 1
+    const glAttributes = getGLAttributes( gl )
     const modelMatrix = new Matrix4();
-
-    const points = initVertexBuffers(gl, BRUSH_VERTICES, a_Position);
-    if (!points) console.error('failed to set vertex positions')
-    modelMatrix.setTranslate( pos.x, pos.y, 0.0 )
-    modelMatrix.rotate( brush.angle, 0, 0, 1 )
-    modelMatrix.scale(  pressure * brush.ratio, pressure )
-    gl.uniformMatrix4fv( u_ModelMatrix, false, modelMatrix.elements)
-    gl.uniform4f(u_FragColor, drawColor[0], drawColor[1], drawColor[2], 1)
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+    
+    for ( let i = 0; i < dist; i+= brush.spacing ) {
+      const x = prev.x + Math.sin( angle ) * i
+      const y = prev.y + Math.cos( angle ) * i
+      const pressure = prev.pressure + deltaP / ( dist/i )
+      modelMatrix.setTranslate( x, y, 0.0 )
+      modelMatrix.rotate( brush.angle, 0, 0, 1 )
+      modelMatrix.scale(  pressure * brush.ratio, pressure )
+      drawPoint(gl, modelMatrix, glAttributes, drawColor)
+    } 
   }
 
 
