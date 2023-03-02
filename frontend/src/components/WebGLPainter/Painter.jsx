@@ -34,8 +34,8 @@ const paintReducer = ( state, action ) => {
 }
 
 function Painter( props ) {
-  const { width, height, palette, brushes, activeColor, activeBrush } = paintState
   const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
+  const { width, height, palette, brushes, activeColor, activeBrush } = paintState
   
   const canvasRef = useRef()
   const glRef = useRef()
@@ -51,7 +51,7 @@ function Painter( props ) {
     if (!initShaders(gl, VERT_SHADER, FRAG_SHADER)) console.error('failed to initialize shaders')
   }, [])
 
-  const setPosition = ( evt ) => {
+  const setPenEvt = ( evt ) => {
     const rect = evt.target.getBoundingClientRect();
     let x = evt.clientX - rect.left;
     let y = evt.clientY - rect.top;
@@ -64,13 +64,11 @@ function Painter( props ) {
 
   const draw = ( evt, gl, brush, color ) => {
     const prev = { ...penEvt.current }
-    const curr = setPosition( evt )
+    const curr = setPenEvt( evt )
     if (evt.buttons !== 1 ) return
-
+    
     const [ dist, angle, deltaP ] = getStroke( prev, curr )
-    console.log( dist, angle, deltaP )
     const drawColor = rgbToGL( color )
-    // const pressure = evt.pressure * 1
     const glAttributes = getGLAttributes( gl )
     const modelMatrix = new Matrix4();
     
@@ -85,14 +83,14 @@ function Painter( props ) {
     } 
   }
 
-
   return (
     <>
       <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }
         onPointerMove={ e => draw( e, glRef.current, brushes[activeBrush], palette[activeColor] )}
-        onPointerDown={ setPosition }
-        onPointerEnter={ setPosition }
+        onPointerDown={ setPenEvt }
+        onPointerEnter={ setPenEvt }
       />
+
     </>
   )
 }
