@@ -1,6 +1,15 @@
 import { useEffect, useReducer, useRef } from "react";
 import { FRAG_SHADER, VERT_SHADER } from "./shaders";
 import { initShaders } from "./WebGLUtils/cuon-utils"
+import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
+import { initVertexBuffers } from "./utils/gl-helpers";
+
+const BRUSH_VERTICES = new Float32Array([
+  -0.1, 0.1,
+  -0.1, -0.1, 
+  0.1,  0.1, 
+  0.1,  -0.1
+]) 
 
 const DEFAULT_PALETTE = [
   [ 0, 0, 0, ],
@@ -37,6 +46,8 @@ function Painter( props ) {
 
   const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
 
+  const { width, height, palette, brushes, activeColor, activeBrush } = paintState
+
   useEffect(() => {
     const canvas = canvasRef.current
     const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true })
@@ -48,10 +59,43 @@ function Painter( props ) {
     if (!initShaders(gl, VERT_SHADER, FRAG_SHADER)) console.error('failed to initialize shaders')
   }, [])
 
+  const setPosition = ( evt ) => {
+    const rect = evt.target.getBoundingClientRect();
+    let x = evt.clientX - rect.left;
+    let y = evt.clientY - rect.top;
+    x = (x - width/2)/(width/2);
+    y = (height/2 - y)/(height/2);
+    position.current = { x, y }
+    return { x, y }
+  }
+
+  const draw = ( evt, gl, brush, color ) => {
+    setPosition( evt )
+    const pos = position.current
+    console.log(pos)
+    const u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix')
+    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+    const u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor')
+    const modelMatrix = new Matrix4();
+
+    const points = initVertexBuffers(gl, BRUSH_VERTICES, a_Position);
+    if (!points) console.error('failed to set vertex positions')
+    console.log(points)
+
+    modelMatrix.setTranslate( pos.x, pos.y, 0.0 )
+    // modelMatrix.rotate( brush.angle, 0, 0, 1 )
+    // modelMatrix.scale( brush.scale * brush.ratio )
+    gl.uniformMatrix4fv( u_ModelMatrix, false, modelMatrix.elements)
+    gl.uniform4f(u_FragColor, 0.3, 0.8, 0.8, 1)
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+  }
+
 
   return (
     <>
-      <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }/>
+      <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }
+        onMouseMove={ e => draw(e, glRef.current, brushes[activeBrush], palette[activeColor] ) }
+      />
     </>
   )
 }
