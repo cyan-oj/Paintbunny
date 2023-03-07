@@ -19,4 +19,4 @@ function Palette() {
   )
 }
 
-export default Palette;
+// export default Palette;

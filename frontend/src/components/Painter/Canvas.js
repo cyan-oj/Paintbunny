@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Brushes from "./Brushes";
-import Palette from "./Palette";
+// import Palette from "./Palette";
 import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
 import "./Painter.css"
 import { createComment } from "../../store/comments";
@@ -147,7 +147,7 @@ function Canvas({ width, height, imgSrc, drawingId, drawingUserId, drawingTitle,
     <div className={ isComment ? "comment-painter" : "painter" }>
       <div className="toolboxes">
         <div onClick={ e => setColor(e.target.value) } id="palette">
-          <Palette palette={user.palette}/>
+          {/* <Palette palette={user.palette}/> */}
         </div>
         <div onClick={ e => setSize(e.target.value) } id="brushes" brushes={user.brushes}>
           <Brushes brushes={user.brushes} />

@@ -4,6 +4,8 @@ import { initShaders } from "./WebGLUtils/cuon-utils"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
 import { drawPoint, getGLAttributes, getStroke, initVertexBuffers } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
+import Palette from "./Palette.jsx";
+import './Painter.css'
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -29,7 +31,10 @@ const init = ( props ) => {
 const paintReducer = ( state, action ) => {
   const { type, payload } = action
   switch ( type ) {
-    default: return { ...state, [type]: payload }
+    default: {
+      console.log( state )
+      return { ...state, [type]: payload }
+    }
   }
 }
 
@@ -90,7 +95,7 @@ function Painter( props ) {
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
       />
-
+      <Palette palette={ palette } paintDispatch={ paintDispatch } />
     </>
   )
 }
