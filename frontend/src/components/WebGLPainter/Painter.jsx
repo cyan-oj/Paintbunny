@@ -32,7 +32,7 @@ const paintReducer = ( state, action ) => {
   const { type, payload } = action
   switch ( type ) {
     default: {
-      console.log( state )
+      // console.log( state )
       return { ...state, [type]: payload }
     }
   }

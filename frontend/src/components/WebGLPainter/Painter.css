@@ -1,5 +1,6 @@
 .toolbox{
   display: flex;
+  flex-wrap: wrap;
   max-width: 512px;
   min-height: 44px;
 }
@@ -19,4 +20,12 @@
 .icon {
   width: 32px;
   height: 32px;
+}
+
+.color-edit-swatch {
+  height: 128px;
+  width: 128px;
+}
+.color-sliders {
+  width: 100%;
 }

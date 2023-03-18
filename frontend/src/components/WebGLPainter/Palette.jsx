@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { colorString } from "./utils/colorConvert"
 import { ReactComponent as PaletteIcon } from '../../icons/color-palette-sharp.svg'
+import PaletteEditor from './PaletteEditor'
 
 function Palette({ activeColor, palette, paintDispatch }) {
   const [ showTools, setShowTools ] = useState(false)
@@ -20,12 +21,17 @@ function Palette({ activeColor, palette, paintDispatch }) {
   )
 
   return (
+    <>
     <div className="toolbox">
-      <div className="square-button" onClick={ setShowTools }>
+      <div className="square-button" onClick={() => setShowTools( !showTools ) }>
         <PaletteIcon className="icon"/>
       </div>
       { swatches }
+    { showTools && 
+      <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
+    }
     </div>
+    </>
   )
 }
 
