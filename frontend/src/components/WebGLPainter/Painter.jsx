@@ -31,6 +31,11 @@ const init = ( props ) => {
 const paintReducer = ( state, action ) => {
   const { type, payload } = action
   switch ( type ) {
+    case 'add_color': {
+      const newPalette = [ ...state.palette ]
+      newPalette.push( payload )
+      return { ...state, palette: newPalette }
+    }
     default: {
       // console.log( state )
       return { ...state, [type]: payload }
