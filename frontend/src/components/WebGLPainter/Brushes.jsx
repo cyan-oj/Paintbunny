@@ -1,16 +1,17 @@
 import { useState } from "react"
+import BrushPreview from "./BrushPreview"
 import { ReactComponent as BrushIcon } from '../../icons/brush-sharp.svg'
 
 function Brushes({ brushes, activeBrush, brushThumbnails, brushSample, paintDispatch }){
   const [ showTools, setShowTools ] = useState( false )
-  console.log(brushes)
+  console.log(brushThumbnails)
   const setBrush = brush => paintDispatch({ type: 'activeBrush', payload: brush })
 
   const brushList = brushes.map((brush, i) => 
     <div key={ i }
       onClick={() => setBrush( brush ) }
     >
-      { brush.scale }
+      <BrushPreview brush={ brush } thumbnail={ brushThumbnails[i] } />
     </div>
   )
 

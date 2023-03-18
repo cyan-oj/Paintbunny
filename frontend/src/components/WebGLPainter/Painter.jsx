@@ -115,7 +115,7 @@ function Painter( props ) {
         onPointerEnter={ setPenEvt }
       />
       <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } />
-      <Brushes brushes={ brushes } paintDispatch={ paintDispatch } />
+      <Brushes brushes={ brushes } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } />
     </>
   )
 }
