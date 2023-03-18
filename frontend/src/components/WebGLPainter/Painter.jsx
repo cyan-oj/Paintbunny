@@ -2,10 +2,11 @@ import { useEffect, useReducer, useRef } from "react";
 import { FRAG_SHADER, VERT_SHADER } from "./shaders";
 import { initShaders } from "./WebGLUtils/cuon-utils"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
-import { drawPoint, getGLAttributes, getStroke, initVertexBuffers } from "./utils/gl-helpers";
+import { createGLContext, drawPoint, getGLAttributes, getStroke, initVertexBuffers } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
 import Palette from "./Palette.jsx";
 import './Painter.css'
+import Brushes from "./Brushes";
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -13,7 +14,8 @@ const DEFAULT_PALETTE = [
 ]
 
 const DEFAULT_BRUSHES = [
-  { ratio: 0.5, scale: 1, angle: 30, spacing: 0.004 }
+  { ratio: 0.5, scale: 1, angle: 30, spacing: 0.004 },
+  { ratio: 1, scale: 5, angle: 0, spacing: 0.004 }
 ]
 
 const init = ( props ) => {
@@ -23,7 +25,16 @@ const init = ( props ) => {
     palette: props.palette ? props.palette : DEFAULT_PALETTE,
     brushes: props.brushes ? props.brushes : DEFAULT_BRUSHES,
     activeColor: [ 0, 255, 0 ],
-    activeBrush: 0,
+    activeBrush: { ratio: 0.5, scale: 1, angle: 30, spacing: 0.004 },
+    brushSample: {},
+    brushThumbnails: [],
+    strokeHistory: [],
+    redoCache: []
+  }
+  initialState.brushSample = createGLContext( 128, 128 )
+  for ( let i = 0; i < initialState.brushes.length; i++ ) {
+    const thumbnail = createGLContext( 40, 40 )
+    initialState.brushThumbnails.push(thumbnail)
   }
   return initialState;
 }
@@ -45,7 +56,10 @@ const paintReducer = ( state, action ) => {
 
 function Painter( props ) {
   const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
-  const { width, height, palette, brushes, activeColor, activeBrush } = paintState
+  const { width, height, palette, brushes, 
+          activeColor, activeBrush,
+          brushSample, brushThumbnails,
+          strokeHistory, redoCache } = paintState
   
   const canvasRef = useRef()
   const glRef = useRef()
@@ -88,7 +102,7 @@ function Painter( props ) {
       const pressure = prev.pressure + deltaP / ( dist/i )
       modelMatrix.setTranslate( x, y, 0.0 )
       modelMatrix.rotate( brush.angle, 0, 0, 1 )
-      modelMatrix.scale(  pressure * brush.ratio, pressure )
+      modelMatrix.scale(  pressure * brush.ratio * brush.scale, pressure * brush.scale )
       drawPoint(gl, modelMatrix, glAttributes, drawColor)
     } 
   }
@@ -96,11 +110,12 @@ function Painter( props ) {
   return (
     <>
       <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }
-        onPointerMove={ e => draw( e, glRef.current, brushes[activeBrush], activeColor )}
+        onPointerMove={ e => draw( e, glRef.current, activeBrush, activeColor )}
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
       />
       <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } />
+      <Brushes brushes={ brushes } paintDispatch={ paintDispatch } />
     </>
   )
 }

@@ -6,7 +6,7 @@ import PaletteEditor from './PaletteEditor'
 function Palette({ activeColor, palette, paintDispatch }) {
   const [ showTools, setShowTools ] = useState(false)
 
-  const setColor = idx => { paintDispatch({ type: 'activeColor', payload: idx }) }
+  const setColor = color => paintDispatch({ type: 'activeColor', payload: color })
 
   const swatches = palette.map((color , i) =>
     <div className="square-button swatch"
@@ -16,7 +16,7 @@ function Palette({ activeColor, palette, paintDispatch }) {
         backgroundColor: colorString(color), 
         color: colorString(color)
       }}
-      onClick={() => setColor( palette[i] )}
+      onClick={() => setColor( color )}
     >■</div>
   )
 

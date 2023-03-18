@@ -1,3 +1,6 @@
+import { FRAG_SHADER, VERT_SHADER } from '../shaders.js'
+import { initShaders } from '../WebGLUtils/cuon-utils.js'
+
 const BRUSH_VERTICES = new Float32Array([
   -0.1, 0.1,
   -0.1, -0.1, 
@@ -40,4 +43,16 @@ export const drawPoint = ( gl, modelMatrix, glAttributes, color ) => {
   gl.uniformMatrix4fv( glAttributes.u_ModelMatrix, false, modelMatrix.elements)
   gl.uniform4f(glAttributes.u_FragColor, color[0], color[1], color[2], 1)
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+}
+
+export const createGLContext = ( width, height, backgroundColor=[ 0.0, 0.0, 0.0, 0.0 ] ) => {
+  const canvas = document.createElement( 'canvas' )
+  canvas.width = width
+  canvas.height = height
+  const gl = canvas.getContext( 'webgl', { preserveDrawingBuffer: true })
+  gl.clearColor(...backgroundColor);
+  gl.clear(gl.COLOR_BUFFER_BIT)
+  if ( !gl ) alert( 'Your browser does not support WebGL. Try updating or using another browser, such as the most recent version of Mozilla Firefox' )
+  if ( !initShaders( gl, VERT_SHADER, FRAG_SHADER )) console.error( 'failed to initialize shaders' )
+  return { canvas, gl }
 }
