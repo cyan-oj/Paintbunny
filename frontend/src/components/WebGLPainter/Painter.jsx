@@ -42,6 +42,21 @@ const init = ( props ) => {
 const paintReducer = ( state, action ) => {
   const { type, payload } = action
   switch ( type ) {
+    case 'brush_ratio': {
+      const newBrush = { ...state.activeBrush }
+      newBrush.ratio = payload
+      return { ...state, activeBrush: newBrush }
+    }
+    case 'brush_angle': {
+      const newBrush = { ...state.activeBrush }
+      newBrush.angle = payload
+      return { ...state, activeBrush: newBrush }
+    }
+    case 'brush_scale': {
+      const newBrush = { ...state.activeBrush }
+      newBrush.scale = payload
+      return { ...state, activeBrush: newBrush }
+    }
     case 'add_color': {
       const newPalette = [ ...state.palette ]
       newPalette.push( payload )
@@ -114,8 +129,10 @@ function Painter( props ) {
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
       />
-      <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } />
-      <Brushes brushes={ brushes } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } />
+      <div className="toolbox">
+        <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } />
+        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } />
+      </div>
     </>
   )
 }
