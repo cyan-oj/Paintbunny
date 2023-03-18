@@ -1,27 +1,29 @@
+import { useState } from 'react'
 import { colorString } from "./utils/colorConvert"
+import { ReactComponent as PaletteIcon } from '../../icons/color-palette-sharp.svg'
 
-function Palette({ palette, paintDispatch }) {
+function Palette({ activeColor, palette, paintDispatch }) {
+  const [ showTools, setShowTools ] = useState(false)
 
-  const setColor = (i) => {
-    console.log( 'set color', i )
-    paintDispatch({ type: 'activeColor', payload: i })
-  }
+  const setColor = idx => { paintDispatch({ type: 'activeColor', payload: idx }) }
 
   const swatches = palette.map((color , i) =>
-      <div
-        key={i}
-        className="swatch"
-        value={i} 
-        style={{
-          backgroundColor: colorString(color), 
-          color: colorString(color)
-        }}
-        onClick={() => setColor( i )}
-      >■</div>
-    )
+    <div className="square-button swatch"
+      key={i}
+      value={i} 
+      style={{
+        backgroundColor: colorString(color), 
+        color: colorString(color)
+      }}
+      onClick={() => setColor( palette[i] )}
+    >■</div>
+  )
 
   return (
-    <div className="palette">
+    <div className="toolbox">
+      <div className="square-button" onClick={ setShowTools }>
+        <PaletteIcon className="icon"/>
+      </div>
       { swatches }
     </div>
   )

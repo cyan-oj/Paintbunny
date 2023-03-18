@@ -1,0 +1,3 @@
+function PaletteEditor({ activeColor, paintDispatch }) {
+  
+}

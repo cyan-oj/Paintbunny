@@ -22,7 +22,7 @@ const init = ( props ) => {
     height: props.height ? props.height : 512,
     palette: props.palette ? props.palette : DEFAULT_PALETTE,
     brushes: props.brushes ? props.brushes : DEFAULT_BRUSHES,
-    activeColor: 0,
+    activeColor: [ 0, 255, 0 ],
     activeBrush: 0,
   }
   return initialState;
@@ -91,11 +91,11 @@ function Painter( props ) {
   return (
     <>
       <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }
-        onPointerMove={ e => draw( e, glRef.current, brushes[activeBrush], palette[activeColor] )}
+        onPointerMove={ e => draw( e, glRef.current, brushes[activeBrush], activeColor )}
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
       />
-      <Palette palette={ palette } paintDispatch={ paintDispatch } />
+      <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } />
     </>
   )
 }
