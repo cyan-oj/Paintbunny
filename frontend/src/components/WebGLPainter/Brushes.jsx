@@ -1,8 +1,8 @@
 import { useState } from "react"
-import BrushPreview from "./BrushPreview"
+import BrushThumbnail from "./BrushThumbnail"
 import { ReactComponent as BrushIcon } from '../../icons/brush-sharp.svg'
 
-function Brushes({ brushes, activeBrush, brushThumbnails, brushSample, paintDispatch }){
+function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch }){
   const [ showTools, setShowTools ] = useState( false )
   console.log(brushThumbnails)
   const setBrush = brush => paintDispatch({ type: 'activeBrush', payload: brush })
@@ -11,7 +11,7 @@ function Brushes({ brushes, activeBrush, brushThumbnails, brushSample, paintDisp
     <div key={ i }
       onClick={() => setBrush( brush ) }
     >
-      <BrushPreview brush={ brush } thumbnail={ brushThumbnails[i] } />
+      <BrushThumbnail brush={ brush } thumbnail={ brushThumbnails[i] } />
     </div>
   )
 
@@ -21,17 +21,19 @@ function Brushes({ brushes, activeBrush, brushThumbnails, brushSample, paintDisp
         <BrushIcon className="icon" />
       </div>
       { brushList }
-      <div className='sliders'>
-        <input type='range' min='0.01' step="0.01" max='5' value={ activeBrush.scale }
-          onChange={ e => paintDispatch({ type: 'brush_scale', payload: e.target.value })}
-        />
-        <input type='range' min='0' max='360' value={ activeBrush.angle }
-          onChange={ e => paintDispatch({ type: 'brush_angle', payload: e.target.value })}
-        />
-        <input type='range' min='0.01' step=".01" max="1" value={ activeBrush.ratio }
-          onChange={ e => paintDispatch({ type: 'brush_ratio', payload: e.target.value })}
-        />
-      </div>
+      { showTools &&
+        <div className='sliders'>
+          <input type='range' min='0.01' step="0.01" max='10' value={ activeBrush.scale }
+            onChange={ e => paintDispatch({ type: 'brush_scale', payload: e.target.value })}
+            />
+          <input type='range' min='0' max='360' value={ activeBrush.angle }
+            onChange={ e => paintDispatch({ type: 'brush_angle', payload: e.target.value })}
+            />
+          <input type='range' min='0.01' step=".01" max="1" value={ activeBrush.ratio }
+            onChange={ e => paintDispatch({ type: 'brush_ratio', payload: e.target.value })}
+            />
+        </div>
+      }
     </>
   )
 }

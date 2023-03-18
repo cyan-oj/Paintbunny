@@ -23,9 +23,21 @@
 }
 
 .color-edit-swatch {
-  height: 128px;
-  width: 128px;
-}
-.color-sliders {
+  height: 32px;
   width: 100%;
+  margin: 8px 0px
+}
+.sliders {
+  width: 100%;
+}
+
+.brush-sample {
+  width: 512px;
+  height: 256px;
+  display: flex;
+  justify-content: center;
+}
+
+.brush-sample > canvas{
+  border: solid 1px black
 }

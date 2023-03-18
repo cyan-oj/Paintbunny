@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { colorString } from "./utils/colorConvert"
 import convert from 'color-convert'
+import BrushSample from "./BrushSample"
 
 function PaletteEditor({ activeColor, paintDispatch }) {
 
@@ -38,7 +39,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
   }
 
   return (
-    <div className="color-sliders">
+    <>
       <div className="color-edit-swatch" style={{ backgroundColor: colorString( activeColor ) }}/>
       { rgbSliders 
         ?
@@ -113,7 +114,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
           onClick={() => addColor( activeColor ) }
         >add color</button>
       </div>
-    </div>
+    </>
   )
 }
 

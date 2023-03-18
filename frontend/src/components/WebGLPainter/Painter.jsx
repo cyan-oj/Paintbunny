@@ -7,6 +7,7 @@ import { rgbToGL } from "./utils/colorConvert";
 import Palette from "./Palette.jsx";
 import './Painter.css'
 import Brushes from "./Brushes";
+import BrushSample from "./BrushSample";
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -31,7 +32,7 @@ const init = ( props ) => {
     strokeHistory: [],
     redoCache: []
   }
-  initialState.brushSample = createGLContext( 128, 128 )
+  initialState.brushSample = createGLContext( 256, 256 )
   for ( let i = 0; i < initialState.brushes.length; i++ ) {
     const thumbnail = createGLContext( 40, 40 )
     initialState.brushThumbnails.push(thumbnail)
@@ -133,6 +134,7 @@ function Painter( props ) {
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } />
         <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } />
       </div>
+      <BrushSample brushSample={ brushSample } activeBrush={ activeBrush } activeColor={ activeColor }/>
     </>
   )
 }

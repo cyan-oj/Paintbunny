@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import { drawPoint, getGLAttributes } from "./utils/gl-helpers"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix"
 
-function BrushPreview({ brush, thumbnail }){
+function BrushThumbnail({ brush, thumbnail }){
   const preview = useRef()
 
   useEffect(() => {
@@ -24,4 +24,4 @@ function BrushPreview({ brush, thumbnail }){
   )
 }
 
-export default BrushPreview;
+export default BrushThumbnail;
