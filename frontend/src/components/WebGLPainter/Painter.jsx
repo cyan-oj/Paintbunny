@@ -2,12 +2,13 @@ import { useEffect, useReducer, useRef } from "react";
 import { FRAG_SHADER, VERT_SHADER } from "./shaders";
 import { initShaders } from "./WebGLUtils/cuon-utils"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
-import { createGLContext, drawPoint, getGLAttributes, getStroke, redraw } from "./utils/gl-helpers";
+import { createGLContext, drawPoint, drawStroke, getGLAttributes, getStroke, redraw } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
 import Palette from "./Palette.jsx";
 import BrushSample from "./BrushSample.jsx"
 import Brushes from "./Brushes";
 import { ReactComponent as UndoIcon } from '../../icons/arrow-undo-sharp.svg'
+import { ReactComponent as RedoIcon } from '../../icons/arrow-redo-sharp.svg'
 import './Painter.css';
 
 const DEFAULT_PALETTE = [
@@ -82,19 +83,30 @@ const paintReducer = ( state, action ) => {
     }
     case 'undo': {
       const newStrokeHistory = [ ...state.strokeHistory ]
-      if ( newStrokeHistory.length < 1 ) {
-        console.log("no history to undo")
-        return { ...state }
-      } 
+      if ( newStrokeHistory.length < 1 ) return { ...state }
       const newRedoCache = [ ...state.redoCache ]
       const stroke = newStrokeHistory.pop()
       newRedoCache.push( stroke )
       redraw( state.gl, newStrokeHistory )
-      console.log("undo in reducer")
       return { 
         ...state,
         strokeHistory: newStrokeHistory,
         redoCache: newRedoCache
+      }
+    }
+    case 'redo': {
+      const newRedoCache = [ ...state.redoCache ]
+      if ( newRedoCache.length < 1 ) return { ...state }
+      console.log("redoin it")
+      const newStrokeHistory = [ ...state.strokeHistory ]
+      const stroke = newRedoCache.pop()
+      newStrokeHistory.push( stroke )
+      const glAttributes = getGLAttributes( state.gl )
+      drawStroke( state.gl, glAttributes, rgbToGL(stroke.color), stroke.points )
+      return { 
+        ...state,
+        redoCache: newRedoCache,
+        strokeHistory: newStrokeHistory
       }
     }
     case 'add_color': {
@@ -114,8 +126,7 @@ function Painter( props ) {
           activeColor, activeBrush,
           canvas, gl,
           showBrushTools, showColorTools,
-          brushSample, brushThumbnails,
-          strokeHistory, redoCache } = paintState
+          brushSample, brushThumbnails } = paintState
   
   const workspace = useRef()
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
@@ -171,6 +182,7 @@ function Painter( props ) {
   }
 
   const undo = () => paintDispatch({ type: 'undo' })
+  const redo = () => paintDispatch({ type: 'redo' })
 
   return (
     <>
@@ -185,6 +197,9 @@ function Painter( props ) {
         <div className="toolbox">
           <div className="square-button" onClick={ undo }>
             <UndoIcon className="icon"/>
+          </div>
+          <div className="square-button" onClick={ redo }>
+            <RedoIcon className="icon"/>
           </div>
           <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
           <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } />
