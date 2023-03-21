@@ -45,31 +45,43 @@ function PaletteEditor({ activeColor, paintDispatch }) {
           ?
           <div className='sliders' id='rgb-sliders'>
               <input type='range' min='0' max='255' value={ rgbColor[0] } 
+                onChange={ e => setRGB( e.target.value, 0 )}
                 style={{ 
                   backgroundImage: `linear-gradient(to right, 
                     rgb(0, ${rgbColor[1]}, ${rgbColor[2]}), 
-                    rgb(255, ${rgbColor[1]}, ${rgbColor[2]}))` }}
-                    onChange={ e => setRGB( e.target.value, 0 )}
-                    />
+                    rgb(255, ${rgbColor[1]}, ${rgbColor[2]}))` 
+                  }} />
+              <label htmlFor="red">red
+                <input type="number" min='0' max='255' value={ rgbColor[0] } 
+                  onChange={ e => setRGB( e.target.value, 0 )} />
+              </label>
               <input type='range' min='0' max='255' value={ rgbColor[1] } 
                 onChange={ e => setRGB( e.target.value, 1 )}
                 style={{ 
                   backgroundImage: `linear-gradient(to right, 
                     rgb(${rgbColor[0]}, 0, ${rgbColor[2]}), 
-                    rgb(${rgbColor[0]}, 255, ${rgbColor[2]}))` }}
-                    />
+                    rgb(${rgbColor[0]}, 255, ${rgbColor[2]}))` 
+                  }} />
+              <label htmlFor="green">green
+                  <input type="number"min='0' max='255' value={ rgbColor[1] } 
+                    onChange={ e => setRGB( e.target.value, 1 )} />
+                </label>
               <input type='range' min='0' max='255' value={ rgbColor[2] } 
                 onChange={ e => setRGB( e.target.value, 2 )}
                 style={{ 
                   backgroundImage: `linear-gradient(to right, 
                     rgb(${rgbColor[0]}, ${rgbColor[1]}, 0), 
                     rgb(${rgbColor[0]}, ${rgbColor[1]}, 255))` 
-                  }}
-                  />
+                  }} />
+              <label htmlFor="blue">blue
+                <input type="number" min='0' max='255' value={ rgbColor[2] } 
+                  onChange={ e => setRGB( e.target.value, 2 )} />
+              </label>
             </div>
           :
           <div className='sliders' id='hsl-sliders'>
               <input type='range' id='hue' min='0' max='360' value={ hslColor[0] } 
+                onChange={ e => setHSL( e.target.value, 0 )} 
                 style={{ 
                   backgroundImage: `linear-gradient(to right, 
                     hsl(0, ${hslColor[1]}%, ${hslColor[2]}%),
@@ -81,16 +93,22 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                     hsl(270, ${hslColor[1]}%, ${hslColor[2]}%),
                     hsl(315, ${hslColor[1]}%, ${hslColor[2]}%),
                     hsl(360, ${hslColor[1]}%, ${hslColor[2]}%))` 
-                  }}
+                  }} />
+              <label htmlFor="hue">hue
+                <input type="number" min='0' max='100' value={ hslColor[0] }
                   onChange={ e => setHSL( e.target.value, 0 )} />
+              </label>
               <input type='range' min='0' max='100' value={ hslColor[1] } 
                 onChange={ e => setHSL( e.target.value, 1 )}
                 style={{ 
                   backgroundImage:  `linear-gradient(to right, 
                     hsl(${hslColor[0]}, 0%, ${hslColor[2]}%), 
                     hsl(${hslColor[0]}, 100%, ${hslColor[2]}%))` 
-                  }}
-                  />
+                  }} />
+              <label htmlFor="saturation">saturation
+                <input type="number" min='0' max='100' value={ hslColor[1] }
+                  onChange={ e => setHSL( e.target.value, 1 )} />
+              </label>
               <input type='range' min='0' max='100' value={ hslColor[2] } 
                 onChange={ e => setHSL( e.target.value, 2 )}
                 style={{ 
@@ -98,8 +116,11 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                     hsl(${hslColor[0]}, ${hslColor[1]}%, 0%), 
                     hsl(${hslColor[0]}, ${hslColor[1]}%, 50%), 
                     hsl(${hslColor[0]}, ${hslColor[1]}%, 100%))` 
-                  }}
-                  />
+                  }} />
+              <label htmlFor="lightness">lightness
+                <input type="number" min='0' max='100' value={ hslColor[2] }
+                  onChange={ e => setHSL( e.target.value, 2 )} />
+              </label>
             </div>
         }
         <div>
@@ -109,7 +130,6 @@ function PaletteEditor({ activeColor, paintDispatch }) {
           <button className={ rgbSliders ? 'named-icon' : 'named-icon-active' }
             onClick={() => setSliders( false )}
             >hsl</button>
-
           <button
             onClick={() => addColor( activeColor ) }
             >add color</button>
