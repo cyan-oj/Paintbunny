@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { colorString } from "./utils/colorConvert"
 import convert from 'color-convert'
-import BrushSample from "./BrushSample"
 
 function PaletteEditor({ activeColor, paintDispatch }) {
 
@@ -39,35 +38,36 @@ function PaletteEditor({ activeColor, paintDispatch }) {
   }
 
   return (
-    <>
-      <div className="color-edit-swatch" style={{ backgroundColor: colorString( activeColor ) }}/>
-      { rgbSliders 
-        ?
+    <div className="tool-editor">
+      {/* <div className="color-edit-swatch" style={{ backgroundColor: colorString( activeColor ) }}/> */}
+      <div>
+        { rgbSliders 
+          ?
           <div className='sliders' id='rgb-sliders'>
-            <input type='range' min='0' max='255' value={ rgbColor[0] } 
-              style={{ 
-                backgroundImage: `linear-gradient(to right, 
-                  rgb(0, ${rgbColor[1]}, ${rgbColor[2]}), 
-                  rgb(255, ${rgbColor[1]}, ${rgbColor[2]}))` }}
-              onChange={ e => setRGB( e.target.value, 0 )}
-              />
-            <input type='range' min='0' max='255' value={ rgbColor[1] } 
-              onChange={ e => setRGB( e.target.value, 1 )}
-              style={{ 
-                backgroundImage: `linear-gradient(to right, 
-                  rgb(${rgbColor[0]}, 0, ${rgbColor[2]}), 
-                  rgb(${rgbColor[0]}, 255, ${rgbColor[2]}))` }}
-              />
-            <input type='range' min='0' max='255' value={ rgbColor[2] } 
-              onChange={ e => setRGB( e.target.value, 2 )}
-              style={{ 
-                backgroundImage: `linear-gradient(to right, 
-                  rgb(${rgbColor[0]}, ${rgbColor[1]}, 0), 
-                  rgb(${rgbColor[0]}, ${rgbColor[1]}, 255))` 
-                }}
-              />
-          </div>
-        :
+              <input type='range' min='0' max='255' value={ rgbColor[0] } 
+                style={{ 
+                  backgroundImage: `linear-gradient(to right, 
+                    rgb(0, ${rgbColor[1]}, ${rgbColor[2]}), 
+                    rgb(255, ${rgbColor[1]}, ${rgbColor[2]}))` }}
+                    onChange={ e => setRGB( e.target.value, 0 )}
+                    />
+              <input type='range' min='0' max='255' value={ rgbColor[1] } 
+                onChange={ e => setRGB( e.target.value, 1 )}
+                style={{ 
+                  backgroundImage: `linear-gradient(to right, 
+                    rgb(${rgbColor[0]}, 0, ${rgbColor[2]}), 
+                    rgb(${rgbColor[0]}, 255, ${rgbColor[2]}))` }}
+                    />
+              <input type='range' min='0' max='255' value={ rgbColor[2] } 
+                onChange={ e => setRGB( e.target.value, 2 )}
+                style={{ 
+                  backgroundImage: `linear-gradient(to right, 
+                    rgb(${rgbColor[0]}, ${rgbColor[1]}, 0), 
+                    rgb(${rgbColor[0]}, ${rgbColor[1]}, 255))` 
+                  }}
+                  />
+            </div>
+          :
           <div className='sliders' id='hsl-sliders'>
               <input type='range' id='hue' min='0' max='360' value={ hslColor[0] } 
                 style={{ 
@@ -90,7 +90,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                     hsl(${hslColor[0]}, 0%, ${hslColor[2]}%), 
                     hsl(${hslColor[0]}, 100%, ${hslColor[2]}%))` 
                   }}
-                />
+                  />
               <input type='range' min='0' max='100' value={ hslColor[2] } 
                 onChange={ e => setHSL( e.target.value, 2 )}
                 style={{ 
@@ -99,22 +99,23 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                     hsl(${hslColor[0]}, ${hslColor[1]}%, 50%), 
                     hsl(${hslColor[0]}, ${hslColor[1]}%, 100%))` 
                   }}
-                />
-          </div>
-      }
-      <div>
-        <button className={ rgbSliders ? 'named-icon-active' : 'named-icon' }
-          onClick={() => setSliders(true)}
-          >rgb</button>
-        <button className={ rgbSliders ? 'named-icon' : 'named-icon-active' }
-          onClick={() => setSliders( false )}
-          >hsl</button>
+                  />
+            </div>
+        }
+        <div>
+          <button className={ rgbSliders ? 'named-icon-active' : 'named-icon' }
+            onClick={() => setSliders(true)}
+            >rgb</button>
+          <button className={ rgbSliders ? 'named-icon' : 'named-icon-active' }
+            onClick={() => setSliders( false )}
+            >hsl</button>
 
-        <button
-          onClick={() => addColor( activeColor ) }
-        >add color</button>
+          <button
+            onClick={() => addColor( activeColor ) }
+            >add color</button>
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 

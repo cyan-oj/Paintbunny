@@ -1,11 +1,10 @@
-import { useState } from "react"
 import BrushThumbnail from "./BrushThumbnail"
 import { ReactComponent as BrushIcon } from '../../icons/brush-sharp.svg'
 
-function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch }){
-  const [ showTools, setShowTools ] = useState( false )
-  console.log(brushThumbnails)
+function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBrushTools }){
+
   const setBrush = brush => paintDispatch({ type: 'activeBrush', payload: brush })
+  const setShowTools = bool => paintDispatch({ type: 'showBrushTools', payload: bool })
 
   const brushList = brushes.map((brush, i) => 
     <div key={ i }
@@ -17,11 +16,11 @@ function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch }){
 
   return (
     <>
-      <div className="square-button" onClick={() => setShowTools( !showTools ) }> 
+      <div className="square-button" onClick={() => setShowTools( !showBrushTools ) }> 
         <BrushIcon className="icon" />
       </div>
       { brushList }
-      { showTools &&
+      { showBrushTools &&
         <div className='sliders'>
           <input type='range' min='0.01' step="0.01" max='10' value={ activeBrush.scale }
             onChange={ e => paintDispatch({ type: 'brush_scale', payload: e.target.value })}

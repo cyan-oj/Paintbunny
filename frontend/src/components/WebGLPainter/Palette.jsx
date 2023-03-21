@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import { colorString } from "./utils/colorConvert"
 import { ReactComponent as PaletteIcon } from '../../icons/color-palette-sharp.svg'
 import PaletteEditor from './PaletteEditor'
 
-function Palette({ activeColor, palette, paintDispatch }) {
-  const [ showTools, setShowTools ] = useState(false)
-
+function Palette({ activeColor, palette, paintDispatch, showColorTools }) {
+  
+  const setShowTools = bool => paintDispatch({ type: 'showColorTools', payload: bool })
   const setColor = color => paintDispatch({ type: 'activeColor', payload: color })
 
   const swatches = palette.map((color , i) =>
@@ -22,11 +21,11 @@ function Palette({ activeColor, palette, paintDispatch }) {
 
   return (
     <>
-      <div className="square-button" onClick={() => setShowTools( !showTools ) }>
+      <div className="square-button" onClick={() => setShowTools( !showColorTools ) }>
         <PaletteIcon className="icon"/>
       </div>
       { swatches }
-    { showTools && 
+    { showColorTools && 
       <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
     }
     </>

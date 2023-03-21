@@ -2,12 +2,12 @@ import { useEffect, useReducer, useRef } from "react";
 import { FRAG_SHADER, VERT_SHADER } from "./shaders";
 import { initShaders } from "./WebGLUtils/cuon-utils"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
-import { createGLContext, drawPoint, getGLAttributes, getStroke, initVertexBuffers } from "./utils/gl-helpers";
+import { createGLContext, drawPoint, getGLAttributes, getStroke} from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
 import Palette from "./Palette.jsx";
-import './Painter.css'
+import BrushSample from "./BrushSample.jsx"
+import './Painter.css';
 import Brushes from "./Brushes";
-import BrushSample from "./BrushSample";
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -27,6 +27,8 @@ const init = ( props ) => {
     brushes: props.brushes ? props.brushes : DEFAULT_BRUSHES,
     activeColor: [ 0, 255, 0 ],
     activeBrush: { ratio: 0.5, scale: 1, angle: 30, spacing: 0.004 },
+    showBrushTools: false,
+    showColorTools: false,
     brushSample: {},
     brushThumbnails: [],
     strokeHistory: [],
@@ -74,12 +76,14 @@ function Painter( props ) {
   const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
   const { width, height, palette, brushes, 
           activeColor, activeBrush,
+          showBrushTools, showColorTools,
           brushSample, brushThumbnails,
           strokeHistory, redoCache } = paintState
   
   const canvasRef = useRef()
   const glRef = useRef()
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
+  const currentStroke = useRef([])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -123,6 +127,10 @@ function Painter( props ) {
     } 
   }
 
+  const saveStroke = () => {
+    const stroke = currentStroke.current
+  }
+
   return (
     <>
       <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }
@@ -130,11 +138,18 @@ function Painter( props ) {
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
       />
-      <div className="toolbox">
-        <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } />
-        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } />
+      <div className="tools">
+        <div className="toolbox">
+          <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
+          <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } />
+        </div>
+        { ( showBrushTools || showColorTools )
+          ?
+          <BrushSample brushSample={ brushSample } activeBrush={ activeBrush } activeColor={ activeColor }  />
+          :
+          null
+        }
       </div>
-      <BrushSample brushSample={ brushSample } activeBrush={ activeBrush } activeColor={ activeColor }/>
     </>
   )
 }
