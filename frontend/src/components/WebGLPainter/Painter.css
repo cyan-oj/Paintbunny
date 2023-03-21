@@ -12,6 +12,7 @@
 }
 .square-button {
   display: flex;
+  background-color: lightgray;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -28,11 +29,12 @@
   height: 32px;
 }
 
-.color-edit-swatch {
+/* .color-edit-swatch {
   height: 32px;
   width: 100%;
   margin: 8px 0px
-}
+} */
+
 .sliders {
   box-sizing: border-box;
   width: 100%;

@@ -45,6 +45,11 @@ const init = ( props ) => {
 const paintReducer = ( state, action ) => {
   const { type, payload } = action
   switch ( type ) {
+    case 'add_stroke': {
+      const newStrokeHistory = [ ...state.strokeHistory ]
+      newStrokeHistory.push( payload )
+      return { ...state, strokeHistory: newStrokeHistory }
+    } 
     case 'brush_ratio': {
       const newBrush = { ...state.activeBrush }
       newBrush.ratio = payload
@@ -66,7 +71,6 @@ const paintReducer = ( state, action ) => {
       return { ...state, palette: newPalette }
     }
     default: {
-      // console.log( state )
       return { ...state, [type]: payload }
     }
   }
@@ -83,7 +87,12 @@ function Painter( props ) {
   const canvasRef = useRef()
   const glRef = useRef()
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
-  const currentStroke = useRef([])
+  const currentStroke = useRef({ 
+    color: null,
+    gl: null,
+    glAttributes: null,
+    points: [] 
+  })
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -114,7 +123,7 @@ function Painter( props ) {
     const [ dist, angle, deltaP ] = getStroke( prev, curr )
     const drawColor = rgbToGL( color )
     const glAttributes = getGLAttributes( gl )
-    const modelMatrix = new Matrix4();
+    const modelMatrix = new Matrix4()
     
     for ( let i = 0; i < dist; i+= brush.spacing ) {
       const x = prev.x + Math.sin( angle ) * i
@@ -123,20 +132,29 @@ function Painter( props ) {
       modelMatrix.setTranslate( x, y, 0.0 )
       modelMatrix.rotate( brush.angle, 0, 0, 1 )
       modelMatrix.scale(  pressure * brush.ratio * brush.scale, pressure * brush.scale )
-      drawPoint(gl, modelMatrix, glAttributes, drawColor)
+      currentStroke.current.points.push( modelMatrix )
+      drawPoint( gl, modelMatrix, glAttributes, drawColor )
     } 
   }
 
-  const saveStroke = () => {
-    const stroke = currentStroke.current
+  const saveStroke = ( stroke, gl, color ) => {
+    stroke.gl = gl
+    stroke.glAttributes = getGLAttributes( stroke.gl )
+    stroke.color = color
+    paintDispatch({
+      type: 'add_stroke',
+      payload: stroke
+    })
   }
 
   return (
     <>
+      <button onClick={() => console.log( paintState )}>log state</button>
       <canvas ref={ canvasRef } width={ paintState.width } height={ paintState.height }
         onPointerMove={ e => draw( e, glRef.current, activeBrush, activeColor )}
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
+        onPointerUp={() => saveStroke( currentStroke.current, glRef.current, activeColor )}
       />
       <div className="tools">
         <div className="toolbox">

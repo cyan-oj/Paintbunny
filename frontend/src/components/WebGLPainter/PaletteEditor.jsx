@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { colorString } from "./utils/colorConvert"
 import convert from 'color-convert'
 
 function PaletteEditor({ activeColor, paintDispatch }) {
@@ -39,7 +38,6 @@ function PaletteEditor({ activeColor, paintDispatch }) {
 
   return (
     <div className="tool-editor">
-      {/* <div className="color-edit-swatch" style={{ backgroundColor: colorString( activeColor ) }}/> */}
       <div>
         { rgbSliders 
           ?
