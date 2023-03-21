@@ -3,7 +3,7 @@ import { ReactComponent as PaletteIcon } from '../../icons/color-palette-sharp.s
 import PaletteEditor from './PaletteEditor'
 
 function Palette({ activeColor, palette, paintDispatch, showColorTools }) {
-  
+
   const setShowTools = bool => paintDispatch({ type: 'showColorTools', payload: bool })
   const setColor = color => paintDispatch({ type: 'activeColor', payload: color })
 
@@ -25,9 +25,9 @@ function Palette({ activeColor, palette, paintDispatch, showColorTools }) {
         <PaletteIcon className="icon"/>
       </div>
       { swatches }
-    { showColorTools && 
-      <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
-    }
+      { showColorTools && 
+        <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
+      }
     </>
   )
 }
