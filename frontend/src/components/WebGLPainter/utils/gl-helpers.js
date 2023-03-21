@@ -35,6 +35,19 @@ export const redraw = ( gl, history, clearColor=[ 1.0, 1.0, 1.0, 1.0 ] ) => {
   }
 }
 
+export const playback = ( gl, history, clearColor=[ 1.0, 1.0, 1.0, 1.0 ] ) => {
+  gl.clearColor( ...clearColor )
+  gl.clear( gl.COLOR_BUFFER_BIT )
+  if ( history.length < 1 ) return
+  const glAttributes = getGLAttributes( gl )
+  for ( let i = 0; i < history.length; i++ ) {
+    setTimeout(() => {
+      const color = rgbToGL( history[i].color )
+      drawStroke( gl, glAttributes, color, history[i].points )
+    }, 50 * i)
+  }
+}
+
 export const getStroke = ( point1, point2 ) => { 
   const distance = Math.sqrt( Math.pow( point2.x - point1.x, 2 ) + Math.pow( point2.y - point1.y, 2 ))
   const angle = Math.atan2( point2.x - point1.x, point2.y - point1.y )

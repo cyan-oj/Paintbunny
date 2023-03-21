@@ -1,8 +1,6 @@
 import { useEffect, useReducer, useRef } from "react";
-import { FRAG_SHADER, VERT_SHADER } from "./shaders";
-import { initShaders } from "./WebGLUtils/cuon-utils"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
-import { createGLContext, drawPoint, drawStroke, getGLAttributes, getStroke, redraw } from "./utils/gl-helpers";
+import { createGLContext, drawPoint, drawStroke, getGLAttributes, getStroke, playback, redraw } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
 import Palette from "./Palette.jsx";
 import BrushSample from "./BrushSample.jsx"
@@ -97,7 +95,6 @@ const paintReducer = ( state, action ) => {
     case 'redo': {
       const newRedoCache = [ ...state.redoCache ]
       if ( newRedoCache.length < 1 ) return { ...state }
-      console.log("redoin it")
       const newStrokeHistory = [ ...state.strokeHistory ]
       const stroke = newRedoCache.pop()
       newStrokeHistory.push( stroke )
@@ -126,7 +123,7 @@ function Painter( props ) {
           activeColor, activeBrush,
           canvas, gl,
           showBrushTools, showColorTools,
-          brushSample, brushThumbnails } = paintState
+          brushSample, brushThumbnails, strokeHistory } = paintState
   
   const workspace = useRef()
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
@@ -183,6 +180,7 @@ function Painter( props ) {
 
   const undo = () => paintDispatch({ type: 'undo' })
   const redo = () => paintDispatch({ type: 'redo' })
+  const replay = () => playback( gl, strokeHistory, [ 1.0, 1.0, 1.0, 1.0 ])
 
   return (
     <>
@@ -199,6 +197,9 @@ function Painter( props ) {
             <UndoIcon className="icon"/>
           </div>
           <div className="square-button" onClick={ redo }>
+            <RedoIcon className="icon"/>
+          </div>
+          <div className="square-button" onClick={ replay }>
             <RedoIcon className="icon"/>
           </div>
           <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
