@@ -59,7 +59,7 @@ const init = ( props ) => {
 const paintReducer = ( state, action ) => {
   const { type, payload } = action
   switch ( type ) {
-    case 'add_stroke': {
+    case 'add_stroke': { 
       const newStrokeHistory = [ ...state.strokeHistory ]
       newStrokeHistory.push( payload )
       return { ...state, strokeHistory: newStrokeHistory }
@@ -123,7 +123,7 @@ function Painter( props ) {
           activeColor, activeBrush,
           canvas, gl,
           showBrushTools, showColorTools,
-          brushSample, brushThumbnails, strokeHistory } = paintState
+          brushSample, brushThumbnails } = paintState
   
   const workspace = useRef()
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
@@ -180,37 +180,33 @@ function Painter( props ) {
 
   const undo = () => paintDispatch({ type: 'undo' })
   const redo = () => paintDispatch({ type: 'redo' })
-  const replay = () => playback( gl, strokeHistory, [ 1.0, 1.0, 1.0, 1.0 ])
 
   return (
-    <>
-      <button onClick={() => console.log( paintState )}>log state</button>
-      <div ref={ workspace } width={ paintState.width } height={ paintState.height }
-        onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
-        onPointerDown={ setPenEvt }
-        onPointerEnter={ setPenEvt }
-        onPointerUp={() => saveStroke( currentStroke )}
-      />
-      <div className="tools">
-        <div className="toolbox">
-          <div className="square-button" onClick={ undo }>
-            <UndoIcon className="icon"/>
-          </div>
-          <div className="square-button" onClick={ redo }>
-            <RedoIcon className="icon"/>
-          </div>
-          <div className="square-button" onClick={ replay }>
-            <RedoIcon className="icon"/>
-          </div>
-          <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
-          <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } />
+  <>
+    {/* <button onClick={() => console.log( paintState )}>log state</button> */}
+    <div ref={ workspace } width={ paintState.width } height={ paintState.height }
+      onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
+      onPointerDown={ setPenEvt }
+      onPointerEnter={ setPenEvt }
+      onPointerUp={() => saveStroke( currentStroke )}
+    />
+    <div className="tools">
+      <div className="toolbox">
+        <div className="square-button" onClick={ undo }>
+          <UndoIcon className="icon"/>
         </div>
-        { ( showBrushTools || showColorTools )
-          ? <BrushSample brushSample={ brushSample } activeBrush={ activeBrush } activeColor={ activeColor }  />
-          : null
-        }
+        <div className="square-button" onClick={ redo }>
+          <RedoIcon className="icon"/>
+        </div>
+        <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
+        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } />
       </div>
-    </>
+      { ( showBrushTools || showColorTools )
+        ? <BrushSample brushSample={ brushSample } activeBrush={ activeBrush } activeColor={ activeColor }  />
+        : null
+      }
+    </div>
+  </>
   )
 }
 
