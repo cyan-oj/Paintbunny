@@ -1,4 +1,8 @@
 import { useEffect, useReducer, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
+import { createComment } from "../../store/comments";
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
 import { createGLContext, drawPoint, drawStroke, getGLAttributes, getStroke, playback, redraw } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
@@ -23,6 +27,9 @@ const init = ( props ) => {
   const initialState = {
     width: props.width ? props.width : 512,
     height: props.height ? props.height : 512,
+    title: props.title ? props.title : '',
+    description: props.description ? props.description : '',
+    canvasType: props.canvasType ? props.canvasType : 'comment',
     canvas: null,
     gl: null,
     palette: props.palette ? props.palette : DEFAULT_PALETTE,
@@ -119,11 +126,23 @@ const paintReducer = ( state, action ) => {
 
 function Painter( props ) {
   const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
-  const { width, height, palette, brushes, 
+  const { width, height, 
+          title, description, canvasType,
+          palette, brushes, 
           activeColor, activeBrush,
           canvas, gl,
           showBrushTools, showColorTools,
           brushSample, brushThumbnails } = paintState
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const drawing = useSelector(getDrawing(props.drawingId))
+  const user = useSelector(state => state.session.user)
+
+  const image = new Image(512, 512)
+  image.crossOrigin = "anonymous"
+  if (drawing) image.src = drawing.imageUrl
+  const buttonText = props.imgSrc ? "edit" : "post"
   
   const workspace = useRef()
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
@@ -181,6 +200,43 @@ function Painter( props ) {
   const undo = () => paintDispatch({ type: 'undo' })
   const redo = () => paintDispatch({ type: 'redo' })
 
+  const dataURItoBlob = ( dataURI ) => {
+    const binary = atob( dataURI.split(',')[1] );
+    const array = [];
+    for(let i = 0; i < binary.length; i++) {
+      array.push( binary.charCodeAt( i ) );
+    }
+    return new Blob([new Uint8Array( array )], { type: 'image/png' });
+  }
+
+  const blobCanvas = e => {
+    e.preventDefault();
+    const dataURL = canvas.toDataURL("img/png");
+    const blobData = dataURItoBlob(dataURL);
+    const formData = new FormData();
+
+    if (canvas.height === 256) {
+      formData.append('comment[author_id]', user.id);
+      formData.append('comment[drawing_id]', props.drawingId)
+      formData.append('comment[image]', blobData)
+      dispatch(createComment( props.drawingId, formData ))
+    } else if ( props.imgSrc && (props.drawingUserId === user.id) ) {
+      formData.append('drawing[title]', title);
+      formData.append('drawing[description]', description)
+      formData.append('drawing[artist_id]', user.id)
+      formData.append('drawing[image]', blobData)
+      dispatch(updateDrawing( user.id, props.drawingId, formData ))
+      window.location.reload(true);
+    } else {
+      formData.append('drawing[title]', title);
+      formData.append('drawing[description]', description)
+      formData.append('drawing[artist_id]', user.id)
+      formData.append('drawing[image]', blobData)
+      dispatch(createDrawing( user.id, formData ))
+      history.push(`/users/${user.id}`)
+    }
+  }
+
   return (
   <>
     {/* <button onClick={() => console.log( paintState )}>log state</button> */}
@@ -206,6 +262,23 @@ function Painter( props ) {
         : null
       }
     </div>
+    <form onSubmit={ blobCanvas } className="comment-form">
+      { (canvasType === 'painting') &&
+      <>
+        <input placeholder="title"
+          type="text" 
+          value={ title }
+          onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
+          />
+        <textarea placeholder="description"
+          type="text"
+          value={ description }
+          onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
+          />
+      </>
+      }
+      <button type="submit">{ buttonText }</button>
+    </form>
   </>
   )
 }

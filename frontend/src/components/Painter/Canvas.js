@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Brushes from "./Brushes";
 // import Palette from "./Palette";
 import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
-import "./Painter.css"
 import { createComment } from "../../store/comments";
+import "./Painter.css"
 import { useHistory } from "react-router-dom";
 import ToolEditorModal from "./ToolEditorModal";
 import BrushDisplay from "./BrushDisplay";
