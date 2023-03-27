@@ -29,7 +29,7 @@ function App() {
         </Route>
         <Route path="/new">
           <ProtectedRoute user={user} >
-              <Canvas />
+              <Painter />
           </ProtectedRoute>
         </Route>
         <Route path="/webgl">

@@ -29,7 +29,7 @@ const init = ( props ) => {
     height: props.height ? props.height : 512,
     title: props.title ? props.title : '',
     description: props.description ? props.description : '',
-    canvasType: props.canvasType ? props.canvasType : 'comment',
+    canvasType: props.canvasType ? props.canvasType : 'painting',
     canvas: null,
     gl: null,
     palette: props.palette ? props.palette : DEFAULT_PALETTE,
@@ -215,7 +215,7 @@ function Painter( props ) {
     const blobData = dataURItoBlob(dataURL);
     const formData = new FormData();
 
-    if (canvas.height === 256) {
+    if (canvasType === 'comment') {
       formData.append('comment[author_id]', user.id);
       formData.append('comment[drawing_id]', props.drawingId)
       formData.append('comment[image]', blobData)
