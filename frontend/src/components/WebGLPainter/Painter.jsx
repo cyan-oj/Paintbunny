@@ -226,7 +226,7 @@ function Painter( props ) {
       formData.append('drawing[artist_id]', user.id)
       formData.append('drawing[image]', blobData)
       dispatch(updateDrawing( user.id, props.drawingId, formData ))
-      window.location.reload(true);
+      props.toggleEdit();
     } else {
       formData.append('drawing[title]', title);
       formData.append('drawing[description]', description)

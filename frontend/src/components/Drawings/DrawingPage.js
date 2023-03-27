@@ -6,6 +6,7 @@ import CommentIndex from "../Comments/CommentIndex";
 import Welcome from "../Welcome/Welcome";
 import Canvas from "../Painter/Canvas";
 import "./DrawingPage.css"
+import Painter from "../WebGLPainter/Painter";
 
 function DrawingPage() {
   const history = useHistory();
@@ -20,7 +21,7 @@ function DrawingPage() {
   
   useEffect(() => {
     dispatch(fetchDrawing(userId, drawingId));
-  }, [dispatch]);
+  }, [dispatch, showCanvas]);
 
   if (!drawing) return null;
 
@@ -75,7 +76,7 @@ function DrawingPage() {
       }
       { showCanvas && user &&
         <>
-          <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} drawingDesc={drawing.description} toggleEdit={ toggleEdit } />
+          <Painter imgSrc={drawing.imageUrl} drawingId={drawingId} title={drawing.title} drawingUserId={drawing.artistId} description={drawing.description} toggleEdit={ toggleEdit } canvasType={'painting'}/>
           <button onClick={ toggleEdit }>cancel edit</button>
         </>
       }
