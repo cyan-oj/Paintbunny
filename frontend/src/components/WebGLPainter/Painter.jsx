@@ -12,6 +12,7 @@ import Brushes from "./Brushes";
 import { ReactComponent as UndoIcon } from '../../icons/arrow-undo-sharp.svg'
 import { ReactComponent as RedoIcon } from '../../icons/arrow-redo-sharp.svg'
 import './Painter.css';
+import { fetchUser } from "../../store/users";
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -136,12 +137,14 @@ function Painter( props ) {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const drawing = useSelector(getDrawing(props.drawingId))
-  const user = useSelector(state => state.session.user)
+  const drawing = useSelector(getDrawing( props.drawingId ))
+  const user = useSelector( state => state.session.user )
 
-  const image = new Image(512, 512)
+  const bgCanvas = useRef( null )
+
+  const image = new Image( 512, 512 )
   image.crossOrigin = "anonymous"
-  if (drawing) image.src = drawing.imageUrl
+  if ( drawing ) image.src = drawing.imageUrl
   const buttonText = props.imgSrc ? "edit" : "post"
   
   const workspace = useRef()
@@ -153,7 +156,22 @@ function Painter( props ) {
 
   useEffect(() => {
     const parent = workspace.current
-    parent.appendChild(canvas)
+    parent.appendChild( canvas )
+
+    const background = bgCanvas.current
+    const bgContext = background.getContext('2d')
+
+    bgContext.fillStyle = "white";
+    bgContext.fillRect(0, 0, bgContext.canvas.width, bgContext.canvas.height)
+
+    const getImageData = async () => {
+      const response = await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
+    }
+    getImageData();
+    if ( drawing ) {
+      bgContext.drawImage(image, 0, 0)
+    }
+
   }, [ canvas ])
 
   const setPenEvt = ( evt ) => {
@@ -246,6 +264,7 @@ function Painter( props ) {
       onPointerEnter={ setPenEvt }
       onPointerUp={() => saveStroke( currentStroke )}
     />
+    <canvas ref={ bgCanvas } width={ paintState.width } height={ paintState.height }/>
     <div className="tools">
       <div className="toolbox">
         <div className="square-button" onClick={ undo }>

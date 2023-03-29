@@ -84,4 +84,4 @@ function DrawingPage() {
   )
 }
 
-export default DrawingPage;
+export default DrawingPage
