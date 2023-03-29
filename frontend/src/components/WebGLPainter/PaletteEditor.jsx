@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import convert from 'color-convert'
+import { colorString } from "./utils/colorConvert"
 
 function PaletteEditor({ activeColor, paintDispatch }) {
 
@@ -7,7 +8,12 @@ function PaletteEditor({ activeColor, paintDispatch }) {
   const [ hslColor, setColorHSL ] = useState( convert.rgb.hsl( activeColor ))
   const [ rgbSliders, setSliders ] = useState( false )
 
-  useEffect(() => setColorRGB( activeColor ), [ activeColor ])
+  useEffect(() => { 
+    setColorRGB( activeColor )
+    const slideColor = getComputedStyle(document.documentElement).getPropertyValue('--active-color');
+    console.log(`--active-color: ${slideColor}`);
+    document.documentElement.style.setProperty('--active-color', colorString(activeColor));
+  }, [ activeColor ])
   useEffect(() => setColorHSL( convert.rgb.hsl( rgbColor )), [ rgbColor ])
 
   const setRGB = ( value, index ) => {
@@ -78,6 +84,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
             </div>
           :
           <div className='sliders' id='hsl-sliders'>
+            <div className="slider-box">
               <input type='range' id='hue' min='0' max='360' value={ hslColor[0] } 
                 onChange={ e => setHSL( e.target.value, 0 )} 
                 style={{ 
@@ -92,10 +99,12 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                     hsl(315, ${hslColor[1]}%, ${hslColor[2]}%),
                     hsl(360, ${hslColor[1]}%, ${hslColor[2]}%))` 
                   }} />
-              <label htmlFor="hue">hue
+              <label htmlFor="hue">
                 <input type="number" min='0' max='100' value={ hslColor[0] }
                   onChange={ e => setHSL( e.target.value, 0 )} />
               </label>
+            </div>
+            <div className="slider-box">
               <input type='range' min='0' max='100' value={ hslColor[1] } 
                 onChange={ e => setHSL( e.target.value, 1 )}
                 style={{ 
@@ -103,10 +112,12 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                     hsl(${hslColor[0]}, 0%, ${hslColor[2]}%), 
                     hsl(${hslColor[0]}, 100%, ${hslColor[2]}%))` 
                   }} />
-              <label htmlFor="saturation">saturation
+              <label htmlFor="saturation">
                 <input type="number" min='0' max='100' value={ hslColor[1] }
                   onChange={ e => setHSL( e.target.value, 1 )} />
               </label>
+            </div>
+            <div className="slider-box">
               <input type='range' min='0' max='100' value={ hslColor[2] } 
                 onChange={ e => setHSL( e.target.value, 2 )}
                 style={{ 
@@ -115,11 +126,12 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                     hsl(${hslColor[0]}, ${hslColor[1]}%, 50%), 
                     hsl(${hslColor[0]}, ${hslColor[1]}%, 100%))` 
                   }} />
-              <label htmlFor="lightness">lightness
+              <label htmlFor="lightness">
                 <input type="number" min='0' max='100' value={ hslColor[2] }
                   onChange={ e => setHSL( e.target.value, 2 )} />
               </label>
             </div>
+          </div>
         }
         <div>
           <button className={ rgbSliders ? 'named-icon-active' : 'named-icon' }

@@ -5,7 +5,6 @@ import UserPage from "./components/UserPage";
 import DrawingPage from "./components/Drawings/DrawingPage";
 import DrawingIndex from "./components/Drawings/DrawingIndex";
 import DrawingTemplatePage from "./components/Drawings/DrawingTemplatePage";
-import Canvas from "./components/Painter/Canvas";
 import { ProtectedRoute } from "./utils";
 import { useSelector } from "react-redux";
 import Welcome from "./components/Welcome/Welcome";
