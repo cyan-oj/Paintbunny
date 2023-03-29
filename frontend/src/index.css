@@ -76,3 +76,33 @@ button:hover {
 canvas {
   z-index: 100;
 }
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 1px;
+  margin: 8px 0px;
+  padding: 0;
+  background: black;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  background: black;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+input[type=range]::-moz-range-thumb {
+  -moz-appearance: none;
+  width: 24px;
+  height: 24px;
+  background: black;
+  border: none;
+  border-radius: 50%;
+}

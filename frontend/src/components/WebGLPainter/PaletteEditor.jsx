@@ -47,7 +47,8 @@ function PaletteEditor({ activeColor, paintDispatch }) {
       <div>
         { rgbSliders 
           ?
-          <div className='sliders' id='rgb-sliders'>
+          <div className='sliders' id='color-sliders'>
+            <div className="color-slider-box">
               <input type='range' min='0' max='255' value={ rgbColor[0] } 
                 onChange={ e => setRGB( e.target.value, 0 )}
                 style={{ 
@@ -59,6 +60,8 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                 <input type="number" min='0' max='255' value={ rgbColor[0] } 
                   onChange={ e => setRGB( e.target.value, 0 )} />
               </label>
+            </div>
+            <div className="color-slider-box">
               <input type='range' min='0' max='255' value={ rgbColor[1] } 
                 onChange={ e => setRGB( e.target.value, 1 )}
                 style={{ 
@@ -69,7 +72,9 @@ function PaletteEditor({ activeColor, paintDispatch }) {
               <label htmlFor="green">green
                   <input type="number"min='0' max='255' value={ rgbColor[1] } 
                     onChange={ e => setRGB( e.target.value, 1 )} />
-                </label>
+              </label>
+            </div>
+            <div className="color-slider-box">
               <input type='range' min='0' max='255' value={ rgbColor[2] } 
                 onChange={ e => setRGB( e.target.value, 2 )}
                 style={{ 
@@ -82,9 +87,10 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   onChange={ e => setRGB( e.target.value, 2 )} />
               </label>
             </div>
+          </div>
           :
-          <div className='sliders' id='hsl-sliders'>
-            <div className="slider-box">
+          <div className='sliders' id='color-sliders'>
+            <div className="color-slider-box">
               <input type='range' id='hue' min='0' max='360' value={ hslColor[0] } 
                 onChange={ e => setHSL( e.target.value, 0 )} 
                 style={{ 
@@ -104,7 +110,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   onChange={ e => setHSL( e.target.value, 0 )} />
               </label>
             </div>
-            <div className="slider-box">
+            <div className="color-slider-box">
               <input type='range' min='0' max='100' value={ hslColor[1] } 
                 onChange={ e => setHSL( e.target.value, 1 )}
                 style={{ 
@@ -117,7 +123,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   onChange={ e => setHSL( e.target.value, 1 )} />
               </label>
             </div>
-            <div className="slider-box">
+            <div className="color-slider-box">
               <input type='range' min='0' max='100' value={ hslColor[2] } 
                 onChange={ e => setHSL( e.target.value, 2 )}
                 style={{ 
