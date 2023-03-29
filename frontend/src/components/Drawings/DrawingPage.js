@@ -72,7 +72,7 @@ function DrawingPage() {
           <CommentIndex drawingId={drawingId} />
           { user &&           
             <div className="comment-canvas" >
-              <Canvas height="256" drawingId={ drawingId } />
+              <Painter canvasType={'comment'} height={ 256 } drawingId={ drawingId } />
             </div>
           }
           { !user && 

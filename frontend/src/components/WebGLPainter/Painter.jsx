@@ -229,7 +229,8 @@ function Painter( props ) {
 
   const blobCanvas = e => {
     e.preventDefault();
-    bgContext.current.drawImage( canvas, 0, 0 )
+    const context = bgContext.current
+    context.drawImage( canvas, 0, 0 )
     const dataURL = bgCanvas.current.toDataURL("img/png");
     const blobData = dataURItoBlob( dataURL );
     const formData = new FormData();
