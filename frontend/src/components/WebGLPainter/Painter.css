@@ -1,3 +1,11 @@
+#workspace {
+  position: relative;
+}
+#workspace > canvas {
+  position: absolute;
+  margin: auto;
+}
+
 .toolbox{
   filter: drop-shadow(0 0 1.4mm black);
   display: flex;

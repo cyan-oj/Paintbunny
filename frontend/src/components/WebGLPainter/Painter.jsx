@@ -159,17 +159,20 @@ function Painter( props ) {
     const parent = workspace.current
     parent.appendChild( canvas )
 
-    bgContext.current = bgCanvas.current.getContext('2d')
-    bgContext.current.fillStyle = "white";
-    bgContext.current.fillRect(0, 0, bgCanvas.width, bgCanvas.height)
+    const background = bgCanvas.current
+    bgContext.current = background.getContext('2d')
+    const context = bgContext.current
+    context.fillStyle = "white";
+    context.fillRect(0, 0, width, height)
+
     const getImageData = async () => {
-      const response = await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
+      await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
     }
-    getImageData();
     if ( drawing ) {
+      getImageData()
       bgContext.current.drawImage(image, 0, 0)
     }
-  }, [ canvas ])
+  }, [])
 
   const setPenEvt = ( evt ) => {
     const rect = evt.target.getBoundingClientRect();
@@ -242,7 +245,7 @@ function Painter( props ) {
       formData.append('drawing[artist_id]', user.id)
       formData.append('drawing[image]', blobData)
       dispatch(updateDrawing( user.id, props.drawingId, formData ))
-      props.toggleEdit();
+      props.toggleEdit()
     } else {
       formData.append('drawing[title]', title);
       formData.append('drawing[description]', description)
@@ -256,13 +259,19 @@ function Painter( props ) {
   return (
   <>
     {/* <button onClick={() => console.log( paintState )}>log state</button> */}
-    <div ref={ workspace } width={ paintState.width } height={ paintState.height }
+    <div id="workspace"
+      ref={ workspace } 
+      style={{
+        width: width,
+        height: height
+      }}
       onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
       onPointerDown={ setPenEvt }
       onPointerEnter={ setPenEvt }
       onPointerUp={() => saveStroke( currentStroke )}
-    />
-    <canvas ref={ bgCanvas } width={ paintState.width } height={ paintState.height }/>
+    >
+    <canvas ref={ bgCanvas } width={ width } height={ height }/>
+    </div>
     <div className="tools">
       <div className="toolbox">
         <div className="square-button" onClick={ undo }>
