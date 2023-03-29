@@ -33,6 +33,7 @@ const init = ( props ) => {
     canvasType: props.canvasType ? props.canvasType : 'painting',
     canvas: null,
     gl: null,
+    bgContext: null,
     palette: props.palette ? props.palette : DEFAULT_PALETTE,
     brushes: props.brushes ? props.brushes : DEFAULT_BRUSHES,
     activeColor: [ 0, 255, 0 ],
@@ -48,8 +49,7 @@ const init = ( props ) => {
 
   const initCanvas = createGLContext( 
     initialState.width, 
-    initialState.height, 
-    [ 1.0, 1.0, 1.0, 1.0 ]
+    initialState.height
   )
 
   initialState.canvas = initCanvas.canvas
@@ -141,6 +141,7 @@ function Painter( props ) {
   const user = useSelector( state => state.session.user )
 
   const bgCanvas = useRef( null )
+  const bgContext = useRef( null )
 
   const image = new Image( 512, 512 )
   image.crossOrigin = "anonymous"
@@ -158,20 +159,16 @@ function Painter( props ) {
     const parent = workspace.current
     parent.appendChild( canvas )
 
-    const background = bgCanvas.current
-    const bgContext = background.getContext('2d')
-
-    bgContext.fillStyle = "white";
-    bgContext.fillRect(0, 0, bgContext.canvas.width, bgContext.canvas.height)
-
+    bgContext.current = bgCanvas.current.getContext('2d')
+    bgContext.current.fillStyle = "white";
+    bgContext.current.fillRect(0, 0, bgCanvas.width, bgCanvas.height)
     const getImageData = async () => {
       const response = await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
     }
     getImageData();
     if ( drawing ) {
-      bgContext.drawImage(image, 0, 0)
+      bgContext.current.drawImage(image, 0, 0)
     }
-
   }, [ canvas ])
 
   const setPenEvt = ( evt ) => {
@@ -229,8 +226,9 @@ function Painter( props ) {
 
   const blobCanvas = e => {
     e.preventDefault();
-    const dataURL = canvas.toDataURL("img/png");
-    const blobData = dataURItoBlob(dataURL);
+    bgContext.current.drawImage( canvas, 0, 0 )
+    const dataURL = bgCanvas.current.toDataURL("img/png");
+    const blobData = dataURItoBlob( dataURL );
     const formData = new FormData();
 
     if (canvasType === 'comment') {
