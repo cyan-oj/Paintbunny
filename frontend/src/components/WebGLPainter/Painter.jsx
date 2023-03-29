@@ -12,7 +12,6 @@ import Brushes from "./Brushes";
 import { ReactComponent as UndoIcon } from '../../icons/arrow-undo-sharp.svg'
 import { ReactComponent as RedoIcon } from '../../icons/arrow-redo-sharp.svg'
 import './Painter.css';
-import { fetchUser } from "../../store/users";
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -139,16 +138,15 @@ function Painter( props ) {
   const dispatch = useDispatch();
   const drawing = useSelector(getDrawing( props.drawingId ))
   const user = useSelector( state => state.session.user )
-
   const bgCanvas = useRef( null )
   const bgContext = useRef( null )
+  const workspace = useRef()
 
   const image = new Image( 512, 512 )
   image.crossOrigin = "anonymous"
   if ( drawing ) image.src = drawing.imageUrl
+
   const buttonText = props.imgSrc ? "edit" : "post"
-  
-  const workspace = useRef()
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
   const currentStroke = { 
     color: activeColor,
@@ -165,12 +163,14 @@ function Painter( props ) {
     context.fillStyle = "white";
     context.fillRect(0, 0, width, height)
 
-    const getImageData = async () => {
-      await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
-    }
-    if ( drawing ) {
-      getImageData()
-      bgContext.current.drawImage(image, 0, 0)
+    if ( canvasType === 'painting') {
+      const getImageData = async () => {
+        await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
+      }
+      if ( drawing ) {
+        getImageData()
+        bgContext.current.drawImage(image, 0, 0)
+      }
     }
   }, [])
 

@@ -4,7 +4,6 @@ import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchDrawing, getDrawing, destroyDrawing } from "../../store/drawings";
 import CommentIndex from "../Comments/CommentIndex";
 import Welcome from "../Welcome/Welcome";
-import Canvas from "../Painter/Canvas";
 import "./DrawingPage.css"
 import Painter from "../WebGLPainter/Painter";
 
