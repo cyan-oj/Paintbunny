@@ -48,7 +48,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
           ?
           <div className='sliders' id='color-sliders'>
             <ColorSlider value={ rgbColor[0] } valueLabel="red" 
-              color={ rgbColor } setColor={ setRGB } index={ 0 }
+              color={ rgbColor } setValue={ setRGB } index={ 0 }
               leftArrowColor={{ backgroundColor: `rgb(0, ${rgbColor[1]}, ${rgbColor[2]})` }}
               rightArrowColor={{ backgroundColor: `rgb(255, ${rgbColor[1]}, ${rgbColor[2]})` }}
               backgroundImage={{                   
@@ -57,7 +57,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   rgb(255, ${rgbColor[1]}, ${rgbColor[2]}))` 
               }}/>
             <ColorSlider value={ rgbColor[1] } valueLabel="green" 
-              color={ rgbColor } setColor={ setRGB } index={ 1 }
+              color={ rgbColor } setValue={ setRGB } index={ 1 }
               leftArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, 0, ${rgbColor[2]})` }}
               rightArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, 255, ${rgbColor[2]})` }}
               backgroundImage={{                   
@@ -66,7 +66,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   rgb(${rgbColor[0]}, 255, ${rgbColor[2]}))` 
               }}/>
             <ColorSlider value={ rgbColor[2] } valueLabel="blue" 
-              color={ rgbColor } setColor={ setRGB } index={ 2 }
+              color={ rgbColor } setValue={ setRGB } index={ 2 }
               leftArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, ${rgbColor[1]}, 0)` }}
               rightArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, ${rgbColor[1]}, 255)` }}
               backgroundImage={{                   
@@ -78,7 +78,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
           :
           <div className='sliders' id='color-sliders'>
             <ColorSlider value={ hslColor[0] } valueLabel="hue" 
-              color={ hslColor } setColor={ setHSL } index={ 0 } max={ 360 }
+              color={ hslColor } setValue={ setHSL } index={ 0 } max={ 360 }
               leftArrowColor={{ backgroundColor: `hsl(0, ${hslColor[1]}%, ${hslColor[2]}%)` }}
               rightArrowColor={{ backgroundColor: `hsl(360, ${hslColor[1]}%, ${hslColor[2]}%)` }}
               backgroundImage={{                   
@@ -94,7 +94,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   hsl(360, ${hslColor[1]}%, ${hslColor[2]}%))` 
               }}/>
             <ColorSlider value={ hslColor[1] } valueLabel="saturation" 
-              color={ hslColor } setColor={ setHSL } index={ 1 } max={ 100 }
+              color={ hslColor } setValue={ setHSL } index={ 1 } max={ 100 }
               leftArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, 0%, ${hslColor[2]}%)` }}
               rightArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, 100%, ${hslColor[2]}%)` }}
               backgroundImage={{                   
@@ -103,7 +103,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   hsl(${hslColor[0]}, 100%, ${hslColor[2]}%))`
               }}/>
             <ColorSlider value={ hslColor[2] } valueLabel="lightness" 
-              color={ hslColor } setColor={ setHSL } index={ 2 } max={ 100 }
+              color={ hslColor } setValue={ setHSL } index={ 2 } max={ 100 }
               leftArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, ${hslColor[1]}%, 0%)` }}
               rightArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, ${hslColor[1]}%, 100%)` }}
               backgroundImage={{                   

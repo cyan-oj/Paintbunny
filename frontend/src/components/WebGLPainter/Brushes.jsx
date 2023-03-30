@@ -1,7 +1,8 @@
 import BrushThumbnail from "./BrushThumbnail"
+import BrushSample from "./BrushSample"
 import { ReactComponent as BrushIcon } from '../../icons/brush-sharp.svg'
 
-function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBrushTools }){
+function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBrushTools, brushSample }){
 
   const setBrush = brush => paintDispatch({ type: 'activeBrush', payload: brush })
   const setShowTools = bool => paintDispatch({ type: 'showBrushTools', payload: bool })
@@ -15,7 +16,7 @@ function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBru
   )
 
   return (
-    <>
+    <div className="toolbox">
       <div className="square-button" onClick={() => setShowTools( !showBrushTools ) }> 
         <BrushIcon className="icon" />
       </div>
@@ -31,6 +32,7 @@ function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBru
                 onChange={ e => paintDispatch({ type: 'brush_scale', payload: e.target.value })} />
             </label>
           </div>
+          <BrushSample brushSample={ brushSample } activeBrush={ activeBrush } />
           <div className="slider-box">
             <input type='range' min='0' max='360' value={ activeBrush.angle }
               onChange={ e => paintDispatch({ type: 'brush_angle', payload: e.target.value })}
@@ -51,7 +53,7 @@ function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBru
           </div>
         </div>
       }
-    </>
+    </div>
   )
 }
 

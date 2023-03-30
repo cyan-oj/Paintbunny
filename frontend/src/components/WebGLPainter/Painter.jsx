@@ -60,7 +60,7 @@ const init = ( props ) => {
   initialState.canvas = initCanvas.canvas
   initialState.gl = initCanvas.gl
 
-  initialState.brushSample = createGLContext( 256, 256 )
+  initialState.brushSample = createGLContext( 512, 256 )
 
   for ( let i = 0; i < initialState.brushes.length; i++ ) {
     const thumbnail = createGLContext( 40, 40 )
@@ -288,12 +288,8 @@ function Painter( props ) {
           <RedoIcon className="icon"/>
         </div>
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
-        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } />
+        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } />
       </div>
-      { ( showBrushTools || showColorTools )
-        ? <BrushSample brushSample={ brushSample } activeBrush={ activeBrush } activeColor={ activeColor }  />
-        : null
-      }
     </div>
     <form onSubmit={ blobCanvas } className="comment-form">
       { (canvasType === 'painting') &&

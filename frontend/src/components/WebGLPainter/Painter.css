@@ -11,7 +11,8 @@
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  max-width: 512px;
+  max-width: 100%;
+  min-width: 256px;
   /* mheight: 400px; */
 }
 .tools {
@@ -23,12 +24,12 @@
   background-color: lightgray;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 51px;
+  height: 51px;
 }
 .square-button:hover{
-  width: 44px;
-  height: 44px;
+  width: 55px;
+  height: 55px;
   margin: -2px;
   z-index: 10;
 }
@@ -47,16 +48,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-.color-slider-box > label {
-  position: absolute;
-  right: 20px;
-  max-width: 24px;
-}
-.color-slider-box > label > input {
-  max-width: inherit;
-  background-color: transparent;
-  border: none;
 }
 
 .slider-box {

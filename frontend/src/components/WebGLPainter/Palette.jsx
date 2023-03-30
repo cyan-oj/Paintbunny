@@ -20,7 +20,7 @@ function Palette({ activeColor, palette, paintDispatch, showColorTools }) {
   )
 
   return (
-    <>
+    <div className="toolbox">
       <div className="square-button" onClick={() => setShowTools( !showColorTools ) }>
         <PaletteIcon className="icon"/>
       </div>
@@ -28,7 +28,7 @@ function Palette({ activeColor, palette, paintDispatch, showColorTools }) {
       { showColorTools && 
         <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
       }
-    </>
+    </div>
   )
 }
 
