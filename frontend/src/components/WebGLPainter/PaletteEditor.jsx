@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import convert from 'color-convert'
 import { colorString } from "./utils/colorConvert"
 import ColorSlider from "./ColorSlider"
+import PreviewSpacer from "./PreviewSpacer"
 
 function PaletteEditor({ activeColor, paintDispatch }) {
 
@@ -43,10 +44,11 @@ function PaletteEditor({ activeColor, paintDispatch }) {
 
   return (
     <div className="tool-editor">
-      <div>
+      <>
         { rgbSliders 
           ?
           <div className='sliders' id='color-sliders'>
+            <PreviewSpacer paintDispatch={ paintDispatch } />
             <ColorSlider value={ rgbColor[0] } valueLabel="red" 
               color={ rgbColor } setValue={ setRGB } index={ 0 }
               leftArrowColor={{ backgroundColor: `rgb(0, ${rgbColor[1]}, ${rgbColor[2]})` }}
@@ -77,6 +79,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
           </div>
           :
           <div className='sliders' id='color-sliders'>
+            <PreviewSpacer paintDispatch={ paintDispatch } />
             <ColorSlider value={ hslColor[0] } valueLabel="hue" 
               color={ hslColor } setValue={ setHSL } index={ 0 } max={ 360 }
               leftArrowColor={{ backgroundColor: `hsl(0, ${hslColor[1]}%, ${hslColor[2]}%)` }}
@@ -125,7 +128,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
             onClick={() => addColor( activeColor ) }
             >add color</button>
         </div>
-      </div>
+      </>
     </div>
   )
 }

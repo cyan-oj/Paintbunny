@@ -12,6 +12,8 @@ import Brushes from "./Brushes";
 import { ReactComponent as UndoIcon } from '../../icons/arrow-undo-sharp.svg'
 import { ReactComponent as RedoIcon } from '../../icons/arrow-redo-sharp.svg'
 import './Painter.css';
+import PaletteEditor from "./PaletteEditor";
+import BrushEditor from "./BrushEditor";
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -60,7 +62,7 @@ const init = ( props ) => {
   initialState.canvas = initCanvas.canvas
   initialState.gl = initCanvas.gl
 
-  initialState.brushSample = createGLContext( 512, 256 )
+  initialState.brushSample = createGLContext( 512, 512 )
 
   for ( let i = 0; i < initialState.brushes.length; i++ ) {
     const thumbnail = createGLContext( 40, 40 )
@@ -99,8 +101,7 @@ const paintReducer = ( state, action ) => {
       const stroke = newStrokeHistory.pop()
       newRedoCache.push( stroke )
       redraw( state.gl, newStrokeHistory )
-      return { 
-        ...state,
+      return { ...state,
         strokeHistory: newStrokeHistory,
         redoCache: newRedoCache
       }
@@ -113,10 +114,27 @@ const paintReducer = ( state, action ) => {
       newStrokeHistory.push( stroke )
       const glAttributes = getGLAttributes( state.gl )
       drawStroke( state.gl, glAttributes, rgbToGL(stroke.color), stroke.points )
-      return { 
-        ...state,
+      return { ...state,
         redoCache: newRedoCache,
         strokeHistory: newStrokeHistory
+      }
+    }
+    case 'close_tools': {
+      return { ...state, 
+        showBrushTools: false,
+        showColorTools: false
+      }
+    }
+    case 'show_brush_tools': {
+      return { ...state,
+        showBrushTools: payload,
+        showColorTools: false
+      }
+    }
+    case 'show_color_tools': {
+      return { ...state,
+        showBrushTools: false,
+        showColorTools: payload
       }
     }
     case 'add_color': {
@@ -281,12 +299,24 @@ function Painter( props ) {
     </div>
     <div className="tools">
       <div className="toolbox">
-        <div className="square-button" onClick={ undo }>
+        { ( showBrushTools || showColorTools )
+          ? <BrushSample brushSample={ brushSample }
+              activeBrush={ activeBrush } activeColor={ activeColor } />
+          : null
+        }
+        {
+          showColorTools &&
+          <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
+        }
+        { showBrushTools &&
+          <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } />
+        }
+        {/* <div className="square-button" onClick={ undo }>
           <UndoIcon className="icon"/>
         </div>
         <div className="square-button" onClick={ redo }>
           <RedoIcon className="icon"/>
-        </div>
+        </div> */}
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
         <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } />
       </div>

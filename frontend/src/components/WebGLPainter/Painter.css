@@ -19,17 +19,21 @@
   display: flex;
   max-width: 512px;
 }
+.tool-editor {
+  margin: 8px 0px;
+  width: 100%;
+}
 .square-button {
   display: flex;
   background-color: lightgray;
   align-items: center;
   justify-content: center;
-  width: 51px;
-  height: 51px;
+  width: 64px;
+  height: 64px;
 }
 .square-button:hover{
-  width: 55px;
-  height: 55px;
+  width: 68px;
+  height: 68px;
   margin: -2px;
   z-index: 10;
 }
@@ -88,16 +92,16 @@
   margin: 0px;
 }
 
-.brush-sample {
-  height: 256px;
-  display: flex;
-  justify-content: center;
+.brush-sample, .color-sample {
+  position: absolute;
+  z-index: -10;
 }
-
 .brush-sample > canvas{
-  box-sizing: border-box;
-  border: 1px solid black;
-  border-radius: 4px;
+  position: relative;
+  top: -192px;
+}
+.preview-spacer {
+  height: 100px;
 }
 
 .color-slider-box > input[type=range] {
