@@ -59,15 +59,3 @@ button.brush:hover {
   flex-wrap: wrap;
   margin: 2px;
 }
-
-.comment-form {
-  position: relative;
-  display: flex;
-  max-width: 400px;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  max-width: 256px;
-  margin: auto
-}
-

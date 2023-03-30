@@ -20,7 +20,10 @@ function BrushThumbnail({ brush, thumbnail }){
 
 
   return (
-    <div ref={ preview } className="brush-thumb" />
+    <div className="brush-thumb" >
+      <div ref={ preview } />
+      <p>{ brush.scale }</p>
+    </div>
   )
 }
 

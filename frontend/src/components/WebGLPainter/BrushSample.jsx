@@ -16,7 +16,7 @@ function BrushSample({ brushSample, activeBrush, activeColor }){
     gl.clear( gl.COLOR_BUFFER_BIT )
     modelMatrix.setTranslate( 0, 0, 0.0 )
     modelMatrix.rotate( activeBrush.angle, 0, 0, 1 )
-    modelMatrix.scale( activeBrush.scale * activeBrush.ratio, activeBrush.scale )
+    modelMatrix.scale( activeBrush.scale/2 * activeBrush.ratio, activeBrush.scale/2 )
     drawPoint( gl, modelMatrix, glAttributes, drawColor )
   }, [ activeBrush, activeColor, brushSample ])
 

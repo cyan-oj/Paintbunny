@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
@@ -14,6 +14,7 @@ import { ReactComponent as RedoIcon } from '../../icons/arrow-redo-sharp.svg'
 import './Painter.css';
 import PaletteEditor from "./PaletteEditor";
 import BrushEditor from "./BrushEditor";
+import { useWindowSize } from "../../hooks";
 
 const DEFAULT_PALETTE = [
   [ 255, 0, 0 ],
@@ -65,7 +66,7 @@ const init = ( props ) => {
   initialState.brushSample = createGLContext( 512, 512 )
 
   for ( let i = 0; i < initialState.brushes.length; i++ ) {
-    const thumbnail = createGLContext( 40, 40 )
+    const thumbnail = createGLContext( 64, 64 )
     initialState.brushThumbnails.push( thumbnail )
   }
   return initialState;
@@ -92,6 +93,12 @@ const paintReducer = ( state, action ) => {
     case 'brush_scale': {
       const newBrush = { ...state.activeBrush }
       newBrush.scale = payload
+      return { ...state, activeBrush: newBrush }
+    }
+    case 'brush_spacing': {
+      const newBrush = { ...state.activeBrush }
+      newBrush.spacing = payload
+      console.log(newBrush.spacing, state.activeBrush.spacing)
       return { ...state, activeBrush: newBrush }
     }
     case 'undo': {
@@ -142,6 +149,14 @@ const paintReducer = ( state, action ) => {
       newPalette.push( payload )
       return { ...state, palette: newPalette }
     }
+    case 'add_brush': {
+      const newBrushes = [ ...state.brushes]
+      newBrushes.push(payload)
+      const newPreviews = [ ...state.brushThumbnails ]
+      const newThumb = createGLContext( 64, 64 )
+      newPreviews.push( newThumb )
+      return { ...state, brushes: newBrushes, brushThumbnails: newPreviews }
+    }
     default: {
       return { ...state, [type]: payload }
     }
@@ -158,13 +173,16 @@ function Painter( props ) {
           showBrushTools, showColorTools,
           brushSample, brushThumbnails } = paintState
 
+  const [ wideRatio, setWideRatio ] = useState( true )
   const history = useHistory();
   const dispatch = useDispatch();
   const drawing = useSelector(getDrawing( props.drawingId ))
   const user = useSelector( state => state.session.user )
   const bgCanvas = useRef( null )
   const bgContext = useRef( null )
-  const workspace = useRef()
+  const workspace = useRef( null )
+
+  const [ windowWidth, windowHeight ] = useWindowSize()
 
   const image = new Image( 512, 512 )
   image.crossOrigin = "anonymous"
@@ -197,6 +215,14 @@ function Painter( props ) {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if ( windowWidth / windowHeight > 1 ) {
+      setWideRatio( true )
+    } else {
+      setWideRatio( false )
+    }
+  }, [ windowWidth, windowHeight ])
 
   const setPenEvt = ( evt ) => {
     const rect = evt.target.getBoundingClientRect();
@@ -282,28 +308,13 @@ function Painter( props ) {
   }
 
   return (
-  <>
+  <div id="paint-container">
     {/* <button onClick={() => console.log( paintState )}>log state</button> */}
-    <div id="workspace"
-      ref={ workspace } 
-      style={{
-        width: width,
-        height: height
-      }}
-      onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
-      onPointerDown={ setPenEvt }
-      onPointerEnter={ setPenEvt }
-      onPointerUp={() => saveStroke( currentStroke )}
-    >
-    <canvas ref={ bgCanvas } width={ width } height={ height }/>
-    </div>
-    <div className="tools">
+    { wideRatio &&
       <div className="toolbox">
-        { ( showBrushTools || showColorTools )
-          ? <BrushSample brushSample={ brushSample }
-              activeBrush={ activeBrush } activeColor={ activeColor } />
-          : null
-        }
+        <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
+        <div style={{width: '100%'}}></div>
+        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } />
         {
           showColorTools &&
           <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
@@ -311,34 +322,66 @@ function Painter( props ) {
         { showBrushTools &&
           <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } />
         }
-        {/* <div className="square-button" onClick={ undo }>
-          <UndoIcon className="icon"/>
-        </div>
-        <div className="square-button" onClick={ redo }>
-          <RedoIcon className="icon"/>
-        </div> */}
-        <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
-        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } />
       </div>
-    </div>
-    <form onSubmit={ blobCanvas } className="comment-form">
-      { (canvasType === 'painting') &&
-      <>
-        <input placeholder="title"
-          type="text" 
-          value={ title }
-          onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
-          />
-        <textarea placeholder="description"
-          type="text"
-          value={ description }
-          onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
-          />
-      </>
+    } 
+    <div id="workspace" ref={ workspace } >
+      <div ref={ workspace } id="canvas-wrapper"
+        style={{
+          width: width,
+          height: height
+        }}
+        onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
+        onPointerDown={ setPenEvt }
+        onPointerEnter={ setPenEvt }
+        onPointerUp={() => saveStroke( currentStroke )}
+      >
+        <canvas ref={ bgCanvas } width={ width } height={ height }/>
+      </div>
+      { !wideRatio &&
+        <div className="tools">
+          <div className="toolbox">
+            { ( showBrushTools || showColorTools )
+              ? <BrushSample brushSample={ brushSample }
+              activeBrush={ activeBrush } activeColor={ activeColor } />
+              : null
+            }
+            {
+              showColorTools &&
+              <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
+            }
+            { showBrushTools &&
+              <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } />
+            }
+            <div className="square-button" onClick={ undo }>
+              <UndoIcon className="icon"/>
+            </div>
+            <div className="square-button" onClick={ redo }>
+              <RedoIcon className="icon"/>
+            </div>
+            <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
+            <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } />
+          </div>
+        </div>
       }
-      <button type="submit">{ buttonText }</button>
-    </form>
-  </>
+      <form onSubmit={ blobCanvas } className="comment-form">
+        { (canvasType === 'painting') &&
+        <>
+          <input placeholder="title"
+            type="text" 
+            value={ title }
+            onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
+            />
+          <textarea placeholder="description"
+            type="text"
+            value={ description }
+            onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
+            />
+        </>
+        }
+        <button type="submit">{ buttonText }</button>
+      </form>
+    </div>
+  </div>
   )
 }
 
