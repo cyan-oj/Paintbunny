@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import convert from 'color-convert'
 import { colorString } from "./utils/colorConvert"
-import CompSlider from "./CompSlider"
+import ColorSlider from "./ColorSlider"
 
 function PaletteEditor({ activeColor, paintDispatch }) {
 
@@ -47,7 +47,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
         { rgbSliders 
           ?
           <div className='sliders' id='color-sliders'>
-            <CompSlider value={ rgbColor[0] } valueLabel="red" 
+            <ColorSlider value={ rgbColor[0] } valueLabel="red" 
               color={ rgbColor } setColor={ setRGB } index={ 0 }
               leftArrowColor={{ backgroundColor: `rgb(0, ${rgbColor[1]}, ${rgbColor[2]})` }}
               rightArrowColor={{ backgroundColor: `rgb(255, ${rgbColor[1]}, ${rgbColor[2]})` }}
@@ -56,7 +56,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   rgb(0, ${rgbColor[1]}, ${rgbColor[2]}), 
                   rgb(255, ${rgbColor[1]}, ${rgbColor[2]}))` 
               }}/>
-            <CompSlider value={ rgbColor[1] } valueLabel="green" 
+            <ColorSlider value={ rgbColor[1] } valueLabel="green" 
               color={ rgbColor } setColor={ setRGB } index={ 1 }
               leftArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, 0, ${rgbColor[2]})` }}
               rightArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, 255, ${rgbColor[2]})` }}
@@ -65,7 +65,7 @@ function PaletteEditor({ activeColor, paintDispatch }) {
                   rgb(${rgbColor[0]}, 0, ${rgbColor[2]}), 
                   rgb(${rgbColor[0]}, 255, ${rgbColor[2]}))` 
               }}/>
-            <CompSlider value={ rgbColor[2] } valueLabel="blue" 
+            <ColorSlider value={ rgbColor[2] } valueLabel="blue" 
               color={ rgbColor } setColor={ setRGB } index={ 2 }
               leftArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, ${rgbColor[1]}, 0)` }}
               rightArrowColor={{ backgroundColor: `rgb(${rgbColor[0]}, ${rgbColor[1]}, 255)` }}
@@ -77,44 +77,41 @@ function PaletteEditor({ activeColor, paintDispatch }) {
           </div>
           :
           <div className='sliders' id='color-sliders'>
-            <div className="color-slider-box">
-              <input type='range' id='hue' min='0' max='360' value={ hslColor[0] } 
-                onChange={ e => setHSL( e.target.value, 0 )} 
-                style={{ 
-                  backgroundImage: `linear-gradient(to right, 
-                    hsl(0, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(45, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(90, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(135, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(180, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(225, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(270, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(315, ${hslColor[1]}%, ${hslColor[2]}%),
-                    hsl(360, ${hslColor[1]}%, ${hslColor[2]}%))` 
-                  }} />
-              <div className="slider-num">{ hslColor[0] }</div>
-            </div>
-            <div className="color-slider-box">
-              <input type='range' min='0' max='100' value={ hslColor[1] } 
-                onChange={ e => setHSL( e.target.value, 1 )}
-                style={{ 
-                  backgroundImage:  `linear-gradient(to right, 
-                    hsl(${hslColor[0]}, 0%, ${hslColor[2]}%), 
-                    hsl(${hslColor[0]}, 100%, ${hslColor[2]}%))` 
-                  }} />
-              <div className="slider-num">{ hslColor[1] }</div>
-            </div>
-            <div className="color-slider-box">
-              <input type='range' id="lightness" min='0' max='100' value={ hslColor[2] } 
-                onChange={ e => setHSL( e.target.value, 2 )}
-                style={{ 
-                  backgroundImage:  `linear-gradient(to right, 
-                    hsl(${hslColor[0]}, ${hslColor[1]}%, 0%), 
-                    hsl(${hslColor[0]}, ${hslColor[1]}%, 50%), 
-                    hsl(${hslColor[0]}, ${hslColor[1]}%, 100%))` 
-                  }} />
-              <div className="slider-num">{ hslColor[2] }</div>
-            </div>
+            <ColorSlider value={ hslColor[0] } valueLabel="hue" 
+              color={ hslColor } setColor={ setHSL } index={ 0 } max={ 360 }
+              leftArrowColor={{ backgroundColor: `hsl(0, ${hslColor[1]}%, ${hslColor[2]}%)` }}
+              rightArrowColor={{ backgroundColor: `hsl(360, ${hslColor[1]}%, ${hslColor[2]}%)` }}
+              backgroundImage={{                   
+                backgroundImage: `linear-gradient(to right, 
+                  hsl(0, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(45, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(90, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(135, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(180, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(225, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(270, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(315, ${hslColor[1]}%, ${hslColor[2]}%),
+                  hsl(360, ${hslColor[1]}%, ${hslColor[2]}%))` 
+              }}/>
+            <ColorSlider value={ hslColor[1] } valueLabel="saturation" 
+              color={ hslColor } setColor={ setHSL } index={ 1 } max={ 100 }
+              leftArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, 0%, ${hslColor[2]}%)` }}
+              rightArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, 100%, ${hslColor[2]}%)` }}
+              backgroundImage={{                   
+                backgroundImage:  `linear-gradient(to right, 
+                  hsl(${hslColor[0]}, 0%, ${hslColor[2]}%), 
+                  hsl(${hslColor[0]}, 100%, ${hslColor[2]}%))`
+              }}/>
+            <ColorSlider value={ hslColor[2] } valueLabel="lightness" 
+              color={ hslColor } setColor={ setHSL } index={ 2 } max={ 100 }
+              leftArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, ${hslColor[1]}%, 0%)` }}
+              rightArrowColor={{ backgroundColor: `hsl(${hslColor[0]}, ${hslColor[1]}%, 100%)` }}
+              backgroundImage={{                   
+                backgroundImage:  `linear-gradient(to right, 
+                  hsl(${hslColor[0]}, ${hslColor[1]}%, 0%), 
+                  hsl(${hslColor[0]}, ${hslColor[1]}%, 50%), 
+                  hsl(${hslColor[0]}, ${hslColor[1]}%, 100%))` 
+              }}/>
           </div>
         }
         <div>
