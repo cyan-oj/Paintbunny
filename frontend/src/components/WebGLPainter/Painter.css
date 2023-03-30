@@ -75,6 +75,18 @@
   background-color: transparent;
   border: none;
 }
+.slider-num {
+  position: absolute;
+  margin: auto;
+  pointer-events: none;
+  color: white;
+  filter: drop-shadow(0 0 1.4mm black);
+}
+.slider-arrow{
+  width: 24px;
+  height: 24px;
+  user-select: none;
+}
 
 .sliders > label {
   display: flex;
