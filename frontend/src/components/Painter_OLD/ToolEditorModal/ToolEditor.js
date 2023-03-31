@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../../../store/users";
+import { updateUserTools } from "../../../store/users";
 import "./ToolEditor.css"
 
 function ToolEditor() {
@@ -12,15 +12,13 @@ function ToolEditor() {
   const [brushes, setBrushes] = useState(user.brushes);
   const [testVal, setVal] = useState(1);
 
-  useEffect(() => {
-
-  }, [brushes, palette])
+  useEffect(() => {}, [brushes, palette])
 
   const updateTools = e => {
     e.preventDefault();
     user.palette = palette;
     user.brushes = brushes;
-    dispatch(updateUser(user))
+    dispatch(updateUserTools(user))
   }
 
   
