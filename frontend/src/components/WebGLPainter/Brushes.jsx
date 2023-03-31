@@ -1,7 +1,8 @@
 import BrushThumbnail from "./BrushThumbnail"
 import { ReactComponent as BrushIcon } from '../../icons/brush-sharp.svg'
+import { ReactComponent as LeftIcon } from '../../icons/caret-forward-sharp.svg'
 
-function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBrushTools }){
+function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBrushTools, wideRatio }){
 
   const setBrush = brush => paintDispatch({ type: 'activeBrush', payload: brush })
   const setShowTools = bool => paintDispatch({ type: 'show_brush_tools', payload: bool })
@@ -16,9 +17,11 @@ function Brushes({ brushes, activeBrush, brushThumbnails, paintDispatch, showBru
 
   return (
     <>
-      <div className="square-button" onClick={() => setShowTools( !showBrushTools ) }> 
-        <BrushIcon className="icon" />
-      </div>
+      { !wideRatio &&  
+        <div className="square-button" onClick={() => setShowTools( !showBrushTools ) }> 
+          <BrushIcon className="icon" />
+        </div>
+      }
       { brushList }
     </>
   )

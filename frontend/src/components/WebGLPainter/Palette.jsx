@@ -2,7 +2,7 @@ import { colorString } from "./utils/colorConvert"
 import { ReactComponent as PaletteIcon } from '../../icons/color-palette-sharp.svg'
 import PaletteEditor from './PaletteEditor'
 
-function Palette({ palette, paintDispatch, showColorTools }) {
+function Palette({ palette, paintDispatch, showColorTools, wideRatio }) {
 
   const setColor = color => paintDispatch({ type: 'activeColor', payload: color })
   const setShowTools = bool => paintDispatch({ type: 'show_color_tools' , payload: bool })
@@ -22,9 +22,11 @@ function Palette({ palette, paintDispatch, showColorTools }) {
   return (
     // <div className="toolbox">
     <>
-      <div className="square-button" onClick={() => setShowTools( !showColorTools ) }>
-        <PaletteIcon className="icon"/>
-      </div>
+      { !wideRatio &&
+        <div className="square-button" onClick={() => setShowTools( !showColorTools ) }>
+          <PaletteIcon className="icon"/>
+        </div>
+      }
       { swatches }
     </>
     // </div>

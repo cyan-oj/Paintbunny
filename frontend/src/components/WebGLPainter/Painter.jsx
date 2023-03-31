@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
@@ -216,12 +216,13 @@ function Painter( props ) {
     }
   }, [])
 
-  useEffect(() => {
-    if ( windowWidth / windowHeight > 1 ) {
+  useLayoutEffect(() => {
+    if ( windowWidth >= windowHeight ) {
       setWideRatio( true )
     } else {
       setWideRatio( false )
     }
+    console.log({wideRatio})
   }, [ windowWidth, windowHeight ])
 
   const setPenEvt = ( evt ) => {
@@ -312,19 +313,11 @@ function Painter( props ) {
     {/* <button onClick={() => console.log( paintState )}>log state</button> */}
     { wideRatio &&
       <div className="toolbox">
-        <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
-        <div style={{width: '100%'}}></div>
-        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } />
-        {
-          showColorTools &&
-          <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
-        }
-        { showBrushTools &&
-          <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } />
-        }
+        <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio } />
+        <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } wideRatio={ wideRatio } />
       </div>
     } 
-    <div id="workspace" ref={ workspace } >
+    <div id="workspace" >
       <div ref={ workspace } id="canvas-wrapper"
         style={{
           width: width,
@@ -336,51 +329,61 @@ function Painter( props ) {
         onPointerUp={() => saveStroke( currentStroke )}
       >
         <canvas ref={ bgCanvas } width={ width } height={ height }/>
-      </div>
-      { !wideRatio &&
-        <div className="tools">
-          <div className="toolbox">
-            { ( showBrushTools || showColorTools )
-              ? <BrushSample brushSample={ brushSample }
-              activeBrush={ activeBrush } activeColor={ activeColor } />
-              : null
-            }
-            {
-              showColorTools &&
-              <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
-            }
-            { showBrushTools &&
-              <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } />
-            }
-            <div className="square-button" onClick={ undo }>
-              <UndoIcon className="icon"/>
-            </div>
-            <div className="square-button" onClick={ redo }>
-              <RedoIcon className="icon"/>
-            </div>
-            <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } />
-            <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } />
-          </div>
-        </div>
-      }
-      <form onSubmit={ blobCanvas } className="comment-form">
-        { (canvasType === 'painting') &&
-        <>
-          <input placeholder="title"
-            type="text" 
-            value={ title }
-            onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
-            />
-          <textarea placeholder="description"
-            type="text"
-            value={ description }
-            onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
-            />
-        </>
-        }
-        <button type="submit">{ buttonText }</button>
-      </form>
     </div>
+    { !wideRatio &&
+      <div className="tools">
+        <div className="toolbox">
+          { ( showBrushTools || showColorTools )
+            ? <BrushSample brushSample={ brushSample }
+                activeBrush={ activeBrush } activeColor={ activeColor } />
+            : null
+          }
+          { showColorTools &&
+            <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
+          }
+          { showBrushTools &&
+            <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio }/>
+          }
+          <div className="square-button" onClick={ undo }>
+            <UndoIcon className="icon"/>
+          </div>
+          <div className="square-button" onClick={ redo }>
+            <RedoIcon className="icon"/>
+          </div>
+          <Palette palette={ palette } activeColor={ activeColor } 
+            paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio }/>
+          <Brushes brushes={ brushes } activeBrush={ activeBrush } 
+            brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } 
+            showBrushTools={ showBrushTools } wideRatio={ wideRatio }/>
+        </div>
+      </div>
+    }
+    <form onSubmit={ blobCanvas } className="comment-form">
+      { (canvasType === 'painting') &&
+      <>
+        <input placeholder="title"
+          type="text" 
+          value={ title }
+          onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
+          />
+        <textarea placeholder="description"
+          type="text"
+          value={ description }
+          onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
+          />
+      </>
+      }
+      <button type="submit">{ buttonText }</button>
+    </form>
+    </div>
+    { wideRatio &&
+      <div className="toolbox">
+        <BrushSample brushSample={ brushSample }
+            activeBrush={ activeBrush } activeColor={ activeColor } />
+        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } wideRatio={ wideRatio } />
+        <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio } />
+      </div>
+    } 
   </div>
   )
 }

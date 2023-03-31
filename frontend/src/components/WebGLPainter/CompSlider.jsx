@@ -14,16 +14,19 @@ function CompSlider({ dispatch, type, value, valueLabel, min=0, max=100, step=1,
 
   return (
     <div className="slider-box">
-      <div className="slider-arrow"
+      {/* <div className="slider-arrow"
         onClick={() => dispatch({ type: type, payload: subtractPayloadValue() })}
-      >ᐊ</div>
+      >ᐊ</div> */}
       <input type='range' min={ min } max={ max } value={ value } step={ step }
         onChange={ e => dispatch({ type: type, payload: Number(e.target.value) })}
       />
-      <div className="slider-num">{ `${ valueLabel }: ${ value }` }</div>
-      <div className="slider-arrow"
+      <span className="slider-name">{ valueLabel }</span>
+      <input type='number' className="slider-num" 
+        min={ min } max={ max } value={ value } 
+        onChange={ e => dispatch({ type: type, payload: Number(e.target.value) })}/>
+      {/* <div className="slider-arrow"
         onClick={() => dispatch({ type: type, payload: addPayloadValue() })}
-      >ᐅ</div>
+      >ᐅ</div> */}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import CompSlider from "./CompSlider"
 import PreviewSpacer from "./PreviewSpacer"
 
-function BrushEditor({ paintDispatch, activeBrush }){
+function BrushEditor({ paintDispatch, activeBrush, wideRatio }){
 
   const addBrush = () => {
     paintDispatch({
@@ -18,7 +18,9 @@ function BrushEditor({ paintDispatch, activeBrush }){
   return (
     <div className="tool-editor">
       <div className='sliders' id="brush-sliders">
-        <PreviewSpacer paintDispatch={ paintDispatch } />
+        { !wideRatio &&
+          <PreviewSpacer paintDispatch={ paintDispatch } />
+        }
         <CompSlider  dispatch={ paintDispatch } type={ 'brush_scale' }
           value={ activeBrush.scale } valueLabel='scale'
           min={ 0.05 } max={ 10 } step={ 0.05 }
