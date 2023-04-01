@@ -135,10 +135,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
 }
-.brush-thumb > p {
+.brush-size{
   position: absolute;
+  color: white;
+  z-index: 200;
 }
 .preview-spacer {
   height: 100px;
@@ -175,12 +176,12 @@
   .toolbox {
     max-width: 256px;
   }
-  .toolbox:first-child {
+  #paint-container > .toolbox:first-child {
     margin-right: 4px;
     border-radius: 0 0 8px 8px;
     border-right: solid 1px black;
   }
-  .toolbox:last-child {
+  #paint-container > .toolbox:last-child {
     margin-left: 4px;
     border-radius: 0 8px 8px 0;
     border-left: solid 1px black;

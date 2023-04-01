@@ -18,7 +18,7 @@ export const fetchUser = userId => async dispatch => {
   dispatch(receiveDrawings(data.drawings))
 }
 
-export const updateUserTools = (user) => async dispatch => {
+export const updateUserTools = user => async dispatch => {
   const res = await csrfFetch(`/api/users/${user.id}`, {
     method: "PUT",
     body: JSON.stringify({user: {

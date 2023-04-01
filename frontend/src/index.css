@@ -14,6 +14,9 @@ a, a:visited, a:active {
   color: inherit;
 }
 
+#modal {
+  z-index: 200;
+}
 .modal-form {
   width: 500px;
   display: flex;
@@ -54,6 +57,7 @@ li.error {
 button {
   display: inline;
   min-width: 36px;
+  max-width: 512px;
   height: 36px;
   margin: 2px;
   font-size: 18px;

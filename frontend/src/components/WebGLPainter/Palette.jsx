@@ -1,6 +1,5 @@
 import { colorString } from "./utils/colorConvert"
 import { ReactComponent as PaletteIcon } from '../../icons/color-palette-sharp.svg'
-import PaletteEditor from './PaletteEditor'
 
 function Palette({ palette, paintDispatch, showColorTools, wideRatio }) {
 
@@ -20,7 +19,6 @@ function Palette({ palette, paintDispatch, showColorTools, wideRatio }) {
   )
 
   return (
-    // <div className="toolbox">
     <>
       { !wideRatio &&
         <div className="square-button" onClick={() => setShowTools( !showColorTools ) }>
@@ -29,7 +27,6 @@ function Palette({ palette, paintDispatch, showColorTools, wideRatio }) {
       }
       { swatches }
     </>
-    // </div>
   )
 }
 

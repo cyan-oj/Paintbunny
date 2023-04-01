@@ -15,8 +15,9 @@ import './Painter.css';
 import PaletteEditor from "./PaletteEditor";
 import BrushEditor from "./BrushEditor";
 import { useWindowSize } from "../../hooks";
+import ToolEditorModal from "./ToolEditorModal";
 
-const DEFAULT_PALETTE = [
+export const DEFAULT_PALETTE = [
   [ 255, 255, 255 ], 
   [ 245, 200, 110 ], 
   [ 230, 125, 85 ], 
@@ -27,7 +28,7 @@ const DEFAULT_PALETTE = [
   [ 0, 0, 0 ], 
 ]
 
-const DEFAULT_BRUSHES = [
+export const DEFAULT_BRUSHES = [
   { ratio: 1, scale: 0.1, angle: 30, spacing: 0.004 },
   { ratio: 1, scale: 5, angle: 0, spacing: 0.004 },
   { ratio: 0.01, scale: 2, angle: 180, spacing: 0.002 },
@@ -157,6 +158,11 @@ const paintReducer = ( state, action ) => {
       const newThumb = createGLContext( 64, 64 )
       newPreviews.push( newThumb )
       return { ...state, brushes: newBrushes, brushThumbnails: newPreviews }
+    }
+    case 'remove_color': {
+      const newPalette = [ ...state.palette ]
+      newPalette.splice(payload, 1)
+      return { ...state, palette: newPalette }
     }
     default: {
       return { ...state, [type]: payload }
@@ -330,52 +336,53 @@ function Painter( props ) {
         onPointerUp={() => saveStroke( currentStroke )}
       >
         <canvas ref={ bgCanvas } width={ width } height={ height }/>
-    </div>
-    { !wideRatio &&
-      <div className="tools">
-        <div className="toolbox">
-          { ( showBrushTools || showColorTools )
-            ? <BrushSample brushSample={ brushSample }
-                activeBrush={ activeBrush } activeColor={ activeColor } />
-            : null
-          }
-          { showColorTools &&
-            <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
-          }
-          { showBrushTools &&
-            <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio }/>
-          }
-          <div className="square-button" onClick={ undo }>
-            <UndoIcon className="icon"/>
-          </div>
-          <div className="square-button" onClick={ redo }>
-            <RedoIcon className="icon"/>
-          </div>
-          <Palette palette={ palette } activeColor={ activeColor } 
-            paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio }/>
-          <Brushes brushes={ brushes } activeBrush={ activeBrush } 
-            brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } 
-            showBrushTools={ showBrushTools } wideRatio={ wideRatio }/>
-        </div>
       </div>
-    }
-    <form onSubmit={ blobCanvas } className="comment-form">
-      { (canvasType === 'painting') &&
-      <>
-        <input placeholder="title"
-          type="text" 
-          value={ title }
-          onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
-          />
-        <textarea placeholder="description"
-          type="text"
-          value={ description }
-          onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
-          />
-      </>
+      { !wideRatio &&
+        <div className="tools">
+          <div className="toolbox">
+            { ( showBrushTools || showColorTools )
+              ? <BrushSample brushSample={ brushSample }
+                  activeBrush={ activeBrush } activeColor={ activeColor } />
+              : null
+            }
+            { showColorTools &&
+              <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } />
+            }
+            { showBrushTools &&
+              <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio }/>
+            }
+            <div className="square-button" onClick={ undo }>
+              <UndoIcon className="icon"/>
+            </div>
+            <div className="square-button" onClick={ redo }>
+              <RedoIcon className="icon"/>
+            </div>
+            <Palette palette={ palette } activeColor={ activeColor } 
+              paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio }/>
+            <Brushes brushes={ brushes } activeBrush={ activeBrush } 
+              brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } 
+              showBrushTools={ showBrushTools } wideRatio={ wideRatio }/>
+          </div>
+        </div>
       }
-      <button type="submit">{ buttonText }</button>
-    </form>
+      <ToolEditorModal palette={ palette } brushes={ brushes } activeBrush={ activeBrush } activeColor={ activeColor } paintDispatch={ paintDispatch }/>
+      <form onSubmit={ blobCanvas } className="comment-form">
+        { (canvasType === 'painting') &&
+        <>
+          <input placeholder="title"
+            type="text" 
+            value={ title }
+            onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
+            />
+          <textarea placeholder="description"
+            type="text"
+            value={ description }
+            onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
+            />
+        </>
+        }
+        <button type="submit">{ buttonText }</button>
+      </form>
     </div>
     { wideRatio &&
       <div className="toolbox">

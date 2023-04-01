@@ -35,12 +35,8 @@ function PaletteEditor({ activeColor, paintDispatch, wideRatio }) {
     })
   }
 
-  const addColor = ( color )=> {
-    paintDispatch({
-      type: 'add_color',
-      payload: color
-    })
-  }
+  const addColor = color => paintDispatch({ type: 'add_color', payload: color })
+  const removeColor = index => paintDispatch({ type: 'add_color', payload: index }) 
 
   return (
     <div className="tool-editor">

@@ -20,10 +20,11 @@ function BrushThumbnail({ brush, thumbnail }){
 
 
   return (
-    <div className="brush-thumb" >
-      <div ref={ preview } />
-      <p>{ brush.scale }</p>
-    </div>
+    <>
+      <div ref={ preview } className="square-button">
+        <p className="brush-size">{ brush.scale }</p>
+      </div>
+    </>
   )
 }
 
