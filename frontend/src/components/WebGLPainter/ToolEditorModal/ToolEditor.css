@@ -1,0 +1,44 @@
+.toolbox-editor {
+  width: 600px;
+  background-color: var(--base-alt);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.swatchbox{
+  max-width: 48em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.swatchbox > input {
+  border-radius: 0;
+  border: none;
+  max-width: 8em;
+  height: 3em;
+  font-size: 12pt;
+  text-align: bottom;
+}
+
+.brushbox{
+  max-width: 48em;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.brushbox > input {
+  max-width: 4em;
+  margin: .1em;
+  font-size: 12pt;
+}
+
+.preset-button {
+  display: flex;
+  justify-content: center;
+}
+
+.editor-button {
+  margin-left: 20px;
+}
