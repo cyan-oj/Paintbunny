@@ -35,7 +35,7 @@ function BrushEditor({ paintDispatch, activeBrush, wideRatio }){
           />
         <CompSlider  dispatch={ paintDispatch } type={ 'brush_spacing' }
           value={ activeBrush.spacing } valueLabel='spacing'
-          min={ 0.004 } max={ 1 } step={ 0.004 } cutoff={ 3 }
+          min={ 0.002 } max={ 1 } step={ 0.002 } cutoff={ 3 }
           />
       </div>
       <div>

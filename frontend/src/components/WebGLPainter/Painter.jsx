@@ -17,19 +17,20 @@ import BrushEditor from "./BrushEditor";
 import { useWindowSize } from "../../hooks";
 
 const DEFAULT_PALETTE = [
-  [ 255, 0, 0 ],
-  [ 0, 255, 0 ],
-  [ 0, 0, 255 ],
-  [ 255, 255, 0 ],
-  [ 0, 255, 255 ],
-  [ 255, 0, 255 ],
-  [ 255, 255, 255 ],
-  [ 0, 0, 0 ]
+  [ 255, 255, 255 ], 
+  [ 245, 200, 110 ], 
+  [ 230, 125, 85 ], 
+  [ 190, 50, 40 ], 
+  [ 100, 115, 75 ], 
+  [ 75, 70, 120 ], 
+  [ 60, 40, 55 ], 
+  [ 0, 0, 0 ], 
 ]
 
 const DEFAULT_BRUSHES = [
-  { ratio: 0.5, scale: 1, angle: 30, spacing: 0.004 },
-  { ratio: 1, scale: 5, angle: 0, spacing: 0.004 }
+  { ratio: 1, scale: 0.1, angle: 30, spacing: 0.004 },
+  { ratio: 1, scale: 5, angle: 0, spacing: 0.004 },
+  { ratio: 0.01, scale: 2, angle: 180, spacing: 0.002 },
 ]
 
 const init = ( props ) => {
@@ -44,8 +45,8 @@ const init = ( props ) => {
     bgContext: null,
     palette: props.palette ? props.palette : DEFAULT_PALETTE,
     brushes: props.brushes ? props.brushes : DEFAULT_BRUSHES,
-    activeColor: [ 0, 255, 0 ],
-    activeBrush: { ratio: 0.5, scale: 1, angle: 30, spacing: 0.004 },
+    activeColor: [ 0, 0, 0 ],
+    activeBrush: { ratio: 1, scale: 0.1, angle: 30, spacing: 0.004 },
     showBrushTools: false,
     showColorTools: false,
     brushSample: {},
