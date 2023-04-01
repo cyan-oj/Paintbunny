@@ -45,7 +45,7 @@
   z-index: 10;
 }
 
-.toolbox-editor > div > .toolbox > .square-button {
+.toolbox-editor > .toolbox > .square-button {
   position: relative;
 }
 

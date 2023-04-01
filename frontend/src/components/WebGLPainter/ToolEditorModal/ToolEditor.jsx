@@ -73,14 +73,12 @@ function ToolEditor({ palette, brushes, activeBrush, activeColor, brushThumbnail
 
   return (
     <div className="toolbox-editor">
-      <div> 
         <div className="toolbox">
           { swatches }
           <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } wideRatio={ true }/>
           <button onClick={ e => updatePalette(e)}>save palette as default</button>
           <button onClick={ resetPalette } >reset palette to defaults</button>
           <button onClick={ resetToUserPalette } >reset palette user defaults</button>
-        </div>
       </div>
       <div className="toolbox">
         { brushList }
