@@ -1,9 +1,6 @@
 #workspace {
-  /* position: relative; */
   display: flex;
   flex-direction: column;
-  /* width: 512px; */
-  /* margin: auto; */
 }
 #canvas-wrapper > canvas {
   position: absolute;
@@ -18,6 +15,9 @@
   min-width: 256px;
   background-color: var(--base-alt);
 }
+.toolbar {
+  width: 100%;
+}
 .tools {
   display: flex;
   max-width: 512px;
@@ -26,9 +26,13 @@
   margin: 8px 0px;
   width: 100%;
 }
+.toolbox-editor {
+  display: flex;
+  flex-wrap: wrap;
+}
 .square-button {
   display: flex;
-  background-color: lightgray;
+  background-color: none;
   align-items: center;
   justify-content: center;
   width: 64px;
@@ -40,9 +44,9 @@
   margin: -2px;
   z-index: 10;
 }
-.icon {
-  width: 32px;
-  height: 32px;
+
+.toolbox-editor > div > .toolbox > .square-button {
+  position: relative;
 }
 
 .sliders {
@@ -80,13 +84,6 @@
 .slider-box div:first-child {
   border-radius: var(--slider-width) 0px 0px var(--slider-width);
 }
-/* .slider-num {
-  left: var(--slider-width);
-  margin: auto;
-  pointer-events: none;
-  color: white;
-  filter: drop-shadow(0 0 1.4mm black);
-} */
 
 .slider-name, .slider-num {
   position: absolute;
@@ -104,23 +101,6 @@
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 4px;
 }
-/* .slider-arrow{
-  width: var(--slider-width);
-  height: var(--slider-width);
-  background: gray;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sliders > label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  margin: 0px;
-} */
 
 .brush-sample, .color-sample {
   position: absolute;
@@ -136,6 +116,9 @@
   align-items: center;
   justify-content: center;
 }
+.brush-preview {
+  background-color: transparent;
+}
 .brush-size{
   position: absolute;
   color: white;
@@ -145,14 +128,16 @@
   height: 100px;
 }
 
+.color-slider-box > input[type=range] {
+  height: 6px;
+  border-radius: 2px;
+}
 .color-slider-box > input[type=range]::-webkit-slider-thumb {
   background: var(--active-color);
 }
-
 .color-slider-box > input[type=range]::-moz-range-thumb {
   background: var(--active-color);
 }
-
 
 .comment-form {
   display: flex;
@@ -183,7 +168,7 @@
   }
   #paint-container > .toolbox:last-child {
     margin-left: 4px;
-    border-radius: 0 8px 8px 0;
+    border-radius: 0 8px 8px 8px;
     border-left: solid 1px black;
   }
 

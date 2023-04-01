@@ -161,8 +161,13 @@ const paintReducer = ( state, action ) => {
     }
     case 'remove_color': {
       const newPalette = [ ...state.palette ]
-      newPalette.splice(payload, 1)
+      newPalette.splice( payload, 1 )
       return { ...state, palette: newPalette }
+    }
+    case 'remove_brush': {
+      const newBrushes = [ ...state.brushes ]
+      newBrushes.splice( payload, 1 )
+      return { ...state, brushes: newBrushes }
     }
     default: {
       return { ...state, [type]: payload }
@@ -365,7 +370,7 @@ function Painter( props ) {
           </div>
         </div>
       }
-      <ToolEditorModal palette={ palette } brushes={ brushes } activeBrush={ activeBrush } activeColor={ activeColor } paintDispatch={ paintDispatch }/>
+      <ToolEditorModal palette={ palette } brushes={ brushes } activeBrush={ activeBrush } activeColor={ activeColor } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch }/>
       <form onSubmit={ blobCanvas } className="comment-form">
         { (canvasType === 'painting') &&
         <>
@@ -388,8 +393,8 @@ function Painter( props ) {
       <div className="toolbox">
         <BrushSample brushSample={ brushSample }
             activeBrush={ activeBrush } activeColor={ activeColor } />
-        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } wideRatio={ wideRatio } />
         <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio } />
+        <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } wideRatio={ wideRatio } />
       </div>
     } 
   </div>
