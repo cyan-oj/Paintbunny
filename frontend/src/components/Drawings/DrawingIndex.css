@@ -1,6 +1,6 @@
 a.artist-name, a.title {
   color: var(--base-text);
-  padding: .2em 1em
+  padding: 8px 16px;
 }
 
 a:visited {

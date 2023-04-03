@@ -7,9 +7,7 @@ function PreviewSpacer({ paintDispatch }){
   }
 
   return (
-    <div className="preview-spacer" >
-      <button onClick={ closeTools }>x</button>
-    </div>
+      <button className="close-tools" onClick={ closeTools }>x</button>
   )
 }
 

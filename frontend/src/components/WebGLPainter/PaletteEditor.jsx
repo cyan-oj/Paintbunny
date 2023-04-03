@@ -43,7 +43,6 @@ function PaletteEditor({ activeColor, paintDispatch, wideRatio }) {
         { rgbSliders 
           ?
           <div className='sliders' id='color-sliders'>
-            { !wideRatio && <PreviewSpacer paintDispatch={ paintDispatch } /> }
             <ColorSlider value={ rgbColor[0] } valueLabel="red" 
               color={ rgbColor } setValue={ setRGB } index={ 0 }
               leftArrowColor={{ backgroundColor: `rgb(0, ${rgbColor[1]}, ${rgbColor[2]})` }}
@@ -74,7 +73,6 @@ function PaletteEditor({ activeColor, paintDispatch, wideRatio }) {
           </div>
           :
           <div className='sliders' id='color-sliders'>
-            { !wideRatio && <PreviewSpacer paintDispatch={ paintDispatch } /> }
             <ColorSlider value={ hslColor[0] } valueLabel="hue" 
               color={ hslColor } setValue={ setHSL } index={ 0 } max={ 360 }
               leftArrowColor={{ backgroundColor: `hsl(0, ${hslColor[1]}%, ${hslColor[2]}%)` }}

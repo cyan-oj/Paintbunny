@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react"
+import PreviewSpacer from "./PreviewSpacer"
 import { rgbToGL } from "./utils/colorConvert"
 import { drawPoint, getGLAttributes } from "./utils/gl-helpers"
 import { Matrix4 } from "./WebGLUtils/cuon-matrix"
 
-function BrushSample({ brushSample, activeBrush, activeColor, wideRatio }){
+function BrushSample({ brushSample, activeBrush, activeColor, wideRatio, paintDispatch }){
   const preview = useRef()
 
   useEffect(() => {
@@ -22,7 +23,12 @@ function BrushSample({ brushSample, activeBrush, activeColor, wideRatio }){
   }, [ activeBrush, activeColor, brushSample ])
 
   return (
-    <div ref={ preview } className="brush-sample" />
+    <>
+    <div ref={ preview } className="brush-sample" /> 
+    { !wideRatio &&
+      <PreviewSpacer paintDispatch={ paintDispatch } />
+    }
+    </>
   )
 }
 

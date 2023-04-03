@@ -18,9 +18,6 @@ function BrushEditor({ paintDispatch, activeBrush, wideRatio }){
   return (
     <div className="tool-editor">
       <div className='sliders' id="brush-sliders">
-        { !wideRatio &&
-          <PreviewSpacer paintDispatch={ paintDispatch } />
-        }
         <CompSlider  dispatch={ paintDispatch } type={ 'brush_scale' }
           value={ activeBrush.scale } valueLabel='scale'
           min={ 0.05 } max={ 10 } step={ 0.05 }

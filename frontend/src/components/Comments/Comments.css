@@ -2,13 +2,16 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
-  margin: 4px
+  margin: 4px;
+  position: relative;
+  left: -112px;
 }
 
 .commenter-info {
-  width: 160px;
+  box-sizing: border-box;
+  width: 220px;
   background-color: var(--base-alt);
-  border-right: var(--base-text);
+  border-right: solid 1px black;
   margin-right: 4px;
   border-radius: 8px 0 0 8px;
   padding: 8px 4px;
@@ -20,4 +23,34 @@
 
 .commenter-info > a {
   font-weight: 700;
+}
+
+@media ( max-aspect-ratio: 1/1 ) {
+  .comment {
+    left: 0;
+  }
+  .commenter-info {
+    position: absolute;
+    color: white;
+    background: transparent;
+    filter: drop-shadow(0 1mm 1.2mm var(--shadow));
+    border: none;
+    width: 100%;
+    display: flex;
+  }
+  .commenter-info > * {
+    margin: 0px 8px;
+    padding: 0;
+  }
+}
+
+@media ( max-aspect-ratio: 2/3 ) {
+  .comment, .commenter-info {
+    width: 100vw;
+  }
+  .comment > * {
+    width: 100vw;
+    max-width: none;
+    max-height: none;
+  }
 }

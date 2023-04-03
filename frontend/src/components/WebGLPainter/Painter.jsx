@@ -16,6 +16,7 @@ import PaletteEditor from "./PaletteEditor";
 import BrushEditor from "./BrushEditor";
 import { useWindowSize } from "../../hooks";
 import ToolEditorModal from "./ToolEditorModal";
+import PreviewSpacer from "./PreviewSpacer";
 
 export const DEFAULT_PALETTE = [
   [ 255, 255, 255 ], 
@@ -234,7 +235,6 @@ function Painter( props ) {
     } else {
       setWideRatio( false )
     }
-    console.log({wideRatio})
   }, [ windowWidth, windowHeight ])
 
   const setPenEvt = ( evt ) => {
@@ -330,11 +330,7 @@ function Painter( props ) {
       </div>
     } 
     <div id="workspace" >
-      <div ref={ workspace } id="canvas-wrapper"
-        style={{
-          width: width,
-          height: height
-        }}
+      <div ref={ workspace } id={ canvasType === 'painting' ? "canvas-wrapper" : "comment-wrapper" }
         onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
@@ -347,7 +343,7 @@ function Painter( props ) {
           <div className="toolbox">
             { ( showBrushTools || showColorTools )
               ? <BrushSample brushSample={ brushSample }
-                  activeBrush={ activeBrush } activeColor={ activeColor } />
+                  activeBrush={ activeBrush } activeColor={ activeColor } paintDispatch={ paintDispatch } />
               : null
             }
             { showColorTools &&
