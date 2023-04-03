@@ -1,7 +1,6 @@
 import CompSlider from "./CompSlider"
-import PreviewSpacer from "./PreviewSpacer"
 
-function BrushEditor({ paintDispatch, activeBrush, wideRatio }){
+function BrushEditor({ paintDispatch, activeBrush }){
 
   const addBrush = () => {
     paintDispatch({

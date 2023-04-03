@@ -24,10 +24,10 @@ function BrushSample({ brushSample, activeBrush, activeColor, wideRatio, paintDi
 
   return (
     <>
-    <div ref={ preview } className="brush-sample" /> 
-    { !wideRatio &&
-      <PreviewSpacer paintDispatch={ paintDispatch } />
-    }
+      <div ref={ preview } className="brush-sample" /> 
+      { !wideRatio &&
+        <PreviewSpacer paintDispatch={ paintDispatch } />
+      }
     </>
   )
 }

@@ -40,12 +40,11 @@
   position: relative;
   overflow: hidden;
   width: 256px;
-  height: 256px;
+  height: 160px;
 }
 .brush-sample > canvas{
-  scale: 0.5;
   position: absolute;
-  top: -128px;
+  top: -176px;
   left: -128px;
 }
 
