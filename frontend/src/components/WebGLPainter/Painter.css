@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 4px;
 }
 #paint-container > .toolbox:first-child {
   margin-right: 4px;
@@ -237,6 +236,11 @@
     height: 10vw;
   }
   .square-button:hover {
+    width: 11vw;
+    height: 11vw;
+    margin: -0.501vw;
+  }
+  .square-button > canvas:hover {
     width: 11vw;
     height: 11vw;
     margin: -0.5vw;

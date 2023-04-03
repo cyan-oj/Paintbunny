@@ -238,14 +238,13 @@ function Painter( props ) {
   }, [ windowWidth, windowHeight ])
 
   const setPenEvt = ( evt ) => {
-    const rect = evt.target.getBoundingClientRect();
+    const rect = evt.target.getBoundingClientRect()
     const width = Number(workspace.current.clientWidth)
     const scale = width/512
-    console.log("scale", scale)
-    let x = evt.clientX - rect.left;
-    let y = evt.clientY - rect.top;
-    x = ( x - width/2 )/( width/2 );
-    y = ( height * scale /2 - y )/( height * scale /2 );
+    let x = evt.clientX - rect.left
+    let y = evt.clientY - rect.top
+    x = ( x - width/2 )/( width/2 )
+    y = ( height * scale /2 - y )/( height * scale /2 )
     const pressure = evt.pressure
     penEvt.current = { x, y, pressure }
     return { x, y, pressure }
@@ -346,7 +345,7 @@ function Painter( props ) {
           <div className="toolbox">
             { ( showBrushTools || showColorTools )
               ? <BrushSample brushSample={ brushSample }
-                  activeBrush={ activeBrush } activeColor={ activeColor } paintDispatch={ paintDispatch } />
+                  activeBrush={ activeBrush } activeColor={ activeColor } paintDispatch={ paintDispatch } wideRatio={ wideRatio }/>
               : null
             }
             { showColorTools &&
@@ -391,7 +390,7 @@ function Painter( props ) {
     { wideRatio &&
       <div className="toolbox">
         <BrushSample brushSample={ brushSample }
-            activeBrush={ activeBrush } activeColor={ activeColor } />
+            activeBrush={ activeBrush } activeColor={ activeColor } wideRatio={ wideRatio } />
         <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio } />
         <Brushes brushes={ brushes } activeBrush={ activeBrush } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } showBrushTools={ showBrushTools } brushSample={ brushSample } wideRatio={ wideRatio } />
       </div>
