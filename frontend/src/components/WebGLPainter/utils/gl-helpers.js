@@ -1,4 +1,5 @@
 import { FRAG_SHADER, VERT_SHADER } from '../shaders.js'
+import { Matrix4 } from '../WebGLUtils/cuon-matrix.js';
 import { initShaders } from '../WebGLUtils/cuon-utils.js'
 import { rgbToGL } from './colorConvert.js';
 
@@ -9,11 +10,17 @@ const BRUSH_VERTICES = new Float32Array([
   0.1,  -0.1
 ]) 
 
-export const drawPoint = ( gl, modelMatrix, glAttributes, color ) => {
+const RECT_MATRIX = new Matrix4()
+
+export const drawPoint = ( gl, transforms, glAttributes, color ) => {
+  RECT_MATRIX.setTranslate( transforms.translate.x, transforms.translate.y, 0.0 )
+  RECT_MATRIX.rotate( transforms.rotate, 0, 0, 1 )
+  RECT_MATRIX.scale( transforms.pressure * transforms.ratio * transforms.scale, transforms.pressure * transforms.scale )
+
   const points = initVertexBuffers(gl, BRUSH_VERTICES, glAttributes.a_Position);
   if (!points) console.error('failed to set vertex positions')
-  gl.uniformMatrix4fv( glAttributes.u_ModelMatrix, false, modelMatrix.elements)
-  gl.uniform4f(glAttributes.u_FragColor, color[0], color[1], color[2], 1)
+  gl.uniformMatrix4fv( glAttributes.u_ModelMatrix, false, RECT_MATRIX.elements)
+  gl.uniform4f( glAttributes.u_FragColor, color[0], color[1], color[2], 1 )
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 

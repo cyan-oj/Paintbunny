@@ -59,8 +59,8 @@ const init = ( props ) => {
   }
 
   const initCanvas = createGLContext( 
-    initialState.width, 
-    initialState.height
+    512, 
+    512
   )
 
   initialState.canvas = initCanvas.canvas
@@ -243,6 +243,7 @@ function Painter( props ) {
     const scale = width/512
     let x = evt.clientX - rect.left
     let y = evt.clientY - rect.top
+    if ( canvasType === 'comment') y /= 2
     x = ( x - width/2 )/( width/2 )
     y = ( height * scale /2 - y )/( height * scale /2 )
     const pressure = evt.pressure
@@ -253,7 +254,7 @@ function Painter( props ) {
   const draw = ( evt, gl, brush, color ) => {
     const prev = { ...penEvt.current }
     const curr = setPenEvt( evt )
-    if (evt.buttons !== 1 ) return
+    if ( evt.buttons !== 1 ) return
     
     const [ dist, angle, deltaP ] = getStroke( prev, curr )
     const drawColor = rgbToGL( color )
@@ -261,15 +262,19 @@ function Painter( props ) {
     const glAttributes = getGLAttributes( gl )
     
     for ( let i = 0; i < dist; i+= brush.spacing ) {
+      // const modelMatrix = new Matrix4()
       const x = prev.x + Math.sin( angle ) * i
       const y = prev.y + Math.cos( angle ) * i
       const pressure = prev.pressure + deltaP / ( dist/i )
-      const modelMatrix = new Matrix4()
-      modelMatrix.setTranslate( x, y, 0.0 )
-      modelMatrix.rotate( brush.angle, 0, 0, 1 )
-      modelMatrix.scale(  pressure * brush.ratio * brush.scale, pressure * brush.scale )
-      drawPoint( gl, modelMatrix, glAttributes, drawColor )
-      currentStroke.points.push( modelMatrix )
+      const transforms = { 
+        translate: { x, y },
+        rotate: brush.angle,
+        scale: brush.scale,
+        ratio: brush.ratio, 
+        pressure: pressure
+      }
+      drawPoint( gl, transforms, glAttributes, drawColor )
+      currentStroke.points.push( transforms )
     } 
   }
 
@@ -329,6 +334,12 @@ function Painter( props ) {
       <div className="toolbox">
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio } />
         <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } wideRatio={ wideRatio } />
+        <div className="square-button" onClick={ undo }>
+          <UndoIcon className="icon"/>
+        </div>
+        <div className="square-button" onClick={ redo }>
+          <RedoIcon className="icon"/>
+        </div>
       </div>
     } 
     <div id="workspace" >
@@ -336,8 +347,7 @@ function Painter( props ) {
         onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
-        onPointerUp={() => saveStroke( currentStroke )}
-      >
+        onPointerUp={() => saveStroke( currentStroke )}>
         <canvas ref={ bgCanvas } width={ width } height={ height }/>
       </div>
       { !wideRatio &&
@@ -345,7 +355,8 @@ function Painter( props ) {
           <div className="toolbox">
             { ( showBrushTools || showColorTools )
               ? <BrushSample brushSample={ brushSample }
-                  activeBrush={ activeBrush } activeColor={ activeColor } paintDispatch={ paintDispatch } wideRatio={ wideRatio }/>
+                  activeBrush={ activeBrush } activeColor={ activeColor }
+                  paintDispatch={ paintDispatch } wideRatio={ wideRatio }/>
               : null
             }
             { showColorTools &&

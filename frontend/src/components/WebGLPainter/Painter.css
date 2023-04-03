@@ -23,6 +23,8 @@
   width: 512px;
 }
 #comment-wrapper {
+  position: relative;
+  overflow: hidden;
   height: 256px;
 }
 #canvas-wrapper > canvas {
