@@ -239,10 +239,13 @@ function Painter( props ) {
 
   const setPenEvt = ( evt ) => {
     const rect = evt.target.getBoundingClientRect();
+    const width = Number(workspace.current.clientWidth)
+    const scale = width/512
+    console.log("scale", scale)
     let x = evt.clientX - rect.left;
     let y = evt.clientY - rect.top;
-    x = (x - width/2)/(width/2);
-    y = (height/2 - y)/(height/2);
+    x = ( x - width/2 )/( width/2 );
+    y = ( height * scale /2 - y )/( height * scale /2 );
     const pressure = evt.pressure
     penEvt.current = { x, y, pressure }
     return { x, y, pressure }
