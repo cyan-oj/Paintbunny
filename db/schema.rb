@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_24_103305) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_01_011507) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,8 +67,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_24_103305) do
     t.string "session_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "palette", default: ["hsl(0, 0%, 100%)", "hsl(0, 0%, 0%)"], array: true
-    t.integer "brushes", default: [2, 5, 30, 70, 200], array: true
+    t.integer "palette", default: [[255, 255, 255], [245, 200, 110], [230, 125, 85], [190, 50, 40], [100, 115, 75], [75, 70, 120], [60, 40, 55], [0, 0, 0]], array: true
+    t.jsonb "brushes", default: [{"angle"=>30, "ratio"=>1, "scale"=>0.1, "spacing"=>0.004}, {"angle"=>0, "ratio"=>1, "scale"=>5, "spacing"=>0.004}, {"angle"=>180, "ratio"=>0.01, "scale"=>2, "spacing"=>0.002}], null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["session_token"], name: "index_users_on_session_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true

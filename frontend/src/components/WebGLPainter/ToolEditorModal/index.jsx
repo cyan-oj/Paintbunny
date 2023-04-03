@@ -2,7 +2,7 @@ import ToolEditor from "./ToolEditor";
 import { Modal } from "../../../context/Modal";
 import { useState } from "react";
 
-function ToolEditorModal({ user }) {
+function ToolEditorModal( { palette, brushes, activeBrush, activeColor, brushThumbnails, paintDispatch } ) {
   const [ showModal, setShowModal ] = useState();
 
   return (
@@ -10,7 +10,7 @@ function ToolEditorModal({ user }) {
       <button onClick={e => setShowModal(true)}>edit toolbox</button>
       { showModal && (
         <Modal onClose={e => setShowModal(false)}>
-          <ToolEditor user={user} />
+          <ToolEditor palette={ palette } brushes={ brushes } activeBrush={ activeBrush } activeColor={ activeColor } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch } />
         </Modal>
       )}
     </>

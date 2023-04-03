@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchDrawing, getDrawing, destroyDrawing } from "../../store/drawings";
-import CommentIndex from "../Comments/CommentIndex";
-import Canvas from "../Painter/Canvas";
+import Painter from "../WebGLPainter/Painter";
 import "./DrawingPage.css"
 
 function DrawingTemplatePage() {
@@ -20,7 +19,7 @@ function DrawingTemplatePage() {
   if (!drawing) return null;
 
   return (
-    <Canvas imgSrc={drawing.imageUrl} isTemplate={true}/>
+    <Painter imgSrc={drawing.imageUrl} canvasType={ 'template' }/>
   )
 }
 

@@ -13,4 +13,8 @@
 
   --highlight: #00b0c4;
   --shadow: rgba(0, 0, 0, .4);
+
+  --active-color: black;
+
+  --slider-width: 32px;
 }

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchDrawing, getDrawing, destroyDrawing } from "../../store/drawings";
 import CommentIndex from "../Comments/CommentIndex";
 import Welcome from "../Welcome/Welcome";
-import Canvas from "../Painter/Canvas";
 import "./DrawingPage.css"
+import Painter from "../WebGLPainter/Painter";
 
 function DrawingPage() {
   const history = useHistory();
@@ -16,17 +16,23 @@ function DrawingPage() {
   const user = useSelector(state => state.session.user)
   const isArtist = (user && userId === '' + user.id) ? true : false
 
-  const [showCanvas, setShowCanvas] = useState(false);
+  const [ showCanvas, setShowCanvas ] = useState(false);
+  const [ isFetched, setIsFetched ] = useState(false)
   
-  useEffect(() => {
-    dispatch(fetchDrawing(userId, drawingId));
-  }, [dispatch]);
+  useLayoutEffect(() => {
+    if( !isFetched ) {
+      dispatch(fetchDrawing(userId, drawingId))
+      setIsFetched( true )
+    }
+  }, [ dispatch, isFetched, userId, drawingId, showCanvas ]);
 
   if (!drawing) return null;
 
   const toggleEdit = () => {
-    if (isArtist)
-      setShowCanvas(!showCanvas);
+    if (isArtist) {
+      setShowCanvas( !showCanvas );
+      setIsFetched( false )
+    }
   }
 
   const dateFormat = dateString => {
@@ -60,12 +66,12 @@ function DrawingPage() {
                 </>
               }
             </div>
-            <img src={drawing.imageUrl} alt="" id="image" className="showimage" />
+            <img src={ drawing.imageUrl } alt="" id="image" className="showimage" />
           </div>
           <CommentIndex drawingId={drawingId} />
           { user &&           
             <div className="comment-canvas" >
-              <Canvas height="256" drawingId={ drawingId } />
+              <Painter canvasType={'comment'} height={ 256 } drawingId={ drawingId } />
             </div>
           }
           { !user && 
@@ -75,7 +81,7 @@ function DrawingPage() {
       }
       { showCanvas && user &&
         <>
-          <Canvas imgSrc={drawing.imageUrl} drawingId={drawingId} drawingTitle={drawing.title} drawingUserId={drawing.artistId} drawingDesc={drawing.description} toggleEdit={ toggleEdit } />
+          <Painter imgSrc={drawing.imageUrl} drawingId={drawingId} title={drawing.title} drawingUserId={drawing.artistId} description={drawing.description} toggleEdit={ toggleEdit } canvasType={'painting'}/>
           <button onClick={ toggleEdit }>cancel edit</button>
         </>
       }
@@ -83,4 +89,4 @@ function DrawingPage() {
   )
 }
 
-export default DrawingPage;
+export default DrawingPage

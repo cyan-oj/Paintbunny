@@ -14,6 +14,9 @@ a, a:visited, a:active {
   color: inherit;
 }
 
+#modal {
+  z-index: 200;
+}
 .modal-form {
   width: 500px;
   display: flex;
@@ -22,6 +25,22 @@ a, a:visited, a:active {
   flex-direction: column;
   align-items: center;
   padding-bottom: 32px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+.small-icon {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+}
+.small-icon:hover {
+  cursor: pointer;
+  fill: red;
 }
 
 form > * {
@@ -36,6 +55,7 @@ input {
   border: 1px solid var(--base-alt);
   padding: 4px 8px;
   margin: 4px 16px;
+  font: inherit;
 }
 
 li {
@@ -53,6 +73,7 @@ li.error {
 button {
   display: inline;
   min-width: 36px;
+  max-width: 512px;
   height: 36px;
   margin: 2px;
   font-size: 18px;
@@ -71,4 +92,64 @@ button:hover {
   z-index: 50;
   cursor: pointer;
   background-color: var(--highlight);
+}
+
+canvas {
+  z-index: 100;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  margin: 32px 0px 16px;
+  padding: 0;
+  background: black;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+}
+input[type=range]:focus {
+  border: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 32px;
+  height: 32px;
+  background: black;
+  border-radius: 50%;
+  border: none
+}
+
+input[type=range]::-moz-range-thumb {
+  -moz-appearance: none;
+  width: 32px;
+  height: 32px;
+  background: black;
+  border-radius: 50%;
+  border: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} 
+
+input[type=number] {
+  font: inherit;
+  -moz-appearance: textfield;
+  background-color: none;
+  border: none;
+  width: 2em;
+  text-align: right;
+  margin: 0;
+  padding: 2px;
+} 
+
+input:focus {
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid white;
 }
