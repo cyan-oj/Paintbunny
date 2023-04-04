@@ -2,11 +2,9 @@ import { useEffect, useRef } from "react"
 import PreviewSpacer from "./PreviewSpacer"
 import { rgbToGL } from "./utils/colorConvert"
 import { drawPoint, getGLAttributes } from "./utils/gl-helpers"
-import { Matrix4 } from "./WebGLUtils/cuon-matrix"
 
 function BrushSample({ brushSample, activeBrush, activeColor, wideRatio, paintDispatch }){
   const preview = useRef()
-  const modelMatrix = new Matrix4()
 
   useEffect(() => {
     const scaleMult = wideRatio ? 2 : 1
