@@ -334,12 +334,12 @@ function Painter( props ) {
       <div className="toolbox">
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio } />
         <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } wideRatio={ wideRatio } />
-        <div className="square-button" onClick={ undo }>
+        {/* <div className="square-button" onClick={ undo }>
           <UndoIcon className="icon"/>
         </div>
         <div className="square-button" onClick={ redo }>
           <RedoIcon className="icon"/>
-        </div>
+        </div> */}
       </div>
     } 
     <div id="workspace" >
@@ -365,12 +365,12 @@ function Painter( props ) {
             { showBrushTools &&
               <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio }/>
             }
-            <div className="square-button" onClick={ undo }>
+            {/* <div className="square-button" onClick={ undo }>
               <UndoIcon className="icon"/>
             </div>
             <div className="square-button" onClick={ redo }>
               <RedoIcon className="icon"/>
-            </div>
+            </div> */}
             <Palette palette={ palette } activeColor={ activeColor } 
               paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio }/>
             <Brushes brushes={ brushes } activeBrush={ activeBrush } 
