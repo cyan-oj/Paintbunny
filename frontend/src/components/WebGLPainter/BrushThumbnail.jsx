@@ -1,14 +1,19 @@
 import { useEffect, useRef } from "react"
-import { drawPoint, getGLAttributes } from "./utils/gl-helpers"
+import { drawPoint, getGLAttributes, initVertexBuffers, BRUSH_VERTICES } from "./utils/gl-helpers"
 
 function BrushThumbnail({ brush, thumbnail }){
   const preview = useRef()
+  const gl = thumbnail.gl
+  const glAttributes = getGLAttributes( gl )
 
-  useEffect(() => {
+  useEffect(() => { 
     const parent = preview.current
     parent.appendChild( thumbnail.canvas )
-    const gl = thumbnail.gl
-    const glAttributes = getGLAttributes( gl )
+    const points = initVertexBuffers(gl, BRUSH_VERTICES, glAttributes.a_Position);
+    if (!points) console.error('failed to set vertex positions')
+  }, [])
+
+  useEffect(() => {
     gl.clear( gl.COLOR_BUFFER_BIT )
     const transforms = { 
       translate: { x: 0, y: 0 },

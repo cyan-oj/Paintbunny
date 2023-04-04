@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
 import { createComment } from "../../store/comments";
 import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
-import { createGLContext, drawPoint, drawStroke, getGLAttributes, getStroke, playback, redraw } from "./utils/gl-helpers";
+import { createGLContext, drawPoint, drawStroke, getGLAttributes, getStroke, initVertexBuffers, playback, redraw, BRUSH_VERTICES } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
 import Palette from "./Palette.jsx";
 import BrushSample from "./BrushSample.jsx"
@@ -44,6 +44,7 @@ const init = ( props ) => {
     canvasType: props.canvasType ? props.canvasType : 'painting',
     canvas: null,
     gl: null,
+    glAttributes: null,
     bgContext: null,
     palette: props.palette ? props.palette : DEFAULT_PALETTE,
     brushes: props.brushes ? props.brushes : DEFAULT_BRUSHES,
@@ -65,6 +66,9 @@ const init = ( props ) => {
 
   initialState.canvas = initCanvas.canvas
   initialState.gl = initCanvas.gl
+  initialState.glAttributes = getGLAttributes( initialState.gl )
+  const points = initVertexBuffers(initialState.gl, BRUSH_VERTICES, initialState.glAttributes.a_Position);
+  if (!points) console.error('failed to set vertex positions')
 
   initialState.brushSample = createGLContext( 512, 512 )
 
@@ -80,7 +84,8 @@ const paintReducer = ( state, action ) => {
   switch ( type ) {
     case 'add_stroke': { 
       const newStrokeHistory = [ ...state.strokeHistory ]
-      newStrokeHistory.push( payload )
+      console.log(payload)
+      if (payload.points.length > 1) newStrokeHistory.push( payload )
       return { ...state, strokeHistory: newStrokeHistory }
     } 
     case 'brush_ratio': {
@@ -110,7 +115,7 @@ const paintReducer = ( state, action ) => {
       const newRedoCache = [ ...state.redoCache ]
       const stroke = newStrokeHistory.pop()
       newRedoCache.push( stroke )
-      redraw( state.gl, newStrokeHistory )
+      redraw( state.gl, state.glAttributes, newStrokeHistory )
       return { ...state,
         strokeHistory: newStrokeHistory,
         redoCache: newRedoCache
@@ -122,8 +127,8 @@ const paintReducer = ( state, action ) => {
       const newStrokeHistory = [ ...state.strokeHistory ]
       const stroke = newRedoCache.pop()
       newStrokeHistory.push( stroke )
-      const glAttributes = getGLAttributes( state.gl )
-      drawStroke( state.gl, glAttributes, rgbToGL(stroke.color), stroke.points )
+      // const glAttributes = getGLAttributes( state.gl )
+      drawStroke( state.gl, state.glAttributes, rgbToGL(stroke.color), stroke.points )
       return { ...state,
         redoCache: newRedoCache,
         strokeHistory: newStrokeHistory
@@ -182,7 +187,7 @@ function Painter( props ) {
           title, description, canvasType,
           palette, brushes, 
           activeColor, activeBrush,
-          canvas, gl,
+          canvas, gl, glAttributes,
           showBrushTools, showColorTools,
           brushSample, brushThumbnails } = paintState
 
@@ -204,7 +209,7 @@ function Painter( props ) {
   const buttonText = props.imgSrc ? "edit" : "post"
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
   const currentStroke = { 
-    color: activeColor,
+    color: [ ...activeColor ],
     points: [] 
   }
 
@@ -251,7 +256,7 @@ function Painter( props ) {
     return { x, y, pressure }
   }
 
-  const draw = ( evt, gl, brush, color ) => {
+  const draw = ( evt, gl, glAttributes, brush, color ) => {
     const prev = { ...penEvt.current }
     const curr = setPenEvt( evt )
     if ( evt.buttons !== 1 ) return
@@ -259,7 +264,7 @@ function Painter( props ) {
     const [ dist, angle, deltaP ] = getStroke( prev, curr )
     const drawColor = rgbToGL( color )
     currentStroke.color = color
-    const glAttributes = getGLAttributes( gl )
+    // const glAttributes = getGLAttributes( gl )
     
     for ( let i = 0; i < dist; i+= brush.spacing ) {
       // const modelMatrix = new Matrix4()
@@ -334,20 +339,21 @@ function Painter( props ) {
       <div className="toolbox">
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio } />
         <PaletteEditor activeColor={ activeColor } paintDispatch={ paintDispatch } wideRatio={ wideRatio } />
-        {/* <div className="square-button" onClick={ undo }>
+        <div className="square-button" onClick={ undo }>
           <UndoIcon className="icon"/>
         </div>
         <div className="square-button" onClick={ redo }>
           <RedoIcon className="icon"/>
-        </div> */}
+        </div>
       </div>
     } 
     <div id="workspace" >
       <div ref={ workspace } id={ canvasType === 'painting' ? "canvas-wrapper" : "comment-wrapper" }
-        onPointerMove={ e => draw( e, gl, activeBrush, activeColor )}
+        onPointerMove={ e => draw( e, gl, glAttributes, activeBrush, activeColor )}
         onPointerDown={ setPenEvt }
         onPointerEnter={ setPenEvt }
-        onPointerUp={() => saveStroke( currentStroke )}>
+        onPointerUp={() => saveStroke( currentStroke )}
+        onPointerLeave={() => saveStroke( currentStroke )}>
         <canvas ref={ bgCanvas } width={ width } height={ height }/>
       </div>
       { !wideRatio &&
@@ -365,12 +371,12 @@ function Painter( props ) {
             { showBrushTools &&
               <BrushEditor paintDispatch={ paintDispatch } activeBrush={ activeBrush } wideRatio={ wideRatio }/>
             }
-            {/* <div className="square-button" onClick={ undo }>
+            <div className="square-button" onClick={ undo }>
               <UndoIcon className="icon"/>
             </div>
             <div className="square-button" onClick={ redo }>
               <RedoIcon className="icon"/>
-            </div> */}
+            </div>
             <Palette palette={ palette } activeColor={ activeColor } 
               paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio }/>
             <Brushes brushes={ brushes } activeBrush={ activeBrush } 

@@ -1,17 +1,22 @@
 import { useEffect, useRef } from "react"
 import PreviewSpacer from "./PreviewSpacer"
 import { rgbToGL } from "./utils/colorConvert"
-import { drawPoint, getGLAttributes } from "./utils/gl-helpers"
+import { drawPoint, getGLAttributes, initVertexBuffers, BRUSH_VERTICES } from "./utils/gl-helpers"
 
 function BrushSample({ brushSample, activeBrush, activeColor, wideRatio, paintDispatch }){
   const preview = useRef()
+  const gl = brushSample.gl
+  const glAttributes = getGLAttributes( gl )
+
+  useEffect(() => {
+    const parent = preview.current
+    parent.appendChild( brushSample.canvas )
+    const points = initVertexBuffers(gl, BRUSH_VERTICES, glAttributes.a_Position);
+    if (!points) console.error('failed to set vertex positions')
+  })
 
   useEffect(() => {
     const scaleMult = wideRatio ? 2 : 1
-    const parent = preview.current
-    parent.appendChild( brushSample.canvas )
-    const gl = brushSample.gl
-    const glAttributes = getGLAttributes( gl )
     const drawColor = rgbToGL(activeColor)
     gl.clear( gl.COLOR_BUFFER_BIT )
     const transforms = { 
