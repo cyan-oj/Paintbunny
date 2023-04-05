@@ -21,6 +21,9 @@
 #canvas-wrapper, #comment-wrapper {
   height: 512px;
   width: 512px;
+  touch-action: none;
+  /* z-index: 500; */
+  /* pointer-events: auto; */
 }
 #comment-wrapper {
   position: relative;
@@ -31,6 +34,7 @@
   position: absolute;
   margin: auto;
   touch-action: none;
+  /* pointer-events: none; */
 }
 #comment-wrapper > canvas {
   position: absolute;

@@ -31,7 +31,7 @@ function App() {
               <Painter />
           </ProtectedRoute>
         </Route>
-        <Route path="/webgl">
+        <Route path="/icon">
           <Painter />
         </Route>
         <Route path="/"> 

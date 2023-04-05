@@ -71,8 +71,8 @@ export const initVertexBuffers = ( gl, vertices, a_Position ) => {
   return vertices.length/2
 }
 
-export const createGLContext = ( width, height, backgroundColor=[ 0.0, 0.0, 0.0, 0.0 ] ) => {
-  const canvas = document.createElement( 'canvas' )
+export const createGLContext = ( width, height, backgroundColor=[ 0.0, 0.0, 0.0, 0.0 ], docCanvas ) => {
+  const canvas = docCanvas ? docCanvas : document.createElement( 'canvas' )
   canvas.width = width
   canvas.height = height
   const gl = canvas.getContext( 'webgl', { preserveDrawingBuffer: true })

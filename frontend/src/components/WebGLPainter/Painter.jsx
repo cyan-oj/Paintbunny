@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { paintReducer } from "./paintReducer";
 import { createDrawing, fetchDrawing, getDrawing, updateDrawing } from "../../store/drawings";
 import { createComment } from "../../store/comments";
-import { Matrix4 } from "./WebGLUtils/cuon-matrix" 
-import { createGLContext, drawPoint, drawStroke, getGLAttributes, getStroke, initVertexBuffers, playback, redraw, BRUSH_VERTICES } from "./utils/gl-helpers";
+import { createGLContext, drawPoint, getGLAttributes, getStroke, initVertexBuffers, BRUSH_VERTICES } from "./utils/gl-helpers";
 import { rgbToGL } from "./utils/colorConvert";
 import Palette from "./Palette.jsx";
 import BrushSample from "./BrushSample.jsx"
@@ -16,7 +16,6 @@ import PaletteEditor from "./PaletteEditor";
 import BrushEditor from "./BrushEditor";
 import { useWindowSize } from "../../hooks";
 import ToolEditorModal from "./ToolEditorModal";
-import PreviewSpacer from "./PreviewSpacer";
 
 export const DEFAULT_PALETTE = [
   [ 255, 255, 255 ], 
@@ -77,108 +76,6 @@ const init = ( props ) => {
     initialState.brushThumbnails.push( thumbnail )
   }
   return initialState;
-}
-
-const paintReducer = ( state, action ) => {
-  const { type, payload } = action
-  switch ( type ) {
-    case 'add_stroke': { 
-      const newStrokeHistory = [ ...state.strokeHistory ]
-      console.log(payload)
-      if (payload.points.length > 1) newStrokeHistory.push( payload )
-      return { ...state, strokeHistory: newStrokeHistory }
-    } 
-    case 'brush_ratio': {
-      const newBrush = { ...state.activeBrush }
-      newBrush.ratio = payload
-      return { ...state, activeBrush: newBrush }
-    }
-    case 'brush_angle': {
-      const newBrush = { ...state.activeBrush }
-      newBrush.angle = payload
-      return { ...state, activeBrush: newBrush }
-    }
-    case 'brush_scale': {
-      const newBrush = { ...state.activeBrush }
-      newBrush.scale = payload
-      return { ...state, activeBrush: newBrush }
-    }
-    case 'brush_spacing': {
-      const newBrush = { ...state.activeBrush }
-      newBrush.spacing = payload
-      console.log(newBrush.spacing, state.activeBrush.spacing)
-      return { ...state, activeBrush: newBrush }
-    }
-    case 'undo': {
-      const newStrokeHistory = [ ...state.strokeHistory ]
-      if ( newStrokeHistory.length < 1 ) return { ...state }
-      const newRedoCache = [ ...state.redoCache ]
-      const stroke = newStrokeHistory.pop()
-      newRedoCache.push( stroke )
-      redraw( state.gl, state.glAttributes, newStrokeHistory )
-      return { ...state,
-        strokeHistory: newStrokeHistory,
-        redoCache: newRedoCache
-      }
-    }
-    case 'redo': {
-      const newRedoCache = [ ...state.redoCache ]
-      if ( newRedoCache.length < 1 ) return { ...state }
-      const newStrokeHistory = [ ...state.strokeHistory ]
-      const stroke = newRedoCache.pop()
-      newStrokeHistory.push( stroke )
-      // const glAttributes = getGLAttributes( state.gl )
-      drawStroke( state.gl, state.glAttributes, rgbToGL(stroke.color), stroke.points )
-      return { ...state,
-        redoCache: newRedoCache,
-        strokeHistory: newStrokeHistory
-      }
-    }
-    case 'close_tools': {
-      return { ...state, 
-        showBrushTools: false,
-        showColorTools: false
-      }
-    }
-    case 'show_brush_tools': {
-      return { ...state,
-        showBrushTools: payload,
-        showColorTools: false
-      }
-    }
-    case 'show_color_tools': {
-      return { ...state,
-        showBrushTools: false,
-        showColorTools: payload
-      }
-    }
-    case 'add_color': {
-      const newPalette = [ ...state.palette ]
-      newPalette.push( payload )
-      return { ...state, palette: newPalette }
-    }
-    case 'add_brush': {
-      const newBrushes = [ ...state.brushes]
-      newBrushes.push(payload)
-      const newPreviews = [ ...state.brushThumbnails ]
-      const newThumb = createGLContext( 64, 64 )
-      newPreviews.push( newThumb )
-      return { ...state, brushes: newBrushes, brushThumbnails: newPreviews }
-    }
-    case 'remove_color': {
-      const newPalette = [ ...state.palette ]
-      newPalette.splice( payload, 1 )
-      return { ...state, palette: newPalette }
-    }
-    case 'remove_brush': {
-      const newBrushes = [ ...state.brushes ]
-      newBrushes.splice( payload, 1 )
-      return { ...state, brushes: newBrushes }
-    }
-    default: {
-      return { ...state, [type]: payload }
-    }
-  }
 }
 
 function Painter( props ) {
@@ -256,6 +153,30 @@ function Painter( props ) {
     return { x, y, pressure }
   }
 
+  const touchDraw = ( evt, gl, glAttributes, brush, color ) => {
+    const prev = { ...penEvt.current }
+    const curr = setPenEvt( evt )
+    if ( evt.buttons !== 1 ) return
+    
+    const [ dist, angle ] = getStroke( prev, curr )
+    const drawColor = rgbToGL( color )
+    currentStroke.color = color
+    
+    for ( let i = 0; i < dist; i+= brush.spacing ) {
+      const x = prev.x + Math.sin( angle ) * i
+      const y = prev.y + Math.cos( angle ) * i
+      const transforms = { 
+        translate: { x, y },
+        rotate: brush.angle,
+        scale: brush.scale,
+        ratio: brush.ratio, 
+        pressure: 1
+      }
+      drawPoint( gl, transforms, glAttributes, drawColor )
+      currentStroke.points.push( transforms )
+    }
+  }
+
   const draw = ( evt, gl, glAttributes, brush, color ) => {
     const prev = { ...penEvt.current }
     const curr = setPenEvt( evt )
@@ -264,10 +185,8 @@ function Painter( props ) {
     const [ dist, angle, deltaP ] = getStroke( prev, curr )
     const drawColor = rgbToGL( color )
     currentStroke.color = color
-    // const glAttributes = getGLAttributes( gl )
     
     for ( let i = 0; i < dist; i+= brush.spacing ) {
-      // const modelMatrix = new Matrix4()
       const x = prev.x + Math.sin( angle ) * i
       const y = prev.y + Math.cos( angle ) * i
       const pressure = prev.pressure + deltaP / ( dist/i )
@@ -335,6 +254,7 @@ function Painter( props ) {
   return (
   <div id="paint-container">
     {/* <button onClick={() => console.log( paintState )}>log state</button> */}
+    {/* <button onClick={() => playback(gl, paintState.strokeHistory)}>playback</button> */}
     { wideRatio &&
       <div className="toolbox">
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio } />
@@ -350,10 +270,23 @@ function Painter( props ) {
     <div id="workspace" >
       <div ref={ workspace } id={ canvasType === 'painting' ? "canvas-wrapper" : "comment-wrapper" }
         onPointerMove={ e => draw( e, gl, glAttributes, activeBrush, activeColor )}
-        onPointerDown={ setPenEvt }
-        onPointerEnter={ setPenEvt }
+        onPointerDown={ setPenEvt } onPointerEnter={ setPenEvt } 
         onPointerUp={() => saveStroke( currentStroke )}
-        onPointerLeave={() => saveStroke( currentStroke )}>
+        onPointerLeave={() => saveStroke( currentStroke )}
+        onTouchMove={ e => {
+          // e.preventDefault();
+          const touch = e.changedTouches[0]
+          // console.log("event", e, "touch", touch)
+          touchDraw( { clientX: touch.clientX, clientY: touch.clientY, target: touch.target, pressure: 1, type: "touch" }, gl, glAttributes, activeBrush, activeColor )
+        }}
+        onTouchStart={ e => {
+          // e.preventDefault();
+          const touch = e.changedTouches[0]
+          // console.log("event", e, "touch", touch)
+          setPenEvt( { clientX: touch.clientX, clientY: touch.clientY, target: touch.target, pressure: 1 } )
+        }}
+        onTouchEnd={() => saveStroke( currentStroke )}
+        onTouchCancel={() => saveStroke( currentStroke )}>
         <canvas ref={ bgCanvas } width={ width } height={ height }/>
       </div>
       { !wideRatio &&
@@ -392,13 +325,11 @@ function Painter( props ) {
           <input placeholder="title"
             type="text" 
             value={ title }
-            onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}
-            />
+            onChange={ e => paintDispatch({ type: 'title', payload: e.target.value })}/>
           <textarea placeholder="description"
             type="text"
             value={ description }
-            onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}
-            />
+            onChange={ e => paintDispatch({ type: 'description', payload: e.target.value })}/>
         </>
         }
         <button type="submit">{ buttonText }</button>
