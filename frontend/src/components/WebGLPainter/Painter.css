@@ -34,6 +34,7 @@
   position: absolute;
   margin: auto;
   touch-action: none;
+  height: inherit;
   /* pointer-events: none; */
 }
 #comment-wrapper > canvas {

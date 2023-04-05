@@ -16,6 +16,7 @@ import PaletteEditor from "./PaletteEditor";
 import BrushEditor from "./BrushEditor";
 import { useWindowSize } from "../../hooks";
 import ToolEditorModal from "./ToolEditorModal";
+import { updateUserIcon } from "../../store/users";
 
 export const DEFAULT_PALETTE = [
   [ 255, 255, 255 ], 
@@ -58,10 +59,7 @@ const init = ( props ) => {
     redoCache: []
   }
 
-  const initCanvas = createGLContext( 
-    512, 
-    512
-  )
+  const initCanvas = initialState.canvasType === 'icon' ? createGLContext( 256, 256 ) : createGLContext( 512, 512 )
 
   initialState.canvas = initCanvas.canvas
   initialState.gl = initCanvas.gl
@@ -103,7 +101,7 @@ function Painter( props ) {
   image.crossOrigin = "anonymous"
   if ( drawing ) image.src = drawing.imageUrl
 
-  const buttonText = props.imgSrc ? "edit" : "post"
+  const buttonText = props.imgSrc ? "update" : "post"
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
   const currentStroke = { 
     color: [ ...activeColor ],
@@ -120,7 +118,7 @@ function Painter( props ) {
     context.fillStyle = "white";
     context.fillRect(0, 0, width, height)
 
-    if ( canvasType === 'painting') {
+    if ( canvasType === 'painting' ) {
       const getImageData = async () => {
         await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
       }
@@ -129,6 +127,7 @@ function Painter( props ) {
         bgContext.current.drawImage(image, 0, 0)
       }
     }
+
   }, [])
 
   useLayoutEffect(() => {
@@ -145,7 +144,7 @@ function Painter( props ) {
     const scale = width/512
     let x = evt.clientX - rect.left
     let y = evt.clientY - rect.top
-    if ( canvasType === 'comment') y /= 2
+    if ( canvasType === 'comment' || canvasType === 'icon' ) y /= 2
     x = ( x - width/2 )/( width/2 )
     y = ( height * scale /2 - y )/( height * scale /2 )
     const pressure = evt.pressure
@@ -228,12 +227,14 @@ function Painter( props ) {
     const dataURL = bgCanvas.current.toDataURL("img/png");
     const blobData = dataURItoBlob( dataURL );
     const formData = new FormData();
-
     if (canvasType === 'comment') {
-      formData.append('comment[author_id]', user.id);
-      formData.append('comment[drawing_id]', props.drawingId)
-      formData.append('comment[image]', blobData)
+      formData.append( 'comment[author_id]', user.id )
+      formData.append( 'comment[drawing_id]', props.drawingId )
+      formData.append('comment[image]', blobData )
       dispatch(createComment( props.drawingId, formData ))
+    } else if ( canvasType === 'icon' ) {
+      formData.append( 'user[image]', blobData )
+      dispatch(updateUserIcon( user.id, formData ))
     } else if ( props.imgSrc && (props.drawingUserId === user.id) ) {
       formData.append('drawing[title]', title);
       formData.append('drawing[description]', description)
@@ -254,7 +255,6 @@ function Painter( props ) {
   return (
   <div id="paint-container">
     {/* <button onClick={() => console.log( paintState )}>log state</button> */}
-    {/* <button onClick={() => playback(gl, paintState.strokeHistory)}>playback</button> */}
     { wideRatio &&
       <div className="toolbox">
         <Palette activeColor={ activeColor } palette={ palette } paintDispatch={ paintDispatch } showColorTools={ showColorTools } wideRatio={ wideRatio } />
@@ -268,7 +268,7 @@ function Painter( props ) {
       </div>
     } 
     <div id="workspace" >
-      <div ref={ workspace } id={ canvasType === 'painting' ? "canvas-wrapper" : "comment-wrapper" }
+      <div ref={ workspace } id={ canvasType === 'comment' ? "comment-wrapper" : "canvas-wrapper" }
         onPointerMove={ e => draw( e, gl, glAttributes, activeBrush, activeColor )}
         onPointerDown={ setPenEvt } onPointerEnter={ setPenEvt } 
         onPointerUp={() => saveStroke( currentStroke )}
@@ -318,6 +318,11 @@ function Painter( props ) {
           </div>
         </div>
       }
+
+      { ( canvasType === 'icon' ) && 
+        <img src={ user.iconUrl } alt="" />
+      }
+
       <ToolEditorModal palette={ palette } brushes={ brushes } activeBrush={ activeBrush } activeColor={ activeColor } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch }/>
       <form onSubmit={ blobCanvas } className="comment-form">
         { (canvasType === 'painting') &&

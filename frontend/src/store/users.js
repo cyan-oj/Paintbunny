@@ -18,6 +18,18 @@ export const fetchUser = userId => async dispatch => {
   dispatch(receiveDrawings(data.drawings))
 }
 
+export const updateUserIcon = ( userId, icon ) => async dispatch => {
+  console.log( userId, icon )
+  const res = await csrfFetch(`api/users/${userId}`, {
+    method: "PUT",
+    body: icon
+  });
+  const data = await res.json();
+  console.log('data')
+  storeCurrentUser(data.user);
+  dispatch(receiveUser(data.user))
+}
+
 export const updateUserTools = user => async dispatch => {
   const res = await csrfFetch(`/api/users/${user.id}`, {
     method: "PUT",

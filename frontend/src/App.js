@@ -32,13 +32,13 @@ function App() {
           </ProtectedRoute>
         </Route>
         <Route path="/icon">
-          <Painter />
+          <Painter canvasType='icon' width={ 256 } height={ 256 } />
         </Route>
         <Route path="/"> 
           { !user &&
             <Welcome />
           }
-          <DrawingIndex user={ user } />
+          <DrawingIndex user={ user }  />
         </Route>
       </Switch>
     </>
