@@ -9,6 +9,7 @@ import { ProtectedRoute } from "./utils";
 import { useSelector } from "react-redux";
 import Welcome from "./components/Welcome/Welcome";
 import Painter from "./components/WebGLPainter/Painter";
+import UserEditPage from "./components/UserEditPage";
 
 function App() {
   const user = useSelector(state => state.session.user)
@@ -32,7 +33,7 @@ function App() {
           </ProtectedRoute>
         </Route>
         <Route path="/icon">
-          <Painter canvasType='icon' width={ 256 } height={ 256 } />
+          <UserEditPage />
         </Route>
         <Route path="/"> 
           { !user &&

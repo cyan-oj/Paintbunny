@@ -16,7 +16,7 @@ function DrawingPage() {
   const user = useSelector(state => state.session.user)
   const isArtist = (user && userId === '' + user.id) ? true : false
 
-  const [ showCanvas, setShowCanvas ] = useState(false);
+  const [ showCanvas, setShowCanvas ] = useState(false)
   const [ isFetched, setIsFetched ] = useState(false)
   
   useLayoutEffect(() => {

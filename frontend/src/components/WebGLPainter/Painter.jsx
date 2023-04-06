@@ -16,7 +16,7 @@ import PaletteEditor from "./PaletteEditor";
 import BrushEditor from "./BrushEditor";
 import { useWindowSize } from "../../hooks";
 import ToolEditorModal from "./ToolEditorModal";
-import { updateUserIcon } from "../../store/users";
+import { fetchUser, getUser, updateUserIcon } from "../../store/users";
 
 export const DEFAULT_PALETTE = [
   [ 255, 255, 255 ], 
@@ -76,7 +76,7 @@ const init = ( props ) => {
   return initialState;
 }
 
-function Painter( props ) {
+function Painter( props ) {//
   const [ paintState, paintDispatch ] = useReducer( paintReducer, props, init )
   const { width, height, 
           title, description, canvasType,
@@ -100,6 +100,7 @@ function Painter( props ) {
   const image = new Image( 512, 512 )
   image.crossOrigin = "anonymous"
   if ( drawing ) image.src = drawing.imageUrl
+  if ( canvasType === 'icon' ) image.src = user.iconUrl
 
   const buttonText = props.imgSrc ? "update" : "post"
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
@@ -119,15 +120,24 @@ function Painter( props ) {
     context.fillRect(0, 0, width, height)
 
     if ( canvasType === 'painting' ) {
-      const getImageData = async () => {
-        await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
-      }
       if ( drawing ) {
+        const getImageData = async () => {
+          await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
+        }
         getImageData()
         bgContext.current.drawImage(image, 0, 0)
       }
     }
 
+    if ( canvasType === 'icon' ) {
+      const getUserData = async () => {
+        await dispatch(fetchUser( user.id )) 
+      }
+      getUserData()
+      
+      console.log('image', image)
+      bgContext.current.drawImage(image, 0, 0)
+    }
   }, [])
 
   useLayoutEffect(() => {
@@ -320,7 +330,9 @@ function Painter( props ) {
       }
 
       { ( canvasType === 'icon' ) && 
-        <img src={ user.iconUrl } alt="" />
+      <>
+        <canvas id='icon-preview' />
+      </>
       }
 
       <ToolEditorModal palette={ palette } brushes={ brushes } activeBrush={ activeBrush } activeColor={ activeColor } brushThumbnails={ brushThumbnails } paintDispatch={ paintDispatch }/>

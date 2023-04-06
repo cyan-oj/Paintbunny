@@ -25,8 +25,6 @@ export const updateUserIcon = ( userId, icon ) => async dispatch => {
     body: icon
   });
   const data = await res.json();
-  console.log('data')
-  storeCurrentUser(data.user);
   dispatch(receiveUser(data.user))
 }
 
