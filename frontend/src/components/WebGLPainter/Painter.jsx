@@ -134,7 +134,7 @@ function Painter( props ) {//
         await dispatch(fetchUser( user.id )) 
       }
       getUserData()
-      
+
       console.log('image', image)
       bgContext.current.drawImage(image, 0, 0)
     }
@@ -149,44 +149,23 @@ function Painter( props ) {//
   }, [ windowWidth, windowHeight ])
 
   const setPenEvt = ( evt ) => {
-    const rect = evt.target.getBoundingClientRect()
-    const width = Number(workspace.current.clientWidth)
-    const scale = width/512
+    let rect = evt.target.getBoundingClientRect()
     let x = evt.clientX - rect.left
     let y = evt.clientY - rect.top
+    const pressure = evt.pointerType === "touch" ? 1 : evt.pressure
+
+    const width = Number(workspace.current.clientWidth)
+    const scale = width/512
+
     if ( canvasType === 'comment' || canvasType === 'icon' ) y /= 2
     x = ( x - width/2 )/( width/2 )
     y = ( height * scale /2 - y )/( height * scale /2 )
-    const pressure = evt.pressure
     penEvt.current = { x, y, pressure }
     return { x, y, pressure }
   }
 
-  const touchDraw = ( evt, gl, glAttributes, brush, color ) => {
-    const prev = { ...penEvt.current }
-    const curr = setPenEvt( evt )
-    if ( evt.buttons !== 1 ) return
-    
-    const [ dist, angle ] = getStroke( prev, curr )
-    const drawColor = rgbToGL( color )
-    currentStroke.color = color
-    
-    for ( let i = 0; i < dist; i+= brush.spacing ) {
-      const x = prev.x + Math.sin( angle ) * i
-      const y = prev.y + Math.cos( angle ) * i
-      const transforms = { 
-        translate: { x, y },
-        rotate: brush.angle,
-        scale: brush.scale,
-        ratio: brush.ratio, 
-        pressure: 1
-      }
-      drawPoint( gl, transforms, glAttributes, drawColor )
-      currentStroke.points.push( transforms )
-    }
-  }
-
   const draw = ( evt, gl, glAttributes, brush, color ) => {
+    console.log(evt)
     const prev = { ...penEvt.current }
     const curr = setPenEvt( evt )
     if ( evt.buttons !== 1 ) return
@@ -282,21 +261,7 @@ function Painter( props ) {//
         onPointerMove={ e => draw( e, gl, glAttributes, activeBrush, activeColor )}
         onPointerDown={ setPenEvt } onPointerEnter={ setPenEvt } 
         onPointerUp={() => saveStroke( currentStroke )}
-        onPointerLeave={() => saveStroke( currentStroke )}
-        onTouchMove={ e => {
-          // e.preventDefault();
-          const touch = e.changedTouches[0]
-          // console.log("event", e, "touch", touch)
-          touchDraw( { clientX: touch.clientX, clientY: touch.clientY, target: touch.target, pressure: 1, type: "touch" }, gl, glAttributes, activeBrush, activeColor )
-        }}
-        onTouchStart={ e => {
-          // e.preventDefault();
-          const touch = e.changedTouches[0]
-          // console.log("event", e, "touch", touch)
-          setPenEvt( { clientX: touch.clientX, clientY: touch.clientY, target: touch.target, pressure: 1 } )
-        }}
-        onTouchEnd={() => saveStroke( currentStroke )}
-        onTouchCancel={() => saveStroke( currentStroke )}>
+        onPointerLeave={() => saveStroke( currentStroke )}>
         <canvas ref={ bgCanvas } width={ width } height={ height }/>
       </div>
       { !wideRatio &&
