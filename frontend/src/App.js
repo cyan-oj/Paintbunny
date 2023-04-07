@@ -33,7 +33,9 @@ function App() {
           </ProtectedRoute>
         </Route>
         <Route path="/icon">
-          <UserEditPage />
+          <ProtectedRoute user={user}>
+            <UserEditPage />
+          </ProtectedRoute>
         </Route>
         <Route path="/"> 
           { !user &&

@@ -40,7 +40,7 @@ class Api::DrawingsController < ApplicationController
     if @drawing.update(drawing_params)
       render :show
     else 
-      render json: { errors: ["could not update drawing"] }
+      render json: { errors: ["could not update icon"] }
     end
   end
 

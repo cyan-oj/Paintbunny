@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_01_011507) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_06_175344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_011507) do
     t.index ["artist_id", "title"], name: "index_drawings_on_artist_id_and_title", unique: true
   end
 
+  create_table "icons", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_icons_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "username", null: false
@@ -79,4 +86,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_011507) do
   add_foreign_key "comments", "drawings"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "drawings", "users", column: "artist_id"
+  add_foreign_key "icons", "users"
 end
