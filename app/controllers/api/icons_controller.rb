@@ -8,7 +8,7 @@ class Api::IconsController < ApplicationController
       @icons = Icon.where(user_id: user_id)
       render :index
     else 
-      render json: { "you can't view these icons" }
+      render json: { errors: ["you can't view these icons"] }
     end
   end
 
@@ -23,11 +23,11 @@ class Api::IconsController < ApplicationController
   end
 
   def create
-    @icon = Icon.new(drawing_params)
+    @icon = Icon.new(icon_params)
     if @icon.save
       render :show
     else
-      render json: icon.errors.full_messages, status: 422
+      render json: { errors: ["failed to create icon"]}, status: 422
     end
   end
 
@@ -45,14 +45,14 @@ class Api::IconsController < ApplicationController
     @icon = current_user.icon
 
     if @icon.destroy
-      render json: { "icon destroyed"}
+      render json: { message: "icon destroyed" }
     else
-      render json: { message: "you can't do that" }, status: unauthorized
+      render json: { message: "you can't do that" }, status: :unauthorized
     end
   end
 
   private
-  def drawing_params
-    params.require(:icon).permit(:user_id)
+  def icon_params
+    params.require(:icon).permit(:user_id, :image)
   end
 end

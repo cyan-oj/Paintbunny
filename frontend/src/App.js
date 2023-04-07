@@ -21,6 +21,11 @@ function App() {
         <Route path="/users/:userId/drawings/:drawingId">
           <DrawingPage />
         </Route>
+        <Route path="/users/:userId/icons">
+          <ProtectedRoute user={user}>
+            <UserEditPage />
+          </ProtectedRoute>
+        </Route>
         <Route path="/template">
           <DrawingTemplatePage />
         </Route>
@@ -30,11 +35,6 @@ function App() {
         <Route path="/new">
           <ProtectedRoute user={user} >
               <Painter />
-          </ProtectedRoute>
-        </Route>
-        <Route path="/icon">
-          <ProtectedRoute user={user}>
-            <UserEditPage />
           </ProtectedRoute>
         </Route>
         <Route path="/"> 

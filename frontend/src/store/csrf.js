@@ -1,4 +1,5 @@
 async function csrfFetch(url, options = {}) {
+  console.log(url)
   options.method = options.method || 'GET';
   options.headers = options.headers || {};
 

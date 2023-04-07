@@ -16,7 +16,7 @@ import PaletteEditor from "./PaletteEditor";
 import BrushEditor from "./BrushEditor";
 import { useWindowSize } from "../../hooks";
 import ToolEditorModal from "./ToolEditorModal";
-import { fetchUser, getUser, updateUserIcon } from "../../store/users";
+import { fetchIcon, getIcon, updateIcon } from "../../store/icons";
 
 export const DEFAULT_PALETTE = [
   [ 255, 255, 255 ], 
@@ -90,6 +90,7 @@ function Painter( props ) {//
   const history = useHistory();
   const dispatch = useDispatch();
   const drawing = useSelector(getDrawing( props.drawingId ))
+  const icon = useSelector(getIcon( props.iconId ))
   const user = useSelector( state => state.session.user )
   const bgCanvas = useRef( null )
   const bgContext = useRef( null )
@@ -100,7 +101,7 @@ function Painter( props ) {//
   const image = new Image( 512, 512 )
   image.crossOrigin = "anonymous"
   if ( drawing ) image.src = drawing.imageUrl
-  if ( canvasType === 'icon' ) image.src = user.iconUrl
+  if ( icon ) image.src = icon.iconUrl
 
   const buttonText = props.imgSrc ? "update" : "post"
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
@@ -119,24 +120,20 @@ function Painter( props ) {//
     context.fillStyle = "white";
     context.fillRect(0, 0, width, height)
 
-    if ( canvasType === 'painting' ) {
+    if ( canvasType === 'painting' || canvasType === 'icon' ) {
       if ( drawing ) {
         const getImageData = async () => {
           await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
         }
         getImageData()
         bgContext.current.drawImage(image, 0, 0)
+      } else if ( icon ) {
+        const getIconData = async () => {
+          await dispatch(fetchIcon( props.userId, props.iconId ))
+        }
+        getIconData()
+        bgContext.current.drawImage(image, 0, 0)
       }
-    }
-
-    if ( canvasType === 'icon' ) {
-      const getUserData = async () => {
-        await dispatch(fetchUser( user.id )) 
-      }
-      getUserData()
-
-      console.log('image', image)
-      bgContext.current.drawImage(image, 0, 0)
     }
   }, [])
 
@@ -165,7 +162,6 @@ function Painter( props ) {//
   }
 
   const draw = ( evt, gl, glAttributes, brush, color ) => {
-    console.log(evt)
     const prev = { ...penEvt.current }
     const curr = setPenEvt( evt )
     if ( evt.buttons !== 1 ) return
@@ -222,8 +218,12 @@ function Painter( props ) {//
       formData.append('comment[image]', blobData )
       dispatch(createComment( props.drawingId, formData ))
     } else if ( canvasType === 'icon' ) {
-      formData.append( 'user[image]', blobData )
-      dispatch(updateUserIcon( user.id, formData ))
+      formData.append( 'icon[user_id]', user.id )
+      formData.append( 'icon[image]', blobData )
+
+      console.log("blobFormData", formData)
+
+      dispatch(updateIcon( user.id, formData, props.iconId ))
     } else if ( props.imgSrc && (props.drawingUserId === user.id) ) {
       formData.append('drawing[title]', title);
       formData.append('drawing[description]', description)
