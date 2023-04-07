@@ -12,8 +12,10 @@ export const receiveIcon = icon => ({
 export const getIcon = iconId => ({ icons }) => icons ? icons[iconId] : null
 
 export const fetchIcon = ( userId, iconId ) => async dispatch => {
-  const res = await csrfFetch(`api/users/${userId}/icons/${iconId}`)
+  console.log("fetching icon...")
+  const res = await csrfFetch(`/api/users/${userId}/icons/${iconId}`)
   const data = await res.json();
+  console.log(data)
   dispatch(receiveIcon(data.icon))
 }
 
@@ -36,7 +38,7 @@ const iconsReducer = (state = {}, action) => {
   const nextState = {...state};
   switch (action.type) {
     case RECEIVE_ICON:
-      nextState[action.icon.user_id] = action.icon;
+      nextState[action.icon.id] = action.icon;
       return nextState;
     default:
       return nextState;

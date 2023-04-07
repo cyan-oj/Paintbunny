@@ -1,15 +1,15 @@
 import { useDispatch } from "react-redux"
 import { logout } from "../../store/session"
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function UserMenu({user}) {
+function UserMenu({user}) { //
   const dispatch = useDispatch();
-
+  
   const signOut = e => {
     dispatch(logout())
   }
 
-  const iconEditUrl = user.icon ? `/users/${user.id}/icons/${user.icon.id}` : `/users/${user.id}/icons`
+  const iconEditUrl = user.icon ? `/users/${user.id}/icons/${user.icon}` : `/users/${user.id}/icons`
 
   return (
     <div className="dropdown">

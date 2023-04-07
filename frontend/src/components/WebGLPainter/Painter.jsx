@@ -120,20 +120,21 @@ function Painter( props ) {//
     context.fillStyle = "white";
     context.fillRect(0, 0, width, height)
 
-    if ( canvasType === 'painting' || canvasType === 'icon' ) {
-      if ( drawing ) {
-        const getImageData = async () => {
-          await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
-        }
-        getImageData()
-        bgContext.current.drawImage(image, 0, 0)
-      } else if ( icon ) {
-        const getIconData = async () => {
-          await dispatch(fetchIcon( props.userId, props.iconId ))
-        }
-        getIconData()
+    if ( canvasType === 'painting' && drawing ) {
+      const getImageData = async () => {
+        await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
         bgContext.current.drawImage(image, 0, 0)
       }
+      getImageData()
+    }
+
+    if ( canvasType === 'icon' && icon ) { //
+      console.log("icon is:", icon)
+      const getIconData = async () => {
+        await dispatch(fetchIcon( props.userId, props.iconId ))
+        bgContext.current.drawImage(image, 0, 0)
+      }
+      getIconData()
     }
   }, [])
 

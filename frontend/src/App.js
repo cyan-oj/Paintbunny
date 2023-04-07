@@ -9,7 +9,7 @@ import { ProtectedRoute } from "./utils";
 import { useSelector } from "react-redux";
 import Welcome from "./components/Welcome/Welcome";
 import Painter from "./components/WebGLPainter/Painter";
-import UserEditPage from "./components/UserEditPage";
+import UserEditPage from "./components/UserEditPage/UserEditPage"
 
 function App() {
   const user = useSelector(state => state.session.user)
@@ -20,6 +20,11 @@ function App() {
       <Switch>
         <Route path="/users/:userId/drawings/:drawingId">
           <DrawingPage />
+        </Route>
+        <Route path="/users/:userId/icons/:iconId">
+          <ProtectedRoute user={user}>
+            <UserEditPage />
+          </ProtectedRoute>
         </Route>
         <Route path="/users/:userId/icons">
           <ProtectedRoute user={user}>

@@ -14,8 +14,8 @@ class Api::IconsController < ApplicationController
 
   def show
     user_id = params[:user_id]
-    @icon = Icon.where(user_id: user_id).and(Icon.where(id: params[:id]))
-    if @icon
+    @icon = Icon.find(params[:id])
+    if @icon && @icon.user_id.to_i == user_id.to_i
       render :show
     else
       render json: { errors: ["no icon found"] }, status: 404
