@@ -12,10 +12,8 @@ export const receiveIcon = icon => ({
 export const getIcon = iconId => ({ icons }) => icons ? icons[iconId] : null
 
 export const fetchIcon = ( userId, iconId ) => async dispatch => {
-  console.log("fetching icon...")
   const res = await csrfFetch(`/api/users/${userId}/icons/${iconId}`)
   const data = await res.json();
-  console.log(data)
   dispatch(receiveIcon(data.icon))
 }
 

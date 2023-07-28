@@ -10,7 +10,7 @@ function UserEditPage(){
 
   useEffect(() => {
     dispatch(fetchIcon(userId, iconId));
-  }, [])
+  }, [userId, iconId, dispatch])
 
   console.log( {userId, iconId});
   

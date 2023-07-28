@@ -100,8 +100,6 @@ function Painter( props ) {//
 
   const image = new Image( 512, 512 )
   image.crossOrigin = "anonymous"
-  if ( drawing ) image.src = drawing.imageUrl
-  if ( icon ) image.src = icon.iconUrl
 
   const buttonText = props.imgSrc ? "update" : "post"
   const penEvt = useRef({ x: 0, y: 0, pressure: 0 })
@@ -116,22 +114,27 @@ function Painter( props ) {//
 
     const background = bgCanvas.current
     bgContext.current = background.getContext('2d')
-    const context = bgContext.current
-    context.fillStyle = "white";
-    context.fillRect(0, 0, width, height)
+    // const context = bgContext.current
+    // bgContext.current.fillStyle = "white";
+    // bgContext.current.fillRect(0, 0, width, height)
+    bgContext.current.fillStyle = "white";
+    bgContext.current.fillRect(0, 0, width, height)
 
+    
     if ( canvasType === 'painting' && drawing ) {
       const getImageData = async () => {
+        if ( drawing ) image.src = drawing.imageUrl
         await dispatch(fetchDrawing( props.drawingUserId, props.drawingId));
         bgContext.current.drawImage(image, 0, 0)
       }
       getImageData()
-    }
-
-    if ( canvasType === 'icon' && icon ) { //
-      console.log("icon is:", icon)
+    } 
+    
+    console.log("icon:", icon)
+    if ( canvasType === 'icon' && icon ) {
       const getIconData = async () => {
         await dispatch(fetchIcon( props.userId, props.iconId ))
+        if ( icon ) image.src = icon.iconUrl
         bgContext.current.drawImage(image, 0, 0)
       }
       getIconData()
